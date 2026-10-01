@@ -1,18 +1,17 @@
 <?php
 
-use App\Http\Controllers\BukuController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PengajuanController;
-use App\Http\Controllers\ProductController;
 
+Route::get('/', function () {
+    return view('welcome');
+});
 
-Route::get('/', fn() => redirect()->route('product.index'));
-Route::resource('buku', BukuController::class);
+use App\Http\Controllers\GugusTA\MahasiswaController;
 
-use App\Http\Controllers\AnggotaController;
-
-Route::resource('anggota', AnggotaController::class);
-
-Route::resource('pengajuan', PengajuanController::class);
-
-Route::resource('product', ProductController::class);
+Route::get('/gugus-ta/mahasiswa', [MahasiswaController::class, 'index']);
+Route::post('/gugus-ta/mahasiswa', [MahasiswaController::class, 'store']); // Tambah manual
+Route::post('/gugus-ta/mahasiswa/import', [MahasiswaController::class, 'import']); // Import
+Route::delete('/gugus-ta/mahasiswa/{id}', [MahasiswaController::class, 'destroy']); // Hapus
+Route::get('/gugus-ta/mahasiswa/{id}/edit', [MahasiswaController::class, 'edit']);
+Route::put('/gugus-ta/mahasiswa/{id}', [MahasiswaController::class, 'update']);
