@@ -35,17 +35,27 @@ class MahasiswaController extends Controller
     {
         $request->validate([
             'nim' => 'required|unique:users,nim',
-            'name' => 'required'
+            'name' => 'required',
+            'semester' => 'required'
         ]);
 
         User::create([
             'nim' => $request->nim,
             'name' => $request->name,
+            'semester' => $request->semester, // FIX: Menyimpan semester manual
             'role' => 'mahasiswa',
             'password' => Hash::make($request->nim)
         ]);
 
         return redirect()->back()->with('success', 'Mahasiswa berhasil ditambahkan manual!');
+    }
+
+    public function deleteAll()
+    {
+        // Hapus khusus akun yang rolenya 'mahasiswa'
+        User::where('role', 'mahasiswa')->delete();
+
+        return redirect()->back()->with('success', 'Semua data mahasiswa berhasil dibersihkan!');
     }
 
     // Nampilin halaman form edit
@@ -69,7 +79,7 @@ class MahasiswaController extends Controller
         $mhs->update([
             'nim' => $request->nim,
             'name' => $request->name,
-            'semester' => $request->semester, // Tambahkan ini
+            'semester' => $request->semester,
         ]);
 
         return redirect('/gugus-ta/mahasiswa')->with('success', 'Data Mahasiswa berhasil diperbarui!');
@@ -85,7 +95,7 @@ class MahasiswaController extends Controller
         $content = file_get_contents($file->getRealPath());
         $lines = explode(PHP_EOL, $content);
 
-        array_shift($lines);
+        array_shift($lines); // Skip header CSV
 
         foreach ($lines as $line) {
             if (trim($line) === '') continue;
@@ -94,14 +104,16 @@ class MahasiswaController extends Controller
             $row = str_getcsv($line, $delimiter);
 
             $nim = isset($row[1]) ? trim($row[1]) : '';
-            $nama = isset($row[2]) ? trim($row[2]) : '';
+            $semesterVal = isset($row[2]) ? trim($row[2]) : ''; // Index 2 = Semester (Kolom C)
+            $nama = isset($row[3]) ? trim($row[3]) : '';        // Index 3 = Nama (Kolom D)
 
             if (!empty($nim) && strtolower($nim) !== 'nim') {
                 User::updateOrCreate(
                     ['nim' => $nim],
                     [
-                        'name' => $nama,
-                        'role' => 'mahasiswa',
+                        'name'     => $nama,
+                        'semester' => !empty($semesterVal) ? (str_contains($semesterVal, 'Semester') ? $semesterVal : 'Semester ' . $semesterVal) : null, // FIX: Otomatis format 'Semester X'
+                        'role'     => 'mahasiswa',
                         'password' => Hash::make($nim)
                     ]
                 );

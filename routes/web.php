@@ -15,3 +15,4 @@ Route::post('/gugus-ta/mahasiswa/import', [MahasiswaController::class, 'import']
 Route::delete('/gugus-ta/mahasiswa/{id}', [MahasiswaController::class, 'destroy']); // Hapus
 Route::get('/gugus-ta/mahasiswa/{id}/edit', [MahasiswaController::class, 'edit']);
 Route::put('/gugus-ta/mahasiswa/{id}', [MahasiswaController::class, 'update']);
+Route::delete('/gugus-ta/mahasiswa-delete-all', [MahasiswaController::class, 'deleteAll']);
