@@ -27,12 +27,18 @@
                     class="w-full px-3.5 py-2 text-sm rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500">
             </div>
             <div>
-                <label class="block text-xs font-medium text-slate-600 mb-1">Semester</label>
-                <select name="semester" class="px-3 py-1.5 text-xs rounded-xl border border-slate-300 bg-white">
-                    <option value="">Semua Semester</option>
-                    <option value="Semester 5" {{ request('semester') == 'Semester 5' ? 'selected' : '' }}>Semester 5
-                    </option>
-                    <option value="Semester 6" {{ request('semester') == 'Semester 6' ? 'selected' : '' }}>Semester 6
+                <label class="block text-xs font-medium text-slate-600 mb-1">Tahun Angkatan</label>
+                <input type="number" name="tahun_angkatan" value="{{ $mhs->tahun_angkatan }}" required min="2015"
+                    max="2030"
+                    class="w-full px-3.5 py-2 text-sm rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500">
+            </div>
+            <div>
+                <label class="block text-xs font-medium text-slate-600 mb-1">Status Aktif</label>
+                <select name="status_aktif"
+                    class="w-full px-3.5 py-2 text-sm rounded-xl border border-slate-300 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <option value="Aktif" {{ $mhs->status_aktif == 'Aktif' ? 'selected' : '' }}>Aktif</option>
+                    <option value="Cuti" {{ $mhs->status_aktif == 'Cuti' ? 'selected' : '' }}>Cuti</option>
+                    <option value="Tidak Aktif" {{ $mhs->status_aktif == 'Tidak Aktif' ? 'selected' : '' }}>Tidak Aktif
                     </option>
                 </select>
             </div>

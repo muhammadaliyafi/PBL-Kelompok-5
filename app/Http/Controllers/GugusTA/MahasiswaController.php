@@ -36,18 +36,19 @@ class MahasiswaController extends Controller
         $request->validate([
             'nim' => 'required|unique:users,nim',
             'name' => 'required',
-            'semester' => 'required'
+            'tahun_angkatan' => 'required|digits:4',
         ]);
 
         User::create([
             'nim' => $request->nim,
             'name' => $request->name,
-            'semester' => $request->semester, // FIX: Menyimpan semester manual
+            'tahun_angkatan' => $request->tahun_angkatan,
+            'status_aktif' => 'Aktif', // Default Aktif saat tambah manual
             'role' => 'mahasiswa',
-            'password' => Hash::make($request->nim)
+            'password' => bcrypt('password'), // Sesuaikan enkripsi password lu
         ]);
 
-        return redirect()->back()->with('success', 'Mahasiswa berhasil ditambahkan manual!');
+        return redirect()->back()->with('success', 'Data Mahasiswa berhasil ditambahkan!');
     }
 
     public function deleteAll()
@@ -68,23 +69,36 @@ class MahasiswaController extends Controller
     // Proses simpan perubahan data edit
     public function update(Request $request, $id)
     {
-        $mhs = User::findOrFail($id);
-
         $request->validate([
-            'nim' => 'required|unique:users,nim,' . $id,
+            'nim' => 'required',
             'name' => 'required',
-            'semester' => 'nullable'
+            'tahun_angkatan' => 'required|digits:4',
+            'status_aktif' => 'required',
         ]);
 
+        $mhs = User::findOrFail($id);
         $mhs->update([
             'nim' => $request->nim,
             'name' => $request->name,
-            'semester' => $request->semester,
+            'tahun_angkatan' => $request->tahun_angkatan,
+            'status_aktif' => $request->status_aktif,
         ]);
 
         return redirect('/gugus-ta/mahasiswa')->with('success', 'Data Mahasiswa berhasil diperbarui!');
     }
+    public function bulkDelete(Request $request)
+    {
+        $ids = $request->ids;
 
+        if (!$ids || count($ids) === 0) {
+            return redirect()->back()->with('error', 'Pilih minimal satu mahasiswa yang ingin dihapus!');
+        }
+
+        // Hapus mahasiswa berdasarkan ID yang dicentang
+        User::whereIn('id', $ids)->delete();
+
+        return redirect()->back()->with('success', count($ids) . ' data mahasiswa berhasil dihapus!');
+    }
     public function import(Request $request)
     {
         $request->validate([
@@ -119,6 +133,7 @@ class MahasiswaController extends Controller
                 );
             }
         }
+
 
         return redirect()->back()->with('success', 'Data Mahasiswa berhasil di-import!');
     }
