@@ -54,7 +54,7 @@
                     </a>
 
                     <!-- TAMBAHAN: Data Dosen -->
-                    <a href="#"
+                    <a href="{{ url('/gugus-ta/dosen') }}"
                         class="flex items-center px-3.5 py-2 text-sm font-medium rounded-lg hover:bg-slate-800/60 text-slate-400 hover:text-slate-200 transition-colors">
                         Data Dosen
                     </a>
