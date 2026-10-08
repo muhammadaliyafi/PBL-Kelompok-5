@@ -23,6 +23,8 @@ class User extends Authenticatable
         'email',
         'password',
         'nim',
+        'nip',           // Tambah ini untuk Dosen
+        'keahlian',      // Tambah ini untuk Dosen
         'role',
         'tahun_angkatan', // Ganti semester jadi ini
         'status_aktif',   // Tambah ini juga
