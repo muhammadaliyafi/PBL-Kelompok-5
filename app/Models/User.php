@@ -22,15 +22,13 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
-<<<<<<< HEAD
-=======
         'nim',
         'nip',           // Tambah ini untuk Dosen
         'keahlian',      // Tambah ini untuk Dosen
         'role',
         'tahun_angkatan', // Ganti semester jadi ini
         'status_aktif',   // Tambah ini juga
->>>>>>> 364f54b8eb18d10304832d19c2b42859dd6fd30e
+
     ];
 
     /**
