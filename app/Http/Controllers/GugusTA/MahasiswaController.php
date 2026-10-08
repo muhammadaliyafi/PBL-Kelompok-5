@@ -109,33 +109,37 @@ class MahasiswaController extends Controller
         $content = file_get_contents($file->getRealPath());
         $lines = explode(PHP_EOL, $content);
 
-        array_shift($lines); // Skip header CSV
+        array_shift($lines); // Skip baris pertama (header CSV)
 
         foreach ($lines as $line) {
             if (trim($line) === '') continue;
 
+            // Deteksi pemisah (bisa koma atau titik koma, tergantung Excel admin)
             $delimiter = strpos($line, ';') !== false ? ';' : ',';
             $row = str_getcsv($line, $delimiter);
 
-            $nim = isset($row[1]) ? trim($row[1]) : '';
-            $semesterVal = isset($row[2]) ? trim($row[2]) : ''; // Index 2 = Semester (Kolom C)
-            $nama = isset($row[3]) ? trim($row[3]) : '';        // Index 3 = Nama (Kolom D)
+            // Sesuaikan index dengan kolom CSV terbaru lu
+            // Kolom A = No (Index 0) -> Gak kita pakai
+            $nim = isset($row[1]) ? trim($row[1]) : '';            // Kolom B
+            $nama = isset($row[2]) ? trim($row[2]) : '';           // Kolom C
+            $tahunAngkatan = isset($row[3]) ? trim($row[3]) : '';  // Kolom D (Yang baru)
 
+            // Kalau NIM-nya nggak kosong dan bukan tulisan "NIM" header
             if (!empty($nim) && strtolower($nim) !== 'nim') {
                 User::updateOrCreate(
-                    ['nim' => $nim],
+                    ['nim' => $nim], // Cek apakah NIM ini udah ada di database?
                     [
-                        'name'     => $nama,
-                        'semester' => !empty($semesterVal) ? (str_contains($semesterVal, 'Semester') ? $semesterVal : 'Semester ' . $semesterVal) : null, // FIX: Otomatis format 'Semester X'
-                        'role'     => 'mahasiswa',
-                        'password' => Hash::make($nim)
+                        'name'           => $nama,
+                        'tahun_angkatan' => $tahunAngkatan,
+                        'status_aktif'   => 'Aktif', // FIX: Otomatis set status jadi Aktif!
+                        'role'           => 'mahasiswa',
+                        'password'       => Hash::make($nim) // Password default pakai NIM
                     ]
                 );
             }
         }
 
-
-        return redirect()->back()->with('success', 'Data Mahasiswa berhasil di-import!');
+        return redirect()->back()->with('success', 'Data Mahasiswa berhasil di-import dan status otomatis Aktif!');
     }
 
     public function destroy($id)

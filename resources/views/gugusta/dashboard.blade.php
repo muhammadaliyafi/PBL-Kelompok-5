@@ -59,7 +59,7 @@
                         Data Dosen
                     </a>
 
-                    <a href="#"
+                    <a href="/gugus-ta/ploting"
                         class="flex items-center px-3.5 py-2 text-sm font-medium rounded-lg hover:bg-slate-800/60 text-slate-400 hover:text-slate-200 transition-colors">
                         Ploting Dospem
                     </a>
@@ -70,10 +70,11 @@
                         Arsip Judul
                     </a>
                 </nav>
+            </div>
 
-                <div class="p-4 text-xs text-slate-500 border-t border-slate-800/60 text-center font-mono">
-                    Gugus TA POV &copy; 2026
-                </div>
+            <div class="p-4 text-xs text-slate-500 border-t border-slate-800/60 text-center font-mono">
+                Gugus TA POV &copy; 2026
+            </div>
         </aside>
 
         <!-- MAIN CONTENT CONTAINER -->
@@ -83,13 +84,54 @@
             <header
                 class="h-16 bg-white border-b border-slate-200/80 flex items-center justify-between px-8 sticky top-0 z-10">
                 <h1 class="text-sm font-medium text-slate-600">Sistem Informasi Proposal dan Tugas Akhir</h1>
-                <div class="flex items-center gap-3">
-                    <span
-                        class="text-xs font-semibold text-slate-600 bg-slate-100 px-2.5 py-1 rounded-md border border-slate-200">Admin
-                        Gugus TA</span>
-                    <div
-                        class="w-8 h-8 rounded-full bg-blue-600 text-white flex items-center justify-center font-semibold text-xs tracking-wider">
-                        AG</div>
+
+                <!-- User Profile & Dropdown Container -->
+                <div class="relative">
+                    <!-- Tombol Profile (Yang bisa diklik) -->
+                    <button id="profileBtn"
+                        class="flex items-center gap-3 focus:outline-none hover:bg-slate-50 p-1.5 rounded-lg transition-colors cursor-pointer">
+                        <span
+                            class="text-xs font-semibold text-slate-600 bg-slate-100 px-2.5 py-1 rounded-md border border-slate-200">Admin
+                            Gugus TA</span>
+                        <div
+                            class="w-8 h-8 rounded-full bg-blue-600 text-white flex items-center justify-center font-semibold text-xs tracking-wider shadow-sm">
+                            AG</div>
+                    </button>
+
+                    <!-- Kotak Dropdown Menu (Awalnya disembunyikan pakai class 'hidden') -->
+                    <div id="profileDropdown"
+                        class="hidden absolute right-0 mt-2 w-48 bg-white rounded-xl border border-slate-200/80 shadow-lg py-1.5 z-50">
+
+                        <!-- Info Akun Singkat -->
+                        <div class="px-4 py-2.5 border-b border-slate-100">
+                            <p class="text-xs font-semibold text-slate-800">Admin Gugus TA</p>
+                            <p class="text-[10px] text-slate-500">admin@politala.ac.id</p>
+                        </div>
+
+                        <!-- Tombol Switch Role -->
+                        <button type="button" id="btnGantiRole"
+                            class="w-full text-left px-4 py-2 text-xs text-slate-600 hover:bg-blue-50 hover:text-blue-600 transition-colors flex items-center gap-2 mt-1">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"></path>
+                            </svg>
+                            Ganti Role
+                        </button>
+
+                        <!-- Tombol Logout -->
+                        <form action="/logout" method="POST" class="block w-full">
+                            @csrf
+                            <button type="submit"
+                                class="w-full text-left px-4 py-2 text-xs text-rose-600 hover:bg-rose-50 hover:text-rose-700 transition-colors flex items-center gap-2">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1">
+                                    </path>
+                                </svg>
+                                Keluar Sistem
+                            </button>
+                        </form>
+                    </div>
                 </div>
             </header>
 
@@ -120,19 +162,22 @@
                         <div class="space-y-3">
                             <div class="flex justify-between items-center text-sm">
                                 <span class="text-slate-500">Total Mahasiswa</span>
-                                <span class="font-bold text-slate-800">0</span>
+                                <!-- Ganti angka 0 pakai variabel dari Controller lu -->
+                                <span class="font-bold text-slate-800">{{ $totalMahasiswa ?? 0 }}</span>
                             </div>
                             <div class="flex justify-between items-center text-sm">
                                 <span class="text-slate-500">Total Dosen</span>
-                                <span class="font-bold text-slate-800">0</span>
+                                <!-- Ganti angka 0 pakai variabel dari Controller lu -->
+                                <span class="font-bold text-slate-800">{{ $totalDosen ?? 0 }}</span>
                             </div>
                             <div class="flex justify-between items-center text-sm">
                                 <span class="text-slate-500">Topik Tersedia</span>
-                                <span class="font-bold text-slate-800">5</span>
+                                <!-- Awasi TYPO: Pastikan nama variabelnya sama persis sama yang di Controller -->
+                                <span class="font-bold text-slate-800">{{ $topikTersedia ?? 5 }}</span>
                             </div>
                             <div class="flex justify-between items-center text-sm">
                                 <span class="text-slate-500">Arsip Judul</span>
-                                <span class="font-bold text-slate-800">125</span>
+                                <span class="font-bold text-slate-800">{{ $totalArsip ?? 125 }}</span>
                             </div>
                         </div>
                     </div>
@@ -221,5 +266,120 @@
     </div>
 
 </body>
+
+
+
+<!-- MODAL GANTI ROLE -->
+<div id="modalRole" class="hidden fixed inset-0 z-[100] flex items-center justify-center">
+    <!-- Background gelap nge-blur -->
+    <div id="modalOverlay"
+        class="absolute inset-0 bg-slate-900/60 backdrop-blur-sm cursor-pointer transition-opacity"></div>
+
+    <!-- Kotak Modal Tengah -->
+    <div class="relative bg-white rounded-2xl shadow-xl w-full max-w-sm overflow-hidden p-6">
+        <div class="flex items-center justify-between mb-5">
+            <h3 class="text-base font-bold text-slate-900">Pilih Hak Akses</h3>
+            <button type="button" id="closeModalRole" class="text-slate-400 hover:text-rose-500 transition-colors">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12">
+                    </path>
+                </svg>
+            </button>
+        </div>
+
+        <div class="space-y-3">
+            <!-- Opsi 1: Gugus TA (Lagi dipakai) -->
+            <button
+                class="w-full flex items-center justify-between p-3 rounded-xl border-2 border-blue-500 bg-blue-50 text-left transition-colors cursor-default">
+                <div class="flex items-center gap-3">
+                    <div
+                        class="w-8 h-8 rounded-full bg-blue-600 text-white flex items-center justify-center font-bold text-xs shadow-sm">
+                        AG</div>
+                    <div>
+                        <div class="text-sm font-semibold text-blue-900">Admin Gugus TA</div>
+                        <div class="text-[10px] font-medium text-blue-600 uppercase tracking-wider">Sedang Aktif</div>
+                    </div>
+                </div>
+                <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
+            </button>
+
+            <!-- Opsi 2: Dosen Pembimbing -->
+            <button
+                class="w-full flex items-center justify-between p-3 rounded-xl border border-slate-200 hover:border-slate-300 hover:bg-slate-50 text-left transition-all group"
+                onclick="alert('Fitur backend ganti session belum jadi bro! wkwk')">
+                <div class="flex items-center gap-3">
+                    <div
+                        class="w-8 h-8 rounded-full bg-slate-100 text-slate-500 group-hover:bg-slate-200 group-hover:text-slate-700 flex items-center justify-center font-bold text-xs transition-colors">
+                        DP</div>
+                    <div>
+                        <div class="text-sm font-medium text-slate-700 group-hover:text-slate-900">Dosen Pembimbing
+                        </div>
+                        <div class="text-[10px] text-slate-400">2 Mahasiswa Bimbingan</div>
+                    </div>
+                </div>
+            </button>
+
+            <!-- Opsi 3: Koordinator Prodi -->
+            <button
+                class="w-full flex items-center justify-between p-3 rounded-xl border border-slate-200 hover:border-slate-300 hover:bg-slate-50 text-left transition-all group"
+                onclick="alert('Sabar, nunggu persetujuan Koorprodi beneran! wkwk')">
+                <div class="flex items-center gap-3">
+                    <div
+                        class="w-8 h-8 rounded-full bg-slate-100 text-slate-500 group-hover:bg-slate-200 group-hover:text-slate-700 flex items-center justify-center font-bold text-xs transition-colors">
+                        KP</div>
+                    <div>
+                        <div class="text-sm font-medium text-slate-700 group-hover:text-slate-900">Koordinator Prodi
+                        </div>
+                        <div class="text-[10px] text-slate-400">Akses Penuh Akademik</div>
+                    </div>
+                </div>
+            </button>
+        </div>
+    </div>
+</div>
+<!-- SCRIPT UNTUK DROPDOWN PROFIL -->
+<script>
+    const profileBtn = document.getElementById('profileBtn');
+    const profileDropdown = document.getElementById('profileDropdown');
+
+    // Kalau tombol 'AG' diklik, buka/tutup menunya
+    profileBtn.addEventListener('click', (event) => {
+        event.stopPropagation(); // Biar kliknya nggak bocor ke body
+        profileDropdown.classList.toggle('hidden');
+    });
+
+    // Kalau user ngeklik layar di luar kotak menu, tutup otomatis menunya
+    document.addEventListener('click', (event) => {
+        if (!profileDropdown.contains(event.target) && !profileDropdown.classList.contains('hidden')) {
+            profileDropdown.classList.add('hidden');
+        }
+    });
+
+    // --- LOGIKA UNTUK MODAL GANTI ROLE ---
+    const btnGantiRole = document.getElementById('btnGantiRole');
+    const modalRole = document.getElementById('modalRole');
+    const closeModalRole = document.getElementById('closeModalRole');
+    const modalOverlay = document.getElementById('modalOverlay');
+
+    // 1. Kalau tombol "Ganti Role" diklik
+    btnGantiRole.addEventListener('click', () => {
+        profileDropdown.classList.add('hidden'); // Tutup dulu dropdown kecilnya
+        modalRole.classList.remove('hidden'); // Munculin pop-up gede di tengah layar
+    });
+
+    // 2. Fungsi buat nutup Modal
+    const tutupModalRole = () => {
+        modalRole.classList.add('hidden');
+    };
+
+    // 3. Pasang fungsi nutup kalau tombol silang (X) atau background gelapnya diklik
+    closeModalRole.addEventListener('click', tutupModalRole);
+    modalOverlay.addEventListener('click', tutupModalRole);
+</script>
+
+
 
 </html>

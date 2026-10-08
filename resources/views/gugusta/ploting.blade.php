@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Verifikasi Proposal - SIPETA</title>
+    <title>Ploting Dospem - SIPETA</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
@@ -32,45 +32,37 @@
 
                 <!-- Navigation Menu -->
                 <nav class="mt-6 px-3 space-y-1">
-                    <a href="{{ route('gugusta.dashboard') }}"
+                    <a href="{{ route('gugusta.dashboard') ?? '#' }}"
                         class="flex items-center px-3.5 py-2 text-sm font-medium rounded-lg hover:bg-slate-800/60 text-slate-400 hover:text-slate-200 transition-colors">
                         Dashboard
                     </a>
-
-                    <a href="{{ route('gugusta.verifikasi') }}"
-                        class="flex items-center px-3.5 py-2 text-sm font-medium rounded-lg bg-blue-600/10 text-blue-400 font-semibold border border-blue-500/20">
+                    <a href="{{ route('gugusta.verifikasi') ?? '#' }}"
+                        class="flex items-center px-3.5 py-2 text-sm font-medium rounded-lg hover:bg-slate-800/60 text-slate-400 hover:text-slate-200 transition-colors">
                         Verifikasi Proposal
                     </a>
-
                     <a href="#"
                         class="flex items-center px-3.5 py-2 text-sm font-medium rounded-lg hover:bg-slate-800/60 text-slate-400 hover:text-slate-200 transition-colors">
                         Kelola Bank Topik
                     </a>
-
-                    <a href="{{ url('/gugus-ta/mahasiswa') }}"
+                    <a href="/gugus-ta/mahasiswa"
                         class="flex items-center px-3.5 py-2 text-sm font-medium rounded-lg hover:bg-slate-800/60 text-slate-400 hover:text-slate-200 transition-colors">
                         Data Mahasiswa
                     </a>
-
-                    <!-- TAMBAHAN: Data Dosen -->
                     <a href="#"
                         class="flex items-center px-3.5 py-2 text-sm font-medium rounded-lg hover:bg-slate-800/60 text-slate-400 hover:text-slate-200 transition-colors">
                         Data Dosen
                     </a>
-
-                    <a href="/gugus-ta/ploting"
-                        class="flex items-center px-3.5 py-2 text-sm font-medium rounded-lg hover:bg-slate-800/60 text-slate-400 hover:text-slate-200 transition-colors">
+                    <!-- Menu Ploting Dospem Aktif -->
+                    <a href="{{ route('gugusta.ploting') }}"
+                        class="flex items-center px-3.5 py-2 text-sm font-medium rounded-lg bg-blue-600/10 text-blue-400 font-semibold border border-blue-500/20">
                         Ploting Dospem
                     </a>
-
-                    <!-- TAMBAHAN: Arsip Judul -->
                     <a href="#"
                         class="flex items-center px-3.5 py-2 text-sm font-medium rounded-lg hover:bg-slate-800/60 text-slate-400 hover:text-slate-200 transition-colors">
                         Arsip Judul
                     </a>
                 </nav>
             </div>
-
             <div class="p-4 text-xs text-slate-500 border-t border-slate-800/60 text-center font-mono">
                 Gugus TA POV &copy; 2026
             </div>
@@ -78,6 +70,7 @@
 
         <!-- MAIN CONTENT CONTAINER -->
         <div class="flex-1 flex flex-col overflow-y-auto">
+
             <!-- TOP NAVBAR -->
             <header
                 class="h-16 bg-white border-b border-slate-200/80 flex items-center justify-between px-8 sticky top-0 z-10">
@@ -135,114 +128,174 @@
 
             <!-- PAGE CONTENT -->
             <main class="p-8 max-w-7xl w-full mx-auto">
-                <!-- TAMBAHKAN KODE INI DI SINI -->
-                @if (session('success'))
-                    <div
-                        class="mb-6 p-4 bg-emerald-50/80 border border-emerald-200/60 text-emerald-800 rounded-xl text-sm flex items-center gap-2 shadow-sm">
-                        <svg class="w-5 h-5 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                        </svg>
-                        <span class="font-medium">{{ session('success') }}</span>
-                    </div>
-                @endif
-                <!-- BATAS KODE NOTIFIKASI -->
 
-                <!-- Header Banner -->
-                <div
-                    class="bg-white rounded-xl shadow-sm border border-slate-200 p-6 mb-6 flex justify-between items-center">
+                <!-- HEADER SECTION -->
+                <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
                     <div>
-                        <h1 class="text-xl font-bold text-slate-800">Verifikasi Kelayakan Judul & Berkas</h1>
-                        <p class="text-sm text-slate-500 mt-1">Pusat review proposal mahasiswa, pengecekan dokumen, dan
-                            pemberian keputusan status.</p>
+                        <h2 class="text-xl font-bold text-slate-900 tracking-tight">Kelola Ploting Dosen Pembimbing</h2>
+                        <p class="text-xs text-slate-500 mt-0.5">Atur dan tetapkan dosen pembimbing untuk mahasiswa
+                            tugas akhir.</p>
                     </div>
                 </div>
 
-                <!-- Tabel Daftar Pengajuan Proposal -->
-                <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
-                    <div class="px-6 py-4 border-b border-slate-100 flex justify-between items-center bg-slate-50/50">
-                        <h2 class="text-xs font-bold text-slate-700 uppercase tracking-wider">Daftar Pengajuan Masuk
-                        </h2>
-                        <span class="text-xs text-slate-400">Menampilkan pengajuan mahasiswa</span>
+                <!-- CARD FORM TAMBAH & TABEL -->
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 items-start">
+
+                    <!-- Kolom Kiri: Form Ploting (Masih Pakai Data Dummy) -->
+                    <div class="bg-white p-6 rounded-xl border border-slate-200/80 shadow-sm">
+                        <h3
+                            class="text-sm font-semibold text-slate-900 mb-4 pb-3 border-b border-slate-100 flex items-center justify-between">
+                            Form Ploting Dospem
+                            <span class="text-[10px] font-normal text-slate-400 uppercase tracking-wider">Manual</span>
+                        </h3>
+                        <form action="#" method="POST" class="space-y-4">
+                            @csrf
+                            <div>
+                                <label class="block text-xs font-medium text-slate-700 mb-1.5">Pilih Mahasiswa</label>
+                                <select name="mahasiswa_id"
+                                    class="w-full px-3 py-2 text-xs rounded-lg border border-slate-200 bg-white text-slate-700 focus:outline-none focus:border-slate-400 focus:ring-1 focus:ring-slate-400 transition-all cursor-pointer">
+                                    <option value="">-- Pilih Mahasiswa --</option>
+
+                                    <!-- Ini Looping Data Asli dari Database -->
+                                    @foreach ($mahasiswas as $mhs)
+                                        <option value="{{ $mhs->id }}">{{ $mhs->nim }} - {{ $mhs->name }}
+                                        </option>
+                                    @endforeach
+
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-xs font-medium text-slate-700 mb-1.5">Dosen Pembimbing
+                                    1</label>
+                                <select name="dospem1_id"
+                                    class="w-full px-3 py-2 text-xs rounded-lg border border-slate-200 bg-white text-slate-700 focus:outline-none focus:border-slate-400 focus:ring-1 focus:ring-slate-400 transition-all cursor-pointer">
+                                    <option value="">-- Pilih Pembimbing 1 --</option>
+                                    <option value="1">Nina Mia Aristi, M.Kom</option>
+                                    <option value="2">Sausan Hidayah Nova, S.Kom,
+                                        M.Kom</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-xs font-medium text-slate-700 mb-1.5">Dosen Pembimbing
+                                    2</label>
+                                <select name="dospem2_id"
+                                    class="w-full px-3 py-2 text-xs rounded-lg border border-slate-200 bg-white text-slate-700 focus:outline-none focus:border-slate-400 focus:ring-1 focus:ring-slate-400 transition-all cursor-pointer">
+                                    <option value="">-- Pilih Pembimbing 2 --</option>
+                                    <option value="3">Nina Mia Aristi, M.Kom</option>
+                                    <option value="4">Sausan Hidayah Nova, S.Kom,
+                                        M.Kom</option>
+                                </select>
+                            </div>
+                            <button type="button"
+                                onclick="alert('Fitur simpan masih menunggu database dari temen lu kelar bro! wkwk')"
+                                class="w-full bg-blue-600 hover:bg-blue-700 text-white text-xs font-medium py-2.5 rounded-lg transition-colors shadow-sm mt-2">
+                                + Simpan Ploting
+                            </button>
+                        </form>
                     </div>
 
-                    <div class="overflow-x-auto">
-                        <table class="w-full text-left border-collapse text-sm">
-                            <thead>
-                                <tr class="border-b border-slate-200 text-slate-400 font-medium text-xs bg-slate-50/30">
-                                    <th class="py-3 px-6">Mahasiswa & NIM</th>
-                                    <th class="py-3 px-6">Topik / Judul Proposal</th>
-                                    <th class="py-3 px-6">Berkas</th>
-                                    <th class="py-3 px-6">Status Validasi</th>
-                                    <th class="py-3 px-6 text-center">Aksi / Review</th>
-                                </tr>
-                            </thead>
-                            <tbody class="divide-y divide-slate-100 text-slate-600 text-xs">
-                                <!-- Looping data dari Database -->
-                                @foreach ($proposals as $p)
+                    <!-- Kolom Kanan: Tabel Daftar Ploting -->
+                    <div
+                        class="lg:col-span-2 bg-white rounded-xl border border-slate-200/80 shadow-sm overflow-hidden">
+                        <div
+                            class="px-5 py-3.5 border-b border-slate-100 bg-slate-50/50 flex items-center justify-between">
+                            <span class="text-xs font-semibold text-slate-700 uppercase tracking-wider">Daftar Ploting
+                                Aktif</span>
+                            <input type="text" placeholder="Cari mahasiswa / dosen..."
+                                class="px-3 py-1.5 text-xs rounded-lg border border-slate-200 bg-white focus:outline-none focus:border-slate-400 w-44 placeholder:text-slate-400">
+                        </div>
+
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left border-collapse">
+                                <thead>
+                                    <tr
+                                        class="bg-slate-50/80 text-slate-400 text-[11px] font-semibold uppercase tracking-wider border-b border-slate-100">
+                                        <th class="py-3 px-4 w-10 text-center">No</th>
+                                        <th class="py-3 px-5">Mahasiswa</th>
+                                        <th class="py-3 px-5">Dospem 1</th>
+                                        <th class="py-3 px-5">Dospem 2</th>
+                                        <th class="py-3 px-5 text-center">Status</th>
+                                        <th class="py-3 px-5 text-center w-24">Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-slate-100 text-xs text-slate-600">
+                                    <!-- Baris Dummy 1 -->
                                     <tr class="hover:bg-slate-50/60 transition-colors">
-                                        <td class="py-4 px-6">
-                                            <div class="font-bold text-slate-800 text-sm">{{ $p->nama_mahasiswa }}
-                                            </div>
-                                            <div class="text-slate-400 font-mono text-xs">{{ $p->nim }}</div>
+                                        <td class="py-3 px-4 text-center text-slate-400 font-mono">1</td>
+                                        <td class="py-3 px-5">
+                                            <div class="font-medium text-slate-900">Muhammad Ali Yafi</div>
+                                            <div class="text-[10px] text-slate-400 font-mono">2501301024</div>
                                         </td>
-                                        <td class="py-4 px-6 font-medium text-slate-700">{{ $p->judul }}</td>
-                                        <td class="py-4 px-6">
-                                            <a href="#"
-                                                class="inline-flex items-center gap-1 text-blue-600 hover:underline font-medium">
-                                                📄 Proposal.pdf
-                                            </a>
+                                        <td class="py-3 px-5 font-medium text-slate-700">Nina Mia Aristi, M.Kom</td>
+                                        <td class="py-3 px-5 font-medium text-slate-700">Sausan Hidayah Nova, S.Kom,
+                                            M.Kom</td>
+                                        <td class="py-3 px-5 text-center">
+                                            <span
+                                                class="inline-flex items-center px-2 py-0.5 rounded-md text-[11px] font-medium bg-emerald-50 text-emerald-600 border border-emerald-200/60">
+                                                Disetujui
+                                            </span>
                                         </td>
-                                        <td class="py-4 px-6">
-                                            <!-- Logika Warna Badge Status -->
-                                            @if ($p->status == 'Disetujui (ACC)')
-                                                <span
-                                                    class="px-2.5 py-1 bg-emerald-50 text-emerald-600 font-semibold rounded-full text-[11px] border border-emerald-200">
-                                                    {{ $p->status }}
-                                                </span>
-                                            @elseif($p->status == 'Ditolak')
-                                                <span
-                                                    class="px-2.5 py-1 bg-red-50 text-red-600 font-semibold rounded-full text-[11px] border border-red-200">
-                                                    {{ $p->status }}
-                                                </span>
-                                            @elseif($p->status == 'Butuh Revisi Administrasi')
-                                                <span
-                                                    class="px-2.5 py-1 bg-amber-50 text-amber-600 font-semibold rounded-full text-[11px] border border-amber-200">
-                                                    Revisi
-                                                </span>
-                                            @else
-                                                <span
-                                                    class="px-2.5 py-1 bg-slate-100 text-slate-600 font-semibold rounded-full text-[11px] border border-slate-200">
-                                                    {{ $p->status }}
-                                                </span>
-                                            @endif
-                                        </td>
-                                        <td class="py-4 px-6 text-center">
-                                            <a href="{{ route('gugusta.verifikasi.review', $p->id) }}"
-                                                class="px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-colors shadow-sm inline-block">
-                                                Review Keputusan
-                                            </a>
+                                        <td class="py-3 px-5 text-center">
+                                            <button
+                                                class="p-1.5 text-slate-400 hover:text-blue-600 hover:bg-blue-50 rounded-md transition-colors"
+                                                title="Edit Data">
+                                                <svg class="w-4 h-4" fill="none" stroke="currentColor"
+                                                    viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                        stroke-width="2"
+                                                        d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z">
+                                                    </path>
+                                                </svg>
+                                            </button>
                                         </td>
                                     </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
 
+                                    <!-- Baris Dummy 2 -->
+                                    <tr class="hover:bg-slate-50/60 transition-colors">
+                                        <td class="py-3 px-4 text-center text-slate-400 font-mono">2</td>
+                                        <td class="py-3 px-5">
+                                            <div class="font-medium text-slate-900">Arif</div>
+                                            <div class="text-[10px] text-slate-400 font-mono">2501302076</div>
+                                        </td>
+                                        <td class="py-3 px-5 font-medium text-slate-700">Nina Mia Aristi, M.Kom</td>
+                                        <td class="py-3 px-5 font-medium text-slate-700">Sausan Hidayah Nova, S.Kom,
+                                            M.Kom</td>
+                                        <td class="py-3 px-5 text-center">
+                                            <span
+                                                class="inline-flex items-center px-2 py-0.5 rounded-md text-[11px] font-medium bg-amber-50 text-amber-600 border border-amber-200/60">
+                                                Menunggu
+                                            </span>
+                                        </td>
+                                        <td class="py-3 px-5 text-center">
+                                            <button
+                                                class="p-1.5 text-slate-400 hover:text-blue-600 hover:bg-blue-50 rounded-md transition-colors"
+                                                title="Edit Data">
+                                                <svg class="w-4 h-4" fill="none" stroke="currentColor"
+                                                    viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                        stroke-width="2"
+                                                        d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z">
+                                                    </path>
+                                                </svg>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                </div>
             </main>
         </div>
-
     </div>
-
 </body>
 
 <!-- MODAL GANTI ROLE -->
 <div id="modalRole" class="hidden fixed inset-0 z-[100] flex items-center justify-center">
     <!-- Background gelap nge-blur -->
     <div id="modalOverlay"
-        class="absolute inset-0 bg-slate-900/60 backdrop-blur-sm cursor-pointer transition-opacity">
-    </div>
+        class="absolute inset-0 bg-slate-900/60 backdrop-blur-sm cursor-pointer transition-opacity"></div>
 
     <!-- Kotak Modal Tengah -->
     <div class="relative bg-white rounded-2xl shadow-xl w-full max-w-sm overflow-hidden p-6">

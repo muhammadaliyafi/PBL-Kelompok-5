@@ -33,3 +33,6 @@ Route::post('/gugus-ta/mahasiswa/bulk-delete', [MahasiswaController::class, 'bul
 Route::get('/gugus-ta/verifikasi', [VerifikasiController::class, 'index'])->name('gugusta.verifikasi');
 Route::get('/gugus-ta/verifikasi/{id}/review', [VerifikasiController::class, 'review'])->name('gugusta.verifikasi.review');
 Route::post('/gugus-ta/verifikasi/{id}', [App\Http\Controllers\GugusTA\VerifikasiController::class, 'updateReview'])->name('gugusta.verifikasi.update');
+
+// ploting dospem
+Route::get('/gugus-ta/ploting', [App\Http\Controllers\GugusTA\PlotingController::class, 'index'])->name('gugusta.ploting');
