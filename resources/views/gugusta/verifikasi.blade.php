@@ -4,12 +4,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Verifikasi Proposal - SIPETA</title>
+    <title>Verifikasi Pengajuan Judul - SIPETA</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 
-<body class="bg-slate-50/50 font-sans text-slate-800 antialiased">
+<body class="bg-slate-100/70 font-sans text-slate-800 antialiased">
 
     <div class="flex h-screen overflow-hidden">
 
@@ -19,7 +19,7 @@
             <div>
                 <!-- Logo & Brand -->
                 <div
-                    class="h-16 flex items-center px-6 bg-slate-950/50 border-b border-slate-800/80 text-white font-semibold tracking-wide">
+                    class="h-16 flex items-center px-6 bg-slate-950/60 border-b border-slate-800 text-white font-semibold tracking-wide">
                     <svg class="w-5 h-5 text-blue-500 mr-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M12 14l9-5-9-5-9 5 9 5z" />
@@ -38,11 +38,11 @@
                     </a>
 
                     <a href="{{ route('gugusta.verifikasi') }}"
-                        class="flex items-center px-3.5 py-2 text-sm font-medium rounded-lg bg-blue-600/10 text-blue-400 font-semibold border border-blue-500/20">
+                        class="flex items-center px-3.5 py-2 text-sm font-semibold rounded-lg bg-blue-600/10 text-blue-400 border border-blue-500/20">
                         Verifikasi Proposal
                     </a>
 
-                    <a href="#"
+                    <a href="{{ route('topik.index') }}"
                         class="flex items-center px-3.5 py-2 text-sm font-medium rounded-lg hover:bg-slate-800/60 text-slate-400 hover:text-slate-200 transition-colors">
                         Kelola Bank Topik
                     </a>
@@ -52,182 +52,199 @@
                         Data Mahasiswa
                     </a>
 
-                    <!-- TAMBAHAN: Data Dosen -->
-                    <a href="#"
+                    <a href="{{ route('dosen.index') }}"
                         class="flex items-center px-3.5 py-2 text-sm font-medium rounded-lg hover:bg-slate-800/60 text-slate-400 hover:text-slate-200 transition-colors">
                         Data Dosen
                     </a>
 
-                    <a href="/gugus-ta/ploting"
+                    <a href="{{ route('gugusta.ploting') }}"
                         class="flex items-center px-3.5 py-2 text-sm font-medium rounded-lg hover:bg-slate-800/60 text-slate-400 hover:text-slate-200 transition-colors">
                         Ploting Dospem
                     </a>
 
-                    <!-- TAMBAHAN: Arsip Judul -->
-                    <a href="#"
+                    <a href="{{ route('arsip.index') }}"
                         class="flex items-center px-3.5 py-2 text-sm font-medium rounded-lg hover:bg-slate-800/60 text-slate-400 hover:text-slate-200 transition-colors">
                         Arsip Judul
                     </a>
                 </nav>
             </div>
 
-            <div class="p-4 text-xs text-slate-500 border-t border-slate-800/60 text-center font-mono">
+            <div class="p-4 text-xs text-slate-500 border-t border-slate-800 text-center font-mono">
                 Gugus TA POV &copy; 2026
             </div>
         </aside>
 
         <!-- MAIN CONTENT CONTAINER -->
         <div class="flex-1 flex flex-col overflow-y-auto">
+
             <!-- TOP NAVBAR -->
             <header
-                class="h-16 bg-white border-b border-slate-200/80 flex items-center justify-between px-8 sticky top-0 z-10">
-                <h1 class="text-sm font-medium text-slate-600">Sistem Informasi Proposal dan Tugas Akhir</h1>
+                class="h-16 bg-white border-b border-slate-200 flex items-center justify-between px-8 sticky top-0 z-10 shadow-xs">
+                <h1 class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Sistem Informasi Proposal dan
+                    Tugas Akhir</h1>
 
-                <!-- User Profile & Dropdown Container -->
                 <div class="relative">
-                    <!-- Tombol Profile (Yang bisa diklik) -->
                     <button id="profileBtn"
                         class="flex items-center gap-3 focus:outline-none hover:bg-slate-50 p-1.5 rounded-lg transition-colors cursor-pointer">
                         <span
                             class="text-xs font-semibold text-slate-600 bg-slate-100 px-2.5 py-1 rounded-md border border-slate-200">Admin
                             Gugus TA</span>
                         <div
-                            class="w-8 h-8 rounded-full bg-blue-600 text-white flex items-center justify-center font-semibold text-xs tracking-wider shadow-sm">
+                            class="w-8 h-8 rounded-full bg-blue-600 text-white flex items-center justify-center font-semibold text-xs tracking-wider shadow-xs">
                             AG</div>
                     </button>
-
-                    <!-- Kotak Dropdown Menu (Awalnya disembunyikan pakai class 'hidden') -->
-                    <div id="profileDropdown"
-                        class="hidden absolute right-0 mt-2 w-48 bg-white rounded-xl border border-slate-200/80 shadow-lg py-1.5 z-50">
-
-                        <!-- Info Akun Singkat -->
-                        <div class="px-4 py-2.5 border-b border-slate-100">
-                            <p class="text-xs font-semibold text-slate-800">Admin Gugus TA</p>
-                            <p class="text-[10px] text-slate-500">admin@politala.ac.id</p>
-                        </div>
-
-                        <!-- Tombol Switch Role -->
-                        <button type="button" id="btnGantiRole"
-                            class="w-full text-left px-4 py-2 text-xs text-slate-600 hover:bg-blue-50 hover:text-blue-600 transition-colors flex items-center gap-2 mt-1">
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"></path>
-                            </svg>
-                            Ganti Role
-                        </button>
-
-                        <!-- Tombol Logout -->
-                        <form action="/logout" method="POST" class="block w-full">
-                            @csrf
-                            <button type="submit"
-                                class="w-full text-left px-4 py-2 text-xs text-rose-600 hover:bg-rose-50 hover:text-rose-700 transition-colors flex items-center gap-2">
-                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1">
-                                    </path>
-                                </svg>
-                                Keluar Sistem
-                            </button>
-                        </form>
-                    </div>
                 </div>
             </header>
 
             <!-- PAGE CONTENT -->
-            <main class="p-8 max-w-7xl w-full mx-auto">
-                <!-- TAMBAHKAN KODE INI DI SINI -->
-                @if (session('success'))
-                    <div
-                        class="mb-6 p-4 bg-emerald-50/80 border border-emerald-200/60 text-emerald-800 rounded-xl text-sm flex items-center gap-2 shadow-sm">
-                        <svg class="w-5 h-5 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                        </svg>
-                        <span class="font-medium">{{ session('success') }}</span>
-                    </div>
-                @endif
-                <!-- BATAS KODE NOTIFIKASI -->
+            <main class="p-8 max-w-7xl w-full mx-auto space-y-6">
 
-                <!-- Header Banner -->
-                <div
-                    class="bg-white rounded-xl shadow-sm border border-slate-200 p-6 mb-6 flex justify-between items-center">
-                    <div>
-                        <h1 class="text-xl font-bold text-slate-800">Verifikasi Kelayakan Judul & Berkas</h1>
-                        <p class="text-sm text-slate-500 mt-1">Pusat review proposal mahasiswa, pengecekan dokumen, dan
-                            pemberian keputusan status.</p>
+                <!-- Header Section -->
+                <div>
+                    <h1 class="text-xl font-bold text-slate-900">Verifikasi Pengajuan Judul</h1>
+                    <p class="text-xs text-slate-500 mt-1">Lakukan peninjauan kesesuaian topik serta validasi status
+                        pengajuan judul mahasiswa.</p>
+                </div>
+
+                <!-- Stat Overview Cards -->
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                    <div
+                        class="bg-white rounded-xl p-4 border border-slate-200 shadow-2xs flex items-center justify-between">
+                        <div>
+                            <p class="text-[11px] font-semibold text-slate-500 uppercase tracking-wider">Total Pengajuan
+                            </p>
+                            <p class="text-2xl font-bold text-slate-900 mt-1">12</p>
+                        </div>
+                        <div class="p-2.5 bg-slate-100 text-slate-600 rounded-lg border border-slate-200/60">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                            </svg>
+                        </div>
+                    </div>
+
+                    <div
+                        class="bg-white rounded-xl p-4 border border-slate-200 shadow-2xs flex items-center justify-between">
+                        <div>
+                            <p class="text-[11px] font-semibold text-slate-500 uppercase tracking-wider">Menunggu Review
+                            </p>
+                            <p class="text-2xl font-bold text-amber-600 mt-1">4</p>
+                        </div>
+                        <div class="p-2.5 bg-amber-50 text-amber-600 rounded-lg border border-amber-200/60">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                        </div>
+                    </div>
+
+                    <div
+                        class="bg-white rounded-xl p-4 border border-slate-200 shadow-2xs flex items-center justify-between">
+                        <div>
+                            <p class="text-[11px] font-semibold text-slate-500 uppercase tracking-wider">Telah Disetujui
+                            </p>
+                            <p class="text-2xl font-bold text-emerald-600 mt-1">8</p>
+                        </div>
+                        <div class="p-2.5 bg-emerald-50 text-emerald-600 rounded-lg border border-emerald-200/60">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                        </div>
                     </div>
                 </div>
 
-                <!-- Tabel Daftar Pengajuan Proposal -->
-                <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
-                    <div class="px-6 py-4 border-b border-slate-100 flex justify-between items-center bg-slate-50/50">
-                        <h2 class="text-xs font-bold text-slate-700 uppercase tracking-wider">Daftar Pengajuan Masuk
-                        </h2>
-                        <span class="text-xs text-slate-400">Menampilkan pengajuan mahasiswa</span>
+                <!-- Table Card Container -->
+                <div class="bg-white rounded-xl shadow-2xs border border-slate-200 overflow-hidden">
+
+                    <!-- Search & Filter Bar -->
+                    <div
+                        class="p-4 border-b border-slate-200 bg-slate-50/50 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                        <div class="relative flex-1 max-w-xs">
+                            <span
+                                class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none text-slate-400">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                                </svg>
+                            </span>
+                            <input type="text" placeholder="Cari nama, NIM, atau judul..."
+                                class="w-full pl-9 pr-3 py-1.5 text-xs rounded-lg border border-slate-300 bg-white focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600 transition-all">
+                        </div>
+
+                        <select
+                            class="px-3 py-1.5 text-xs rounded-lg border border-slate-300 bg-white text-slate-700 focus:outline-none focus:border-blue-600">
+                            <option value="">Semua Status</option>
+                            <option value="Menunggu">Menunggu</option>
+                            <option value="Disetujui">Disetujui</option>
+                            <option value="Ditolak">Ditolak</option>
+                        </select>
                     </div>
 
+                    <!-- Table -->
                     <div class="overflow-x-auto">
-                        <table class="w-full text-left border-collapse text-sm">
+                        <table class="w-full text-left border-collapse">
                             <thead>
-                                <tr class="border-b border-slate-200 text-slate-400 font-medium text-xs bg-slate-50/30">
-                                    <th class="py-3 px-6">Mahasiswa & NIM</th>
-                                    <th class="py-3 px-6">Topik / Judul Proposal</th>
-                                    <th class="py-3 px-6">Berkas</th>
-                                    <th class="py-3 px-6">Status Validasi</th>
-                                    <th class="py-3 px-6 text-center">Aksi / Review</th>
+                                <tr
+                                    class="bg-slate-50 border-b border-slate-200 text-[11px] font-bold text-slate-500 uppercase tracking-wider">
+                                    <th class="py-3 px-5">Mahasiswa</th>
+                                    <th class="py-3 px-5">Judul Proposal & Topik</th>
+                                    <th class="py-3 px-5">Status</th>
+                                    <th class="py-3 px-5 text-center">Aksi Keputusan</th>
                                 </tr>
                             </thead>
-                            <tbody class="divide-y divide-slate-100 text-slate-600 text-xs">
-                                <!-- Looping data dari Database -->
-                                @foreach ($proposals as $p)
-                                    <tr class="hover:bg-slate-50/60 transition-colors">
-                                        <td class="py-4 px-6">
-                                            <div class="font-bold text-slate-800 text-sm">{{ $p->nama_mahasiswa }}
+                            <tbody class="divide-y divide-slate-100 text-xs">
+
+                                <!-- Row Item -->
+                                <tr class="hover:bg-slate-50/60 transition-colors">
+                                    <td class="py-4 px-5 align-middle">
+                                        <div class="flex items-center gap-3">
+                                            <div
+                                                class="w-8 h-8 rounded-full bg-slate-800 text-white font-bold flex items-center justify-center text-[11px] tracking-wider shadow-2xs">
+                                                MY
                                             </div>
-                                            <div class="text-slate-400 font-mono text-xs">{{ $p->nim }}</div>
-                                        </td>
-                                        <td class="py-4 px-6 font-medium text-slate-700">{{ $p->judul }}</td>
-                                        <td class="py-4 px-6">
-                                            <a href="#"
-                                                class="inline-flex items-center gap-1 text-blue-600 hover:underline font-medium">
-                                                📄 Proposal.pdf
-                                            </a>
-                                        </td>
-                                        <td class="py-4 px-6">
-                                            <!-- Logika Warna Badge Status -->
-                                            @if ($p->status == 'Disetujui (ACC)')
-                                                <span
-                                                    class="px-2.5 py-1 bg-emerald-50 text-emerald-600 font-semibold rounded-full text-[11px] border border-emerald-200">
-                                                    {{ $p->status }}
-                                                </span>
-                                            @elseif($p->status == 'Ditolak')
-                                                <span
-                                                    class="px-2.5 py-1 bg-red-50 text-red-600 font-semibold rounded-full text-[11px] border border-red-200">
-                                                    {{ $p->status }}
-                                                </span>
-                                            @elseif($p->status == 'Butuh Revisi Administrasi')
-                                                <span
-                                                    class="px-2.5 py-1 bg-amber-50 text-amber-600 font-semibold rounded-full text-[11px] border border-amber-200">
-                                                    Revisi
-                                                </span>
-                                            @else
-                                                <span
-                                                    class="px-2.5 py-1 bg-slate-100 text-slate-600 font-semibold rounded-full text-[11px] border border-slate-200">
-                                                    {{ $p->status }}
-                                                </span>
-                                            @endif
-                                        </td>
-                                        <td class="py-4 px-6 text-center">
-                                            <a href="{{ route('gugusta.verifikasi.review', $p->id) }}"
-                                                class="px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-colors shadow-sm inline-block">
-                                                Review Keputusan
-                                            </a>
-                                        </td>
-                                    </tr>
-                                @endforeach
+                                            <div>
+                                                <div class="font-bold text-slate-900">Muhammad Ali Yafi</div>
+                                                <div class="text-[11px] text-slate-400 font-mono mt-0.5">2501301052
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="py-4 px-5 align-middle max-w-md">
+                                        <div class="font-semibold text-slate-800 leading-snug">Sistem Informasi
+                                            Pengelolaan Tugas Akhir (SIPETA)</div>
+                                        <div class="mt-1">
+                                            <span
+                                                class="inline-block px-2 py-0.5 text-[10px] font-medium bg-slate-100 text-slate-600 border border-slate-200 rounded">
+                                                Sistem Informasi
+                                            </span>
+                                        </div>
+                                    </td>
+                                    <td class="py-4 px-5 align-middle">
+                                        <span
+                                            class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-[11px] font-medium bg-amber-50 text-amber-700 border border-amber-200/70">
+                                            <span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span>
+                                            Menunggu
+                                        </span>
+                                    </td>
+                                    <td class="py-4 px-5 align-middle">
+                                        <div class="flex items-center justify-center gap-2">
+                                            <button
+                                                class="px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg text-xs transition-colors shadow-2xs">
+                                                ACC Judul
+                                            </button>
+                                            <button
+                                                class="px-3 py-1.5 bg-white hover:bg-rose-50 text-rose-600 border border-slate-200 hover:border-rose-200 font-semibold rounded-lg text-xs transition-colors">
+                                                Tolak
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+
                             </tbody>
                         </table>
                     </div>
+
                 </div>
 
             </main>
@@ -236,118 +253,5 @@
     </div>
 
 </body>
-
-<!-- MODAL GANTI ROLE -->
-<div id="modalRole" class="hidden fixed inset-0 z-[100] flex items-center justify-center">
-    <!-- Background gelap nge-blur -->
-    <div id="modalOverlay"
-        class="absolute inset-0 bg-slate-900/60 backdrop-blur-sm cursor-pointer transition-opacity">
-    </div>
-
-    <!-- Kotak Modal Tengah -->
-    <div class="relative bg-white rounded-2xl shadow-xl w-full max-w-sm overflow-hidden p-6">
-        <div class="flex items-center justify-between mb-5">
-            <h3 class="text-base font-bold text-slate-900">Pilih Hak Akses</h3>
-            <button type="button" id="closeModalRole" class="text-slate-400 hover:text-rose-500 transition-colors">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12">
-                    </path>
-                </svg>
-            </button>
-        </div>
-
-        <div class="space-y-3">
-            <!-- Opsi 1: Gugus TA (Lagi dipakai) -->
-            <button
-                class="w-full flex items-center justify-between p-3 rounded-xl border-2 border-blue-500 bg-blue-50 text-left transition-colors cursor-default">
-                <div class="flex items-center gap-3">
-                    <div
-                        class="w-8 h-8 rounded-full bg-blue-600 text-white flex items-center justify-center font-bold text-xs shadow-sm">
-                        AG</div>
-                    <div>
-                        <div class="text-sm font-semibold text-blue-900">Admin Gugus TA</div>
-                        <div class="text-[10px] font-medium text-blue-600 uppercase tracking-wider">Sedang Aktif</div>
-                    </div>
-                </div>
-                <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                </svg>
-            </button>
-
-            <!-- Opsi 2: Dosen Pembimbing -->
-            <button
-                class="w-full flex items-center justify-between p-3 rounded-xl border border-slate-200 hover:border-slate-300 hover:bg-slate-50 text-left transition-all group"
-                onclick="alert('Fitur backend ganti session belum jadi bro! wkwk')">
-                <div class="flex items-center gap-3">
-                    <div
-                        class="w-8 h-8 rounded-full bg-slate-100 text-slate-500 group-hover:bg-slate-200 group-hover:text-slate-700 flex items-center justify-center font-bold text-xs transition-colors">
-                        DP</div>
-                    <div>
-                        <div class="text-sm font-medium text-slate-700 group-hover:text-slate-900">Dosen Pembimbing
-                        </div>
-                        <div class="text-[10px] text-slate-400">2 Mahasiswa Bimbingan</div>
-                    </div>
-                </div>
-            </button>
-
-            <!-- Opsi 3: Koordinator Prodi -->
-            <button
-                class="w-full flex items-center justify-between p-3 rounded-xl border border-slate-200 hover:border-slate-300 hover:bg-slate-50 text-left transition-all group"
-                onclick="alert('Sabar, nunggu persetujuan Koorprodi beneran! wkwk')">
-                <div class="flex items-center gap-3">
-                    <div
-                        class="w-8 h-8 rounded-full bg-slate-100 text-slate-500 group-hover:bg-slate-200 group-hover:text-slate-700 flex items-center justify-center font-bold text-xs transition-colors">
-                        KP</div>
-                    <div>
-                        <div class="text-sm font-medium text-slate-700 group-hover:text-slate-900">Koordinator Prodi
-                        </div>
-                        <div class="text-[10px] text-slate-400">Akses Penuh Akademik</div>
-                    </div>
-                </div>
-            </button>
-        </div>
-    </div>
-</div>
-<!-- SCRIPT UNTUK DROPDOWN PROFIL -->
-<script>
-    const profileBtn = document.getElementById('profileBtn');
-    const profileDropdown = document.getElementById('profileDropdown');
-
-    // Kalau tombol 'AG' diklik, buka/tutup menunya
-    profileBtn.addEventListener('click', (event) => {
-        event.stopPropagation(); // Biar kliknya nggak bocor ke body
-        profileDropdown.classList.toggle('hidden');
-    });
-
-    // Kalau user ngeklik layar di luar kotak menu, tutup otomatis menunya
-    document.addEventListener('click', (event) => {
-        if (!profileDropdown.contains(event.target) && !profileDropdown.classList.contains('hidden')) {
-            profileDropdown.classList.add('hidden');
-        }
-    });
-
-    // --- LOGIKA UNTUK MODAL GANTI ROLE ---
-    const btnGantiRole = document.getElementById('btnGantiRole');
-    const modalRole = document.getElementById('modalRole');
-    const closeModalRole = document.getElementById('closeModalRole');
-    const modalOverlay = document.getElementById('modalOverlay');
-
-    // 1. Kalau tombol "Ganti Role" diklik
-    btnGantiRole.addEventListener('click', () => {
-        profileDropdown.classList.add('hidden'); // Tutup dulu dropdown kecilnya
-        modalRole.classList.remove('hidden'); // Munculin pop-up gede di tengah layar
-    });
-
-    // 2. Fungsi buat nutup Modal
-    const tutupModalRole = () => {
-        modalRole.classList.add('hidden');
-    };
-
-    // 3. Pasang fungsi nutup kalau tombol silang (X) atau background gelapnya diklik
-    closeModalRole.addEventListener('click', tutupModalRole);
-    modalOverlay.addEventListener('click', tutupModalRole);
-</script>
-
 
 </html>

@@ -1,24 +1,24 @@
 <?php
 
-// FIX 1: Namespace-nya sekarang pakai GugusTA karena foldernya udah dipindah
 namespace App\Http\Controllers\GugusTA;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-// FIX 2: Panggil model User, BUKAN Mahasiswa!
 use App\Models\User;
+use App\Models\ArsipJudul;
+use App\Models\BankTopik;
+use Illuminate\Http\Request;
 
 class DashboardController extends Controller
 {
     public function index()
     {
-        // FIX 3: Ngitungnya ngikutin cara lu, hitung User yang rolenya 'mahasiswa'
+        // 1. Hitung total data real dari database
         $totalMahasiswa = User::where('role', 'mahasiswa')->count();
+        $totalDosen     = User::where('role', 'dosen')->count();
+        $totalArsip     = ArsipJudul::count();
 
-        // Angka dummy sementara
-        $totalDosen = 0;
-        $totalArsip = 125;
-        $topikTersedia = 5;
+        // 2. Hitung jumlah topik jika model BankTopik tersedia
+        $topikTersedia  = class_exists(BankTopik::class) ? BankTopik::count() : 0;
 
         return view('gugusta.dashboard', compact(
             'totalMahasiswa',
