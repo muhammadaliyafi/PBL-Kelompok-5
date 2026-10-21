@@ -18,6 +18,10 @@ return new class extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->rememberToken();
+
+            $table->string('nim')->unique()->nullable();
+            $table->string('role')->default('mahasiswa');
+
             $table->timestamps();
         });
 

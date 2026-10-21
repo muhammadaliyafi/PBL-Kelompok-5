@@ -27,7 +27,7 @@ class AuthController extends Controller
         // A. CEK JIKA USER ADALAH MAHASISWA
         if (str_contains($input, 'mhs') || preg_match('/^[0-9]{8,12}$/', $input)) {
             session(['active_role' => 'mahasiswa']);
-            return redirect()->intended('/mahasiswa/dashboard');
+            return redirect()->route('mahasiswa.dashboard');
         }
 
         // B. KONDISI KHUSUS DOSEN
@@ -50,7 +50,7 @@ class AuthController extends Controller
             return redirect()->route('select.role');
         }
 
-        // 3. Dosen Lainnya (Dwi Agung, Nindy, Sausan, dll) -> Langsung Dosen Pembimbing
+        // 3. Dosen Lainnya -> Langsung Dosen Pembimbing
         session(['active_role' => 'dospem']);
         return redirect()->intended('/dosen/dashboard');
     }
@@ -73,11 +73,11 @@ class AuthController extends Controller
 
         switch ($role) {
             case 'gugus_ta':
-                return redirect('/gugus-ta/dosen');
+                return redirect()->route('gugusta.dashboard');
             case 'dospem':
                 return redirect('/dosen/dashboard');
             case 'koorprodi':
-                return redirect('/koorprodi/dashboard');
+                return redirect()->route('koorprodi.dashboard');
             default:
                 return redirect('/dosen/dashboard');
         }

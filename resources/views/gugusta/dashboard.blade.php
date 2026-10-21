@@ -273,8 +273,9 @@
             </div>
 
             <div class="space-y-3">
-                <button
-                    class="w-full flex items-center justify-between p-3 rounded-xl border-2 border-blue-500 bg-blue-50 text-left transition-colors cursor-default">
+                <!-- Admin Gugus TA (Aktif) -->
+                <div
+                    class="w-full flex items-center justify-between p-3 rounded-xl border-2 border-blue-500 bg-blue-50 text-left cursor-default">
                     <div class="flex items-center gap-3">
                         <div
                             class="w-8 h-8 rounded-full bg-blue-600 text-white flex items-center justify-center font-bold text-xs shadow-sm">
@@ -289,11 +290,11 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                     </svg>
-                </button>
+                </div>
 
-                <button
-                    class="w-full flex items-center justify-between p-3 rounded-xl border border-slate-200 hover:border-slate-300 hover:bg-slate-50 text-left transition-all group"
-                    onclick="alert('Fitur backend ganti session belum jadi bro! wkwk')">
+                <!-- Dosen Pembimbing -->
+                <a href="{{ url('/dosen/dashboard') }}"
+                    class="w-full flex items-center justify-between p-3 rounded-xl border border-slate-200 hover:border-slate-300 hover:bg-slate-50 text-left transition-all group">
                     <div class="flex items-center gap-3">
                         <div
                             class="w-8 h-8 rounded-full bg-slate-100 text-slate-500 group-hover:bg-slate-200 group-hover:text-slate-700 flex items-center justify-center font-bold text-xs transition-colors">
@@ -304,23 +305,22 @@
                             <div class="text-[10px] text-slate-400">2 Mahasiswa Bimbingan</div>
                         </div>
                     </div>
-                </button>
+                </a>
 
-                <button
-                    class="w-full flex items-center justify-between p-3 rounded-xl border border-slate-200 hover:border-slate-300 hover:bg-slate-50 text-left transition-all group"
-                    onclick="alert('Sabar, nunggu persetujuan Koorprodi beneran! wkwk')">
+                <!-- Koordinator Prodi -->
+                <a href="{{ url('/koorprodi/dashboard') }}"
+                    class="w-full flex items-center justify-between p-3 rounded-xl border border-slate-200 hover:border-slate-300 hover:bg-slate-50 text-left transition-all group">
                     <div class="flex items-center gap-3">
                         <div
                             class="w-8 h-8 rounded-full bg-slate-100 text-slate-500 group-hover:bg-slate-200 group-hover:text-slate-700 flex items-center justify-center font-bold text-xs transition-colors">
                             KP</div>
                         <div>
                             <div class="text-sm font-medium text-slate-700 group-hover:text-slate-900">Koordinator
-                                Prodi
-                            </div>
+                                Prodi</div>
                             <div class="text-[10px] text-slate-400">Akses Penuh Akademik</div>
                         </div>
                     </div>
-                </button>
+                </a>
             </div>
         </div>
     </div>
