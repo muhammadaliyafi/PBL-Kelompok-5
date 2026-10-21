@@ -83,9 +83,18 @@ Route::prefix('gugus-ta')->group(function () {
 
     // Arsip Judul
     Route::get('/arsip-judul', [ArsipJudulController::class, 'index'])->name('arsip.index');
-    Route::delete('/arsip-judul/delete-all', [ArsipJudulController::class, 'deleteAll'])->name('arsip.delete-all'); // <-- Pindahkan ke atas {id}
+    Route::delete('/arsip-judul/delete-all', [ArsipJudulController::class, 'deleteAll'])->name('arsip.delete-all');
     Route::delete('/arsip-judul/{id}', [ArsipJudulController::class, 'destroy'])->name('arsip.destroy');
     Route::post('/arsip-judul/import', [ArsipJudulController::class, 'import'])->name('arsip.import');
+});
+
+// ==========================================
+// ROUTES KOORPRODI
+// ==========================================
+Route::prefix('koorprodi')->group(function () {
+    Route::get('/dashboard', function () {
+        return view('koorprodi.dashboard');
+    })->name('koorprodi.dashboard');
 });
 
 // ==========================================

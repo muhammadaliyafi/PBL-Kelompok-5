@@ -130,6 +130,23 @@
             <!-- PAGE CONTENT -->
             <main class="p-8 max-w-7xl w-full mx-auto">
 
+                <!-- 1. ALERT ERROR RED BOX (NIP Duplikat / Validasi Error) -->
+                @if ($errors->any())
+                    <div class="mb-6 p-4 bg-rose-50 border border-rose-200 text-rose-700 text-xs rounded-2xl shadow-sm">
+                        <div class="flex items-center gap-2 font-bold text-sm text-rose-800 mb-1">
+                            <svg class="w-4 h-4 text-rose-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                            <span>Gagal Memproses Data!</span>
+                        </div>
+                        <ul class="list-disc list-inside space-y-0.5 pl-1">
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
+
                 @if (session('success'))
                     <div
                         class="mb-6 p-4 bg-emerald-50/80 border border-emerald-200/60 text-emerald-800 rounded-xl text-sm flex items-center gap-2 shadow-sm">
@@ -171,8 +188,11 @@
                             @csrf
                             <div>
                                 <label class="block text-xs font-medium text-slate-700 mb-1.5">NIP Dosen</label>
-                                <input type="text" name="nip" placeholder="Contoh: 198501012010121001" required
-                                    class="w-full px-3 py-2 text-xs rounded-lg border border-slate-200 focus:outline-none focus:border-slate-400 focus:ring-1 focus:ring-slate-400 transition-all placeholder:text-slate-400">
+                                <input type="text" name="nip" required maxlength="18" 
+                                    oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 18)"
+                                    value="{{ old('nip') }}" 
+                                    placeholder="Contoh: 198501012010121001" 
+                                    class="w-full px-3 py-2 text-xs rounded-lg border border-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-500">
                             </div>
                             <div>
                                 <label class="block text-xs font-medium text-slate-700 mb-1.5">Nama Lengkap &
@@ -182,8 +202,7 @@
                                     class="w-full px-3 py-2 text-xs rounded-lg border border-slate-200 focus:outline-none focus:border-slate-400 focus:ring-1 focus:ring-slate-400 transition-all placeholder:text-slate-400">
                             </div>
                             <div>
-                                <label class="block text-xs font-medium text-slate-700 mb-1.5">Bidang Keahlian /
-                                    Program Studi</label>
+                                <label class="block text-xs font-medium text-slate-700 mb-1.5">Bidang Keahlian</label>
                                 <input type="text" name="keahlian" placeholder="Contoh: Rekayasa Perangkat Lunak"
                                     required
                                     class="w-full px-3 py-2 text-xs rounded-lg border border-slate-200 focus:outline-none focus:border-slate-400 focus:ring-1 focus:ring-slate-400 transition-all placeholder:text-slate-400">
@@ -324,8 +343,8 @@
 
                 <div>
                     <label class="block text-xs font-medium text-slate-700 mb-1.5">NIP Dosen</label>
-                    <input type="text" id="edit_nip" name="nip" required
-                        class="w-full px-3 py-2 text-xs rounded-lg border border-slate-200 focus:outline-none focus:border-slate-400 focus:ring-1 focus:ring-slate-400 transition-all">
+                    <input type="text" id="edit_nip" name="nip" required maxlength="18" oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 18)"
+                        class="w-full px-3 py-2 text-xs rounded-lg border border-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-500">
                 </div>
 
                 <div>
