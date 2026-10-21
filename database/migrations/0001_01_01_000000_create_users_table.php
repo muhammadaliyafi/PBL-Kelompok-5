@@ -21,9 +21,6 @@ return new class extends Migration
             $table->rememberToken();
 
             $table->string('nim')->unique()->nullable();
-            $table->string('name');
-            $table->string('email')->unique()->nullable();
-            $table->string('password');
             $table->string('role')->default('mahasiswa');
 
             $table->timestamps();
