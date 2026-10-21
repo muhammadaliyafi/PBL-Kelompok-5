@@ -41,7 +41,11 @@ Route::prefix('mahasiswa')->name('mahasiswa.')->group(function () {
     Route::post('/pengajuan-judul', [PengajuanJudulController::class, 'store'])->name('judul.store');
 });
 
+<<<<<<< HEAD
 // Direct Route Tampilan Mahasiswa
+=======
+// Direct Route Tampilan Mahasiswa Kamu
+>>>>>>> main
 Route::get('/dashboard', function () {
     return view('dashboard');
 });
