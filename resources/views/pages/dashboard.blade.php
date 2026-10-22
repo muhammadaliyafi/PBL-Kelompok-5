@@ -327,7 +327,7 @@
         <div class="section-heading">
             <div>
                 <h2>Pengajuan Terbaru</h2>
-                <p>Daftar pengajuan beserta status verifikasi terakhir.</p>
+                <p>List pengajuan beserta status verifikasi terakhir.</p>
             </div>
 
             <a href="{{ route('dosen.validasi') }}" class="btn btn-blue">
