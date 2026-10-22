@@ -113,7 +113,7 @@ Route::prefix('gugus-ta')->group(function () {
     Route::delete('/mahasiswa-delete-all', [MahasiswaController::class, 'deleteAll']);
     Route::post('/mahasiswa/bulk-delete', [MahasiswaController::class, 'bulkDelete']);
 
-    // Kelola Data Dosen
+    // Kelola Dosen
     Route::get('/dosen', [DosenController::class, 'index'])->name('dosen.index');
     Route::post('/dosen', [DosenController::class, 'store'])->name('dosen.store');
     Route::put('/dosen/{id}', [DosenController::class, 'update'])->name('dosen.update');

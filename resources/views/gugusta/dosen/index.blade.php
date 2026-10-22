@@ -168,7 +168,7 @@
                 <!-- HEADER SECTION -->
                 <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
                     <div>
-                        <h2 class="text-xl font-bold text-slate-900 tracking-tight">Kelola Data Dosen</h2>
+                        <h2 class="text-xl font-bold text-slate-900 tracking-tight">Kelola Dosen</h2>
                         <p class="text-xs text-slate-500 mt-0.5">Pusat kelola akun, NIP/NIDN, dan hak akses dosen tugas
                             akhir.</p>
                     </div>
