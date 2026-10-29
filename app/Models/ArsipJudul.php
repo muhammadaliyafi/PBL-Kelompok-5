@@ -9,13 +9,15 @@ class ArsipJudul extends Model
 {
     use HasFactory;
 
+    // Nama tabel di database
     protected $table = 'arsip_juduls';
 
+    // Daftar kolom yang diizinkan untuk mass-assignment / import
     protected $fillable = [
         'tahun',
         'nim',
         'nama',
-        'judul',
         'topik',
+        'judul', // Field ini yang sebelumnya ketinggalan, Pay!
     ];
 }

@@ -22,7 +22,7 @@ class MahasiswaController extends Controller
             });
         }
 
-        // Filter Tahun Angkatan (Udah diperbaiki dari 'semester' ke 'tahun_angkatan')
+        // Filter Tahun Angkatan
         if ($request->filled('tahun_angkatan')) {
             $query->where('tahun_angkatan', $request->tahun_angkatan);
         }
@@ -51,6 +51,7 @@ class MahasiswaController extends Controller
         User::create([
             'nim' => $request->nim,
             'name' => $request->name,
+            'email' => $request->nim . '@mhs.politala.ac.id', // <-- Otomatis generate email dari NIM
             'tahun_angkatan' => $request->tahun_angkatan,
             'status_aktif' => 'Aktif',
             'role' => 'mahasiswa',
@@ -91,6 +92,7 @@ class MahasiswaController extends Controller
         $mhs->update([
             'nim' => $request->nim,
             'name' => $request->name,
+            'email' => $request->nim . '@mhs.politala.ac.id', // <-- Update email jika NIM diubah
             'tahun_angkatan' => $request->tahun_angkatan,
             'status_aktif' => $request->status_aktif,
         ]);
@@ -138,6 +140,7 @@ class MahasiswaController extends Controller
                     ['nim' => $nim],
                     [
                         'name'           => $nama,
+                        'email'          => $nim . '@mhs.politala.ac.id', // <-- Tambahkan email di CSV import
                         'tahun_angkatan' => $tahunAngkatan,
                         'status_aktif'   => 'Aktif',
                         'role'           => 'mahasiswa',

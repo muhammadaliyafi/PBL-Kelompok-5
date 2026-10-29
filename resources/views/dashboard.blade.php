@@ -35,18 +35,18 @@
                         SIPETA
                     </div>
                     <nav class="mt-6 px-3 space-y-1">
-                        <a href="/dashboard"
+                        <a href="{{ route('mahasiswa.dashboard') }}"
                             class="flex items-center px-3.5 py-2 text-sm font-semibold rounded-lg bg-blue-600/10 text-blue-400 border border-blue-500/20">Dashboard</a>
-                        <a href="/pengajuan-topik"
+                        <a href="{{ route('mahasiswa.topik.index') }}"
                             class="flex items-center px-3.5 py-2 text-sm font-medium rounded-lg hover:bg-slate-800/60 text-slate-400 hover:text-slate-200 transition-colors">Pengajuan
                             Topik</a>
-                        <a href="/pengajuan-judul"
+                        <a href="{{ route('mahasiswa.judul.index') }}"
                             class="flex items-center px-3.5 py-2 text-sm font-medium rounded-lg hover:bg-slate-800/60 text-slate-400 hover:text-slate-200 transition-colors">Pengajuan
                             Judul</a>
-                        <a href="/status-validasi"
+                        <a href="{{ route('mahasiswa.status') }}"
                             class="flex items-center px-3.5 py-2 text-sm font-medium rounded-lg hover:bg-slate-800/60 text-slate-400 hover:text-slate-200 transition-colors">Status
                             Validasi</a>
-                        <a href="/data-arsip"
+                        <a href="{{ route('mahasiswa.arsip') }}"
                             class="flex items-center px-3.5 py-2 text-sm font-medium rounded-lg hover:bg-slate-800/60 text-slate-400 hover:text-slate-200 transition-colors">Data
                             Arsip</a>
                     </nav>
@@ -104,10 +104,7 @@
                     <h2 class="text-xs font-bold text-slate-700 uppercase tracking-wider">PROGRESS TUGAS AKHIR</h2>
 
                     <div class="relative flex items-center justify-between max-w-3xl mx-auto px-6 py-2">
-                        <!-- Garis Dasar Abu-Abu -->
                         <div class="absolute left-12 right-12 top-7 h-0.5 bg-slate-200 z-0"></div>
-
-                        <!-- Garis Aktif Biru -->
                         <div id="progressLine"
                             class="absolute left-12 top-7 h-0.5 bg-blue-600 transition-all duration-500 z-0"
                             style="width: 0%;"></div>
@@ -145,7 +142,6 @@
 
                 <!-- Card Grid Status -->
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-
                     <!-- Status Topik -->
                     <div
                         class="bg-white rounded-xl shadow-xs border border-slate-200 p-6 flex flex-col justify-between space-y-4">
@@ -161,7 +157,7 @@
                                 </h3>
                             </div>
                         </div>
-                        <a href="/pengajuan-topik"
+                        <a href="{{ route('mahasiswa.topik.index') }}"
                             class="px-4 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-semibold text-xs rounded-lg transition-colors shadow-xs cursor-pointer flex items-center justify-center gap-2">
                             <span>Pilih Topik</span>
                             <i class="fa-solid fa-arrow-right text-[10px]"></i>
@@ -183,7 +179,7 @@
                                 </h3>
                             </div>
                         </div>
-                        <a href="/pengajuan-judul"
+                        <a href="{{ route('mahasiswa.judul.index') }}"
                             class="px-4 py-2.5 bg-amber-500 hover:bg-amber-600 text-white font-semibold text-xs rounded-lg transition-colors shadow-xs cursor-pointer flex items-center justify-center gap-2">
                             <span>Ajukan Judul</span>
                             <i class="fa-solid fa-arrow-right text-[10px]"></i>
@@ -205,20 +201,18 @@
                                     Divalidasi</h3>
                             </div>
                         </div>
-                        <a href="/status-validasi"
+                        <a href="{{ route('mahasiswa.status') }}"
                             class="px-4 py-2.5 bg-cyan-600 hover:bg-cyan-700 text-white font-semibold text-xs rounded-lg transition-colors shadow-xs cursor-pointer flex items-center justify-center gap-2">
                             <span>Lihat Status</span>
                             <i class="fa-solid fa-arrow-right text-[10px]"></i>
                         </a>
                     </div>
-
                 </div>
 
                 <!-- Alur Pengajuan Tugas Akhir -->
                 <div class="bg-white rounded-xl shadow-xs border border-slate-200 p-6 space-y-4">
                     <h3 class="text-xs font-bold text-slate-700 uppercase tracking-wider">ALUR PENGAJUAN TUGAS AKHIR
                     </h3>
-
                     <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
                         <div class="bg-slate-50/80 border border-slate-200/80 rounded-xl p-4 text-center space-y-2.5">
                             <div
@@ -228,7 +222,6 @@
                             <p class="text-[11px] text-slate-500 leading-relaxed">Pilih topik utama dari Bank TA untuk
                                 proses rekomendasi & penentuan Dospem.</p>
                         </div>
-
                         <div class="bg-slate-50/80 border border-slate-200/80 rounded-xl p-4 text-center space-y-2.5">
                             <div
                                 class="w-8 h-8 bg-slate-200 text-slate-700 font-bold rounded-full flex items-center justify-center mx-auto text-xs">
@@ -237,7 +230,6 @@
                             <p class="text-[11px] text-slate-500 leading-relaxed">Gugus TA memverifikasi topik &
                                 menentukan Dosen Pembimbing kamu.</p>
                         </div>
-
                         <div class="bg-slate-50/80 border border-slate-200/80 rounded-xl p-4 text-center space-y-2.5">
                             <div
                                 class="w-8 h-8 bg-slate-200 text-slate-700 font-bold rounded-full flex items-center justify-center mx-auto text-xs">
@@ -246,7 +238,6 @@
                             <p class="text-[11px] text-slate-500 leading-relaxed">Isi form pengajuan judul setelah
                                 Dospem kamu resmi diploting.</p>
                         </div>
-
                         <div class="bg-slate-50/80 border border-slate-200/80 rounded-xl p-4 text-center space-y-2.5">
                             <div
                                 class="w-8 h-8 bg-slate-200 text-slate-700 font-bold rounded-full flex items-center justify-center mx-auto text-xs">
@@ -282,57 +273,43 @@
 
             if (parseInt(currentStep) >= 3) {
                 if (line) line.style.width = '88%';
-
                 if (circle1) circle1.className =
                     'w-10 h-10 bg-blue-600 text-white font-bold rounded-full flex items-center justify-center shadow-xs transition-colors';
                 if (label1) label1.className = 'text-xs font-semibold text-blue-600 mt-2.5 transition-colors';
-
                 if (circle2) circle2.className =
                     'w-10 h-10 bg-blue-600 text-white font-bold rounded-full flex items-center justify-center shadow-xs transition-colors';
                 if (label2) label2.className = 'text-xs font-semibold text-blue-600 mt-2.5 transition-colors';
-
                 if (circle3) circle3.className =
                     'w-10 h-10 bg-blue-600 text-white font-bold rounded-full flex items-center justify-center shadow-xs transition-colors';
                 if (label3) label3.className = 'text-xs font-semibold text-blue-600 mt-2.5 transition-colors';
-
                 if (statusTopikText) statusTopikText.innerText = "Sudah Diajukan";
                 if (statusJudulText) statusJudulText.innerText = "Sudah Diajukan";
                 if (statusValidasiText) statusValidasiText.innerText = "Menunggu Validasi";
-
             } else if (currentStep === '2') {
                 if (line) line.style.width = '44%';
-
                 if (circle1) circle1.className =
                     'w-10 h-10 bg-blue-600 text-white font-bold rounded-full flex items-center justify-center shadow-xs transition-colors';
                 if (label1) label1.className = 'text-xs font-semibold text-blue-600 mt-2.5 transition-colors';
-
                 if (circle2) circle2.className =
                     'w-10 h-10 bg-slate-400 text-white font-bold rounded-full flex items-center justify-center shadow-xs transition-colors';
                 if (label2) label2.className = 'text-xs font-semibold text-slate-500 mt-2.5 transition-colors';
-
                 if (circle3) circle3.className =
                     'w-10 h-10 bg-slate-400 text-white font-bold rounded-full flex items-center justify-center shadow-xs transition-colors';
                 if (label3) label3.className = 'text-xs font-semibold text-slate-500 mt-2.5 transition-colors';
-
                 if (statusTopikText) statusTopikText.innerText = "Sudah Diajukan";
                 if (statusJudulText) statusJudulText.innerText = "Belum Diajukan";
                 if (statusValidasiText) statusValidasiText.innerText = "Belum Divalidasi";
-
             } else {
                 if (line) line.style.width = '0%';
-
                 if (circle1) circle1.className =
                     'w-10 h-10 bg-slate-400 text-white font-bold rounded-full flex items-center justify-center shadow-xs transition-colors';
                 if (label1) label1.className = 'text-xs font-semibold text-slate-500 mt-2.5 transition-colors';
-
                 if (circle2) circle2.className =
                     'w-10 h-10 bg-slate-400 text-white font-bold rounded-full flex items-center justify-center shadow-xs transition-colors';
                 if (label2) label2.className = 'text-xs font-semibold text-slate-500 mt-2.5 transition-colors';
-
                 if (circle3) circle3.className =
                     'w-10 h-10 bg-slate-400 text-white font-bold rounded-full flex items-center justify-center shadow-xs transition-colors';
                 if (label3) label3.className = 'text-xs font-semibold text-slate-500 mt-2.5 transition-colors';
-
                 if (statusTopikText) statusTopikText.innerText = "Belum Dipilih";
                 if (statusJudulText) statusJudulText.innerText = "Belum Diajukan";
                 if (statusValidasiText) statusValidasiText.innerText = "Belum Divalidasi";

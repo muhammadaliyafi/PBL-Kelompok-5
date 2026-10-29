@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kelola Data Mahasiswa - SIPETA</title>
+    <title>Kelola Mahasiswa - SIPETA</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
@@ -170,7 +170,7 @@
                 <!-- HEADER SECTION -->
                 <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
                     <div>
-                        <h2 class="text-xl font-bold text-slate-900 tracking-tight">Kelola Data Mahasiswa</h2>
+                        <h2 class="text-xl font-bold text-slate-900 tracking-tight">Kelola Mahasiswa</h2>
                         <p class="text-xs text-slate-500 mt-0.5">Pusat kelola akun dan hak akses mahasiswa tugas akhir.
                         </p>
                     </div>

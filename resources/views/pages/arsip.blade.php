@@ -1,9 +1,8 @@
-@extends('layout.dosen')
+@extends($layout)
 
 @section('title', 'Data Arsip Judul TA')
 
 @section('content')
-
     <div class="arsip-page">
 
         {{-- HEADER DATA ARSIP --}}
@@ -14,7 +13,7 @@
             </div>
 
             <span class="total-badge">
-                {{ $arsip->count() }} dari {{ $arsip->count() }} judul
+                {{ $arsip->count() }} judul ditampilkan
             </span>
         </div>
 
@@ -22,14 +21,12 @@
         <div class="arsip-card">
 
             {{-- PENCARIAN DAN FILTER TAHUN --}}
-            <form action="{{ route('dosen.arsip') }}" method="GET" class="arsip-search-form">
+            <form action="{{ url()->current() }}" method="GET" class="arsip-search-form">
 
                 <div class="search-group">
                     <label for="search">Search Bar</label>
-
                     <div class="search-box">
                         <span class="search-icon">&#8981;</span>
-
                         <input type="text" id="search" name="search" value="{{ request('search') }}"
                             placeholder="Cari judul, nama, atau topik...">
                     </div>
@@ -37,12 +34,10 @@
 
                 <div class="year-group">
                     <label for="tahun">Year</label>
-
-                    <select name="tahun" id="tahun">
-                        <option value="semua" {{ !request('tahun') || request('tahun') == 'semua' ? 'selected' : '' }}>
+                    <select name="tahun" id="tahun" onchange="this.form.submit()">
+                        <option value="" {{ !request('tahun') ? 'selected' : '' }}>
                             Semua Tahun
                         </option>
-
                         @for ($tahun = 2021; $tahun <= 2030; $tahun++)
                             <option value="{{ $tahun }}"
                                 {{ (string) request('tahun') === (string) $tahun ? 'selected' : '' }}>
@@ -52,14 +47,14 @@
                     </select>
                 </div>
 
-                {{-- TOMBOL PENCARIAN SAJA --}}
+                {{-- TOMBOL PENCARIAN DAN RESET --}}
                 <div class="search-actions">
                     <button type="submit" class="btn-search">
                         Cari
                     </button>
 
-                    @if (request()->filled('search') || (request()->filled('tahun') && request('tahun') != 'semua'))
-                        <a href="{{ route('dosen.arsip') }}" class="btn-reset">
+                    @if (request()->filled('search') || request()->filled('tahun'))
+                        <a href="{{ url()->current() }}" class="btn-reset">
                             Reset
                         </a>
                     @endif
@@ -115,7 +110,7 @@
                                 </td>
 
                                 <td class="title-cell">
-                                    {{ $item->judul_proposal }}
+                                    {{ $item->judul_proposal ?? ($item->judul ?? '-') }}
                                 </td>
 
                                 <td>
@@ -128,14 +123,8 @@
                             <tr>
                                 <td colspan="6" class="empty-data">
                                     <div class="empty-icon">&#9776;</div>
-
-                                    <strong>
-                                        Belum ada data arsip judul yang tersimpan.
-                                    </strong>
-
-                                    <p>
-                                        Data arsip akan muncul di sini setelah tersedia di sistem.
-                                    </p>
+                                    <strong>Belum ada data arsip judul yang tersimpan.</strong>
+                                    <p>Data arsip akan muncul di sini setelah tersedia di sistem.</p>
                                 </td>
                             </tr>
                         @endforelse
@@ -143,7 +132,7 @@
                 </table>
             </div>
 
-            {{-- FOOTER: TETAP MEMPERTAHANKAN AKSES PENGELOLA --}}
+            {{-- FOOTER --}}
             <div class="table-footer">
                 <span>
                     Menampilkan {{ $arsip->count() }} Data Arsip Judul
@@ -159,7 +148,6 @@
     </div>
 
     <style>
-        /* PENGATURAN DASAR */
         .arsip-page,
         .arsip-page * {
             box-sizing: border-box;
@@ -171,7 +159,6 @@
             color: #17243d;
         }
 
-        /* HEADER */
         .arsip-heading {
             display: flex;
             justify-content: space-between;
@@ -217,7 +204,6 @@
             white-space: nowrap;
         }
 
-        /* KARTU TABEL */
         .arsip-card {
             width: 100%;
             margin-bottom: 24px;
@@ -228,7 +214,6 @@
             box-shadow: 0 2px 5px rgba(25, 55, 100, .03);
         }
 
-        /* FORM SEARCH */
         .arsip-search-form {
             display: grid;
             grid-template-columns: minmax(200px, 2fr) minmax(160px, 1fr);
@@ -287,7 +272,6 @@
             color: #94a5bd;
         }
 
-        /* DROPDOWN TAHUN */
         .year-group select {
             width: 100%;
             height: 43px;
@@ -305,7 +289,6 @@
             border-color: #2864ed;
         }
 
-        /* TOMBOL CARI DAN RESET */
         .search-actions {
             grid-column: 1 / -1;
             display: flex;
@@ -349,7 +332,6 @@
             background: #f3f7fc;
         }
 
-        /* JUDUL TABEL */
         .table-heading {
             display: flex;
             justify-content: space-between;
@@ -378,7 +360,6 @@
             white-space: nowrap;
         }
 
-        /* TABEL ARSIP */
         .table-wrapper {
             width: 100%;
             overflow-x: auto;
@@ -461,7 +442,6 @@
             overflow-wrap: anywhere;
         }
 
-        /* PESAN JIKA BELUM ADA DATA */
         .empty-data {
             height: 150px;
             padding: 25px !important;
@@ -487,7 +467,6 @@
             font-size: 12px;
         }
 
-        /* FOOTER */
         .table-footer {
             display: flex;
             justify-content: space-between;
@@ -511,55 +490,5 @@
         .manager-link:hover {
             text-decoration: underline;
         }
-
-        /* TAMPILAN RESPONSIF */
-        @media (max-width: 900px) {
-            .arsip-heading {
-                padding: 24px;
-            }
-
-            .arsip-search-form {
-                padding: 22px;
-            }
-
-            .arsip-table th,
-            .arsip-table td {
-                padding: 15px;
-            }
-        }
-
-        @media (max-width: 600px) {
-            .arsip-heading {
-                align-items: flex-start;
-                flex-direction: column;
-                padding: 20px;
-            }
-
-            .arsip-heading h1 {
-                font-size: 23px;
-            }
-
-            .arsip-search-form {
-                grid-template-columns: 1fr;
-                padding: 20px;
-            }
-
-            .search-actions {
-                grid-column: 1;
-            }
-
-            .table-heading {
-                align-items: flex-start;
-                flex-direction: column;
-                padding: 0 20px 18px;
-            }
-
-            .table-footer {
-                align-items: flex-start;
-                flex-direction: column;
-                padding: 16px 20px;
-            }
-        }
     </style>
-
 @endsection
