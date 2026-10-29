@@ -73,14 +73,9 @@
                             Lengkapi usulan judul, rincian integrasi sistem, dan deskripsi Tugas Akhir Anda untuk ditinjau oleh Dosen Pembimbing.
                         </p>
                     </div>
-                    <div>
-                        <span class="px-3 py-1 bg-blue-50 text-blue-600 text-xs font-semibold rounded-full border border-blue-100">
-                            Step 2 dari 3
-                        </span>
-                    </div>
                 </div>
 
-                <!-- KONDISI TERKUNCI (JIKA BELUM PENGAJUAN TOPIK) -->
+                <!-- KONDISI TERKUNCI -->
                 <div id="lockedSection" class="bg-amber-50/70 border border-amber-200/80 rounded-2xl p-8 text-center space-y-4 shadow-xs hidden">
                     <div class="w-14 h-14 bg-amber-100 text-amber-600 rounded-full flex items-center justify-center text-xl mx-auto shadow-xs">
                         <i class="fa-solid fa-lock"></i>
@@ -103,35 +98,29 @@
                         <h3 class="text-base font-bold text-slate-800">Input Judul Tugas Akhir</h3>
                     </div>
 
-                    <form onsubmit="submitJudul(event)" class="p-6 space-y-6">
+                    <form id="formJudulTA" onsubmit="submitJudul(event)" class="p-6 space-y-6">
                         <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
                             
                             <!-- Kolom Kiri: Form Input -->
                             <div class="lg:col-span-2 space-y-5">
                                 
-                                <!-- Pilih Topik Utama -->
-                                <div class="space-y-1.5">
-                                    <label class="text-xs font-bold text-slate-800">Pilih Topik Utama <span class="text-red-500">*</span></label>
-                                    <select id="inputTopikUtama" required class="w-full bg-white border border-slate-300 text-slate-800 text-xs rounded-xl p-3 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition cursor-pointer font-medium">
-                                        <option value="" disabled selected>-- Pilih Topik Utama --</option>
-                                        <option value="SI Terintegrasi (Sensor API)">SI Terintegrasi (Sensor API)</option>
-                                        <option value="Internet of Things (IoT)">Internet of Things (IoT)</option>
-                                        <option value="Data Mining / Kecerdasan Buatan / SPK">Data Mining / Kecerdasan Buatan / SPK</option>
-                                        <option value="Virtual (VR) / Augmented Reality (AR)">Virtual (VR) / Augmented Reality (AR)</option>
-                                        <option value="Pengembangan Game (Menggunakan Database)">Pengembangan Game (Menggunakan Database)</option>
-                                    </select>
-                                </div>
-
                                 <!-- Judul Proposal -->
                                 <div class="space-y-1.5">
                                     <label class="text-xs font-bold text-slate-800">Judul Proposal <span class="text-red-500">*</span></label>
-                                    <input type="text" id="inputJudul" required placeholder="Contoh: Rancang Bangun Sistem Informasi Pengajuan Tugas Akhir (SIPETA) Berbasis Web" class="w-full bg-white border border-slate-300 text-slate-800 text-xs rounded-xl p-3 placeholder:text-slate-400 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition">
+                                    <input type="text" id="inputJudul" required placeholder="Contoh: Rancang Sistem IOT Berbasis Payment Gateway" class="w-full bg-white border border-slate-300 text-slate-800 text-xs rounded-xl p-3 placeholder:text-slate-400 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition">
                                 </div>
 
-                                <!-- Integrasi Sistem -->
-                                <div class="space-y-1.5">
-                                    <label class="text-xs font-bold text-slate-800">Integrasi Sistem (Layanan / API Pihak Ketiga) <span class="text-red-500">*</span></label>
-                                    <input type="text" id="inputIntegrasi" required placeholder="Contoh: WhatsApp Gateway (Fonnte API), Mail Server (SMTP), Payment Gateway (Midtrans)" class="w-full bg-white border border-slate-300 text-slate-800 text-xs rounded-xl p-3 placeholder:text-slate-400 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition">
+                                <!-- Integrasi Sistem 1 & 2 -->
+                                <div class="space-y-3">
+                                    <div class="space-y-1.5">
+                                        <label class="text-xs font-bold text-slate-800">Integrasi Sistem 1 (API Utama) <span class="text-red-500">*</span></label>
+                                        <input type="text" id="inputIntegrasi1" required placeholder="Contoh: Fonnte" class="w-full bg-white border border-slate-300 text-slate-800 text-xs rounded-xl p-3 placeholder:text-slate-400 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition">
+                                    </div>
+
+                                    <div class="space-y-1.5">
+                                        <label class="text-xs font-bold text-slate-800">Integrasi Sistem 2 <span class="text-slate-400 font-normal">(Opsional)</span></label>
+                                        <input type="text" id="inputIntegrasi2" placeholder="Contoh: Google Calendar" class="w-full bg-white border border-slate-300 text-slate-800 text-xs rounded-xl p-3 placeholder:text-slate-400 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition">
+                                    </div>
                                 </div>
 
                                 <!-- Deskripsi Singkat -->
@@ -155,7 +144,7 @@
                                         </div>
                                         <div>
                                             <p class="text-[11px] text-slate-500">Topik Rekomendasi</p>
-                                            <p class="text-xs font-bold text-slate-900">Sistem Informasi (88%)</p>
+                                            <p id="sideTopikRekomendasi" class="text-xs font-bold text-slate-900">SI Terintegrasi (Sensor API)</p>
                                         </div>
                                     </div>
 
@@ -196,7 +185,7 @@
                     </form>
                 </div>
 
-                <!-- HASIL / STATUS SETELAH JUDUL DIAJUKAN (CARD KARTU STATUS SINGLE) -->
+                <!-- HASIL / STATUS SETELAH JUDUL DIAJUKAN -->
                 <div id="statusJudulBerhasilSection" class="space-y-6 hidden">
 
                     <div>
@@ -219,7 +208,7 @@
                                 </div>
                                 <div class="w-36 font-bold text-slate-800 shrink-0">Judul Proposal</div>
                                 <div id="displayJudul" class="font-bold text-slate-900 flex-1">
-                                    : Aplikasi SIPETA Berbasis Web Menggunakan Framework Laravel di Politala
+                                    : -
                                 </div>
                             </div>
 
@@ -230,18 +219,21 @@
                                 </div>
                                 <div class="w-36 font-bold text-slate-800 shrink-0">Topik Utama</div>
                                 <div id="displayTopik" class="font-bold text-slate-900 flex-1">
-                                    : SI Terintegrasi
+                                    : -
                                 </div>
                             </div>
 
-                            <!-- Integrasi Sistem -->
-                            <div class="flex items-center space-x-4">
+                            <!-- Integrasi Sistem (Disajikan sebagai Badges Terpisah) -->
+                            <div class="flex items-start space-x-4">
                                 <div class="w-9 h-9 rounded-xl bg-purple-50 text-purple-600 border border-purple-100 flex items-center justify-center shrink-0">
                                     <i class="fa-solid fa-plug text-sm"></i>
                                 </div>
-                                <div class="w-36 font-bold text-slate-800 shrink-0">Integrasi Sistem</div>
-                                <div id="displayIntegrasi" class="font-bold text-slate-900 flex-1">
-                                    : Whatsapp Gateway & Email API
+                                <div class="w-36 font-bold text-slate-800 shrink-0 pt-2">Integrasi Sistem</div>
+                                <div class="flex items-center gap-2 flex-1 pt-1">
+                                    <span class="text-slate-800 font-bold me-1">:</span>
+                                    <div id="integrasiBadgesList" class="flex flex-wrap items-center gap-2">
+                                        <!-- Rendered dynamically by JS -->
+                                    </div>
                                 </div>
                             </div>
 
@@ -276,30 +268,62 @@
 
     </div>
 
-    <!-- SCRIPT PROGRESS & DATA persistence -->
+    <!-- SCRIPT LOGIKA REVISI -->
     <script>
         document.addEventListener("DOMContentLoaded", function() {
             renderPage();
         });
 
         function renderPage() {
-            const currentStep = localStorage.getItem('ta_progress_step') || '0';
+            const currentStep = localStorage.getItem('ta_progress_step') || '2';
 
             const lockedSec = document.getElementById('lockedSection');
             const formSec = document.getElementById('formJudulSection');
             const successSec = document.getElementById('statusJudulBerhasilSection');
 
-            // Load saved input values if available
-            if(localStorage.getItem('ta_judul')) {
-                document.getElementById('displayJudul').textContent = ': ' + localStorage.getItem('ta_judul');
-            }
-            if(localStorage.getItem('ta_topik_utama')) {
-                document.getElementById('displayTopik').textContent = ': ' + localStorage.getItem('ta_topik_utama');
-            }
-            if(localStorage.getItem('ta_integrasi')) {
-                document.getElementById('displayIntegrasi').textContent = ': ' + localStorage.getItem('ta_integrasi');
+            // 1. Topik Utama Otomatis
+            const topikMahasiswa = localStorage.getItem('ta_topik_utama') || 'SI Terintegrasi (Sensor API)';
+            const sideTopik = document.getElementById('sideTopikRekomendasi');
+            if(sideTopik) sideTopik.textContent = topikMahasiswa;
+
+            const displayTopik = document.getElementById('displayTopik');
+            if(displayTopik) displayTopik.textContent = ': ' + topikMahasiswa;
+
+            // 2. Tampilkan Data Inputan Jika Ada
+            const savedJudul = localStorage.getItem('ta_judul');
+            const savedInt1 = localStorage.getItem('ta_integrasi1');
+            const savedInt2 = localStorage.getItem('ta_integrasi2');
+            const savedDeskripsi = localStorage.getItem('ta_deskripsi');
+
+            if(savedJudul) {
+                document.getElementById('displayJudul').textContent = ': ' + savedJudul;
+                document.getElementById('inputJudul').value = savedJudul;
             }
 
+            if(savedInt1) {
+                document.getElementById('inputIntegrasi1').value = savedInt1;
+            }
+            if(savedInt2) {
+                document.getElementById('inputIntegrasi2').value = savedInt2;
+            }
+            if(savedDeskripsi) {
+                document.getElementById('inputDeskripsi').value = savedDeskripsi;
+            }
+
+            // Render Badges Integrasi secara Terpisah
+            const badgeContainer = document.getElementById('integrasiBadgesList');
+            if(badgeContainer) {
+                let htmlBadges = '';
+                if(savedInt1) {
+                    htmlBadges += `<span class="inline-flex items-center px-3 py-1 rounded-lg text-xs font-semibold bg-purple-50 text-purple-700 border border-purple-200"><i class="fa-solid fa-circle-dot text-[8px] me-1.5 text-purple-500"></i>${savedInt1}</span>`;
+                }
+                if(savedInt2 && savedInt2.trim() !== '') {
+                    htmlBadges += `<span class="inline-flex items-center px-3 py-1 rounded-lg text-xs font-semibold bg-indigo-50 text-indigo-700 border border-indigo-200"><i class="fa-solid fa-circle-dot text-[8px] me-1.5 text-indigo-500"></i>${savedInt2}</span>`;
+                }
+                badgeContainer.innerHTML = htmlBadges || '<span class="text-slate-400 font-normal">-</span>';
+            }
+
+            // 3. Kontrol Tampilan Halaman
             if (currentStep === '3') {
                 if(lockedSec) lockedSec.classList.add('hidden');
                 if(formSec) formSec.classList.add('hidden');
@@ -317,13 +341,15 @@
 
         function submitJudul(e) {
             e.preventDefault();
-            const topik = document.getElementById('inputTopikUtama').value;
             const judul = document.getElementById('inputJudul').value;
-            const integrasi = document.getElementById('inputIntegrasi').value;
+            const integrasi1 = document.getElementById('inputIntegrasi1').value;
+            const integrasi2 = document.getElementById('inputIntegrasi2').value;
+            const deskripsi = document.getElementById('inputDeskripsi').value;
 
-            localStorage.setItem('ta_topik_utama', topik);
             localStorage.setItem('ta_judul', judul);
-            localStorage.setItem('ta_integrasi', integrasi);
+            localStorage.setItem('ta_integrasi1', integrasi1);
+            localStorage.setItem('ta_integrasi2', integrasi2);
+            localStorage.setItem('ta_deskripsi', deskripsi);
             localStorage.setItem('ta_progress_step', '3');
             
             renderPage();
@@ -334,11 +360,22 @@
             renderPage();
         }
 
+        // HAPUS TOTAL & RESET KONDISI FORM
         function hapusPengajuan() {
-            if(confirm('Apakah Anda yakin ingin membatalkan pengajuan judul ini?')) {
-                localStorage.setItem('ta_progress_step', '2');
+            if(confirm('Apakah Anda yakin ingin membatalkan & menghapus total pengajuan judul ini?')) {
+                // 1. Hapus semua item tersimpan
                 localStorage.removeItem('ta_judul');
-                localStorage.removeItem('ta_integrasi');
+                localStorage.removeItem('ta_integrasi1');
+                localStorage.removeItem('ta_integrasi2');
+                localStorage.removeItem('ta_deskripsi');
+                
+                // 2. Kembalikan progress step ke mode form kosong ('2')
+                localStorage.setItem('ta_progress_step', '2');
+
+                // 3. Kosongkan elemen input pada form
+                document.getElementById('formJudulTA').reset();
+
+                // 4. Render ulang tampilan halaman
                 renderPage();
             }
         }
