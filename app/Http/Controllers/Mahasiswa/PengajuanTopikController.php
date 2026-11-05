@@ -12,7 +12,7 @@ class PengajuanTopikController extends Controller
         $isSubmitted = session('success_submit', false);
         $pengajuanTopik = session('pengajuanTopik', null);
 
-        return view('mahasiswa.pengajuantopik', compact('isSubmitted', 'pengajuanTopik'));
+        return view('mahasiswa.pengajuan_topik', compact('isSubmitted', 'pengajuanTopik'));
     }
 
     public function store(Request $request)

@@ -12,7 +12,7 @@ class PengajuanJudulController extends Controller
         $isSubmitted = session('judul_submitted', false);
         $dataJudul = session('data_judul', null);
 
-        return view('mahasiswa.pengajuanjudul', compact('isSubmitted', 'dataJudul'));
+        return view('mahasiswa.pengajuan_judul', compact('isSubmitted', 'dataJudul'));
     }
 
     public function store(Request $request)

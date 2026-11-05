@@ -16,7 +16,7 @@ return new class extends Migration
             $table->integer('tahun');
             $table->string('nim');
             $table->string('nama');
-            $table->text('judul_proposal');
+            $table->text('judul');
             $table->string('topik');
             $table->timestamps();
         });

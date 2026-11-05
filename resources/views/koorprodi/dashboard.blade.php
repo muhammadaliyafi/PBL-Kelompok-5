@@ -9,30 +9,31 @@
         <p class="text-xs text-slate-400 mt-0.5">Evaluasi Makro dan Pemantauan Tugas Akhir</p>
     </div>
 
-    <!-- 4 CARD STATISTIK -->
+    <!-- 4 CARD STATISTIK (DINAMIS) -->
     <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mt-6">
-        <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
+        <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-xs">
             <p class="text-xs font-medium text-slate-500">Total Mahasiswa TA</p>
-            <h3 class="text-2xl font-bold text-slate-900 mt-1">125</h3>
+            <h3 class="text-2xl font-bold text-slate-900 mt-1">{{ $totalMahasiswa }}</h3>
         </div>
-        <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
+        <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-xs">
             <p class="text-xs font-medium text-slate-500">Total Dosen Pembimbing</p>
-            <h3 class="text-2xl font-bold text-slate-900 mt-1">24</h3>
+            <h3 class="text-2xl font-bold text-slate-900 mt-1">{{ $totalDosen }}</h3>
         </div>
-        <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
+        <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-xs">
             <p class="text-xs font-medium text-slate-500">Rata-rata Beban Bimbingan</p>
-            <h3 class="text-2xl font-bold text-slate-900 mt-1">5.2 <span class="text-sm font-semibold">mahasiswa</span></h3>
+            <h3 class="text-2xl font-bold text-slate-900 mt-1">{{ $avgBeban }} <span
+                    class="text-sm font-semibold">mahasiswa</span></h3>
         </div>
-        <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
+        <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-xs">
             <p class="text-xs font-medium text-slate-500">Topik Paling Diminati</p>
-            <h3 class="text-xl font-bold text-slate-900 mt-1">IoT & Game Dev</h3>
+            <h3 class="text-xl font-bold text-slate-900 mt-1 truncate">{{ $topikTerbanyak }}</h3>
         </div>
     </div>
 
-    <!-- SECTION CHART (DONUT & BAR) -->
+    <!-- SECTION CHART (DONUT & BAR DINAMIS) -->
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
         <!-- CHART TREN TOPIK (DONUT) -->
-        <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex flex-col justify-between">
+        <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-xs flex flex-col justify-between">
             <h4 class="text-sm font-bold text-slate-800 mb-4">Tren Topik Tugas Akhir</h4>
             <div class="w-full h-64 flex items-center justify-center">
                 <canvas id="topicChart"></canvas>
@@ -40,7 +41,7 @@
         </div>
 
         <!-- CHART PEMERATAAN BEBAN (BAR HORIZONTAL) -->
-        <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex flex-col justify-between">
+        <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-xs flex flex-col justify-between">
             <h4 class="text-sm font-bold text-slate-800 mb-4">Rekapitulasi Pemerataan Beban Bimbingan</h4>
             <div class="w-full h-64">
                 <canvas id="loadChart"></canvas>
@@ -48,8 +49,8 @@
         </div>
     </div>
 
-    <!-- TABEL STATUS DISTRIBUSI MAHASISWA -->
-    <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden mt-6">
+    <!-- TABEL STATUS DISTRIBUSI MAHASISWA (DINAMIS) -->
+    <div class="bg-white rounded-2xl border border-slate-200 shadow-xs overflow-hidden mt-6">
         <div class="p-5 border-b border-slate-100">
             <h4 class="text-sm font-bold text-slate-800">Status Distribusi Mahasiswa</h4>
         </div>
@@ -66,22 +67,22 @@
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-slate-100 text-slate-700">
-                    <tr class="hover:bg-slate-50/80 transition-colors">
-                        <td class="py-3.5 px-5">1</td>
-                        <td class="py-3.5 px-5 font-mono text-slate-500">1998112222025062007</td>
-                        <td class="py-3.5 px-5 font-semibold text-slate-900">Nina Mia Aristi, M.Kom</td>
-                        <td class="py-3.5 px-5">Teknik Pengambilan Keputusan</td>
-                        <td class="py-3.5 px-5">60%</td>
-                        <td class="py-3.5 px-5 font-semibold">6</td>
-                    </tr>
-                    <tr class="hover:bg-slate-50/80 transition-colors">
-                        <td class="py-3.5 px-5">2</td>
-                        <td class="py-3.5 px-5 font-mono text-slate-500">199008262022032002</td>
-                        <td class="py-3.5 px-5 font-semibold text-slate-900">Sausan Hidayah, M.Kom</td>
-                        <td class="py-3.5 px-5">Rekayasa Perangkat Lunak</td>
-                        <td class="py-3.5 px-5">50%</td>
-                        <td class="py-3.5 px-5 font-semibold">7</td>
-                    </tr>
+                    @forelse($dosenList as $index => $dosen)
+                        <tr class="hover:bg-slate-50/80 transition-colors">
+                            <td class="py-3.5 px-5">{{ $index + 1 }}</td>
+                            <td class="py-3.5 px-5 font-mono text-slate-500">{{ $dosen->nip ?? ($dosen->nidn ?? '-') }}</td>
+                            <td class="py-3.5 px-5 font-semibold text-slate-900">
+                                {{ $dosen->name ?? ($dosen->nama ?? '-') }}
+                            </td>
+                            <td class="py-3.5 px-5">{{ $dosen->keahlian ?? 'Umum' }}</td>
+                            <td class="py-3.5 px-5">{{ $dosen->sisa_kuota ?? '50%' }}</td>
+                            <td class="py-3.5 px-5 font-semibold">{{ $dosen->total_bimbingan ?? 0 }}</td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <td colspan="6" class="text-center py-6 text-slate-400">Belum ada data dosen terdaftar.</td>
+                        </tr>
+                    @endforelse
                 </tbody>
             </table>
         </div>
@@ -90,15 +91,15 @@
 
 @section('script')
     <script>
-        // 1. Chart Donut Tren Topik
+        // 1. Chart Donut Tren Topik (Data dari Database)
         const ctxTopic = document.getElementById('topicChart').getContext('2d');
         new Chart(ctxTopic, {
             type: 'doughnut',
             data: {
-                labels: ['Visualizing IoT', 'Game Dev', 'Web Dev', 'Mobile Dev', 'AI'],
+                labels: @json($chartTopikLabels),
                 datasets: [{
-                    data: [35, 25, 20, 12, 8],
-                    backgroundColor: ['#2563eb', '#3b82f6', '#22c55e', '#38bdf8', '#f97316'],
+                    data: @json($chartTopikData),
+                    backgroundColor: ['#2563eb', '#3b82f6', '#22c55e', '#38bdf8', '#f97316', '#a855f7'],
                     borderWidth: 2,
                     borderColor: '#ffffff'
                 }]
@@ -126,11 +127,9 @@
         new Chart(ctxLoad, {
             type: 'bar',
             data: {
-                labels: ['Sausan Hidayah, M.Kom', 'Nina Mia Aristi, M.Kom', 'Data Dosen, M.Kom',
-                    'Nina Mia Aristi, M.Kom', 'Data Dosen, M.Kom', 'Rathar Dosen, M.Kom', 'Web Dev, M.Kom', 'AI'
-                ],
+                labels: @json($chartDosenLabels),
                 datasets: [{
-                    data: [8, 6, 5, 4, 3, 3, 2, 1],
+                    data: @json($chartDosenData),
                     backgroundColor: '#2563eb',
                     borderRadius: 4
                 }]
@@ -146,10 +145,15 @@
                 },
                 scales: {
                     x: {
+                        beginAtZero: true,
+                        min: 0,
+                        max: 10, // Memberikan batas maksimal ideal (bisa disesuaikan)
                         grid: {
                             display: false
                         },
                         ticks: {
+                            stepSize: 1,
+                            precision: 0, // Memaksa hanya menampilkan angka bulat (1, 2, 3...)
                             font: {
                                 size: 10
                             }

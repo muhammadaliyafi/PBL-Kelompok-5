@@ -64,8 +64,7 @@ class SingleArsipSheetImport implements ToModel, WithEvents
         if (empty($values)) {
             return null;
         }
-
-        $nim   = '-';
+        -$nim   = '-';
         $nama  = '-';
         $judul = '';
         $topik = 'Sistem Informasi';

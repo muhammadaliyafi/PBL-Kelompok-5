@@ -8,6 +8,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Mahasiswa\DashboardController as MahasiswaDashboardController;
 use App\Http\Controllers\Mahasiswa\PengajuanTopikController;
 use App\Http\Controllers\Mahasiswa\PengajuanJudulController;
+use App\Http\Controllers\Mahasiswa\DataArsipController;
 
 // Import Controller Gugus TA & Auth
 use App\Http\Controllers\GugusTA\DashboardController as GugusTADashboardController;
@@ -17,6 +18,9 @@ use App\Http\Controllers\GugusTA\DosenController;
 use App\Http\Controllers\GugusTA\PlotingController;
 use App\Http\Controllers\GugusTA\BankTopikController;
 use App\Http\Controllers\GugusTA\ArsipJudulController;
+
+//koorprodi
+use App\Http\Controllers\Koorprodi\DashboardController as KoorprodiDashboardController;
 
 /*
 |--------------------------------------------------------------------------
@@ -38,12 +42,10 @@ Route::prefix('mahasiswa')->name('mahasiswa.')->group(function () {
     Route::post('/pengajuan-topik', [PengajuanTopikController::class, 'store'])->name('topik.store');
     Route::get('/pengajuan-judul', [PengajuanJudulController::class, 'index'])->name('judul.index');
     Route::post('/pengajuan-judul', [PengajuanJudulController::class, 'store'])->name('judul.store');
-    Route::view('/status-validasi', 'status_validasi')->name('status');
+    Route::view('/status-validasi', 'mahasiswa.status_validasi')->name('status');
 
-    // Data Arsip Mahasiswa
-    Route::get('/data-arsip', function () {
-        return view('mahasiswa.arsip');
-    })->name('arsip');
+    // Data Arsip Mahasiswa (Telah Terhubung ke Controller)
+    Route::get('/data-arsip', [DataArsipController::class, 'index'])->name('arsip');
 });
 
 // ==========================================
@@ -111,13 +113,21 @@ Route::post('/pilih-role', [AuthController::class, 'setRole'])->name('set.role')
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 // ==========================================
-// RUTE DARURAT / ALIAS (SUPAYA URL TANPA PREFIX TIDAK 404)
+// RUTE DARURAT / ALIAS (TANPA DUPELIKAT)
 // ==========================================
-Route::view('/status-validasi', 'status_validasi');
+Route::get('/dashboard', function () {
+    return redirect()->route('mahasiswa.dashboard');
+});
+Route::view('/status-validasi', 'mahasiswa.status_validasi');
 Route::get('/pengajuan-topik', [PengajuanTopikController::class, 'index']);
 Route::get('/pengajuan-judul', [PengajuanJudulController::class, 'index']);
+Route::get('/data-arsip', [DataArsipController::class, 'index']);
 
-// Perbaikan: /data-arsip darurat langsung arahkan ke view mahasiswa arsip, bukan dospem
-Route::get('/data-arsip', function () {
-    return view('mahasiswa.arsip');
+//koorprodi
+// ==========================================
+// ROUTES KOORPRODI
+// ==========================================
+Route::prefix('koorprodi')->name('koorprodi.')->group(function () {
+    Route::get('/dashboard', [KoorprodiDashboardController::class, 'index'])->name('dashboard');
+    Route::get('/arsip', [ArsipController::class, 'index'])->name('arsip');
 });
