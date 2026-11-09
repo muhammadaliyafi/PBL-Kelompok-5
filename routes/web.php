@@ -4,11 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ArsipController;
 use App\Http\Controllers\AuthController;
 
-// Import Controller Mahasiswa
-use App\Http\Controllers\Mahasiswa\DashboardController as MahasiswaDashboardController;
-use App\Http\Controllers\Mahasiswa\PengajuanTopikController;
-use App\Http\Controllers\Mahasiswa\PengajuanJudulController;
-use App\Http\Controllers\Mahasiswa\DataArsipController;
+
 
 // Import Controller Gugus TA & Auth
 use App\Http\Controllers\GugusTA\DashboardController as GugusTADashboardController;
@@ -19,7 +15,7 @@ use App\Http\Controllers\GugusTA\PlotingController;
 use App\Http\Controllers\GugusTA\BankTopikController;
 use App\Http\Controllers\GugusTA\ArsipJudulController;
 
-//koorprodi
+// Import Controller Koorprodi
 use App\Http\Controllers\Koorprodi\DashboardController as KoorprodiDashboardController;
 
 /*
@@ -33,27 +29,17 @@ Route::get('/', function () {
     return redirect()->route('login');
 });
 
-// ==========================================
-// ROUTES MAHASISWA
-// ==========================================
-Route::prefix('mahasiswa')->name('mahasiswa.')->group(function () {
-    Route::get('/dashboard', [MahasiswaDashboardController::class, 'index'])->name('dashboard');
-    Route::get('/pengajuan-topik', [PengajuanTopikController::class, 'index'])->name('topik.index');
-    Route::post('/pengajuan-topik', [PengajuanTopikController::class, 'store'])->name('topik.store');
-    Route::get('/pengajuan-judul', [PengajuanJudulController::class, 'index'])->name('judul.index');
-    Route::post('/pengajuan-judul', [PengajuanJudulController::class, 'store'])->name('judul.store');
-    Route::view('/status-validasi', 'mahasiswa.status_validasi')->name('status');
 
-    // Data Arsip Mahasiswa (Telah Terhubung ke Controller)
-    Route::get('/data-arsip', [DataArsipController::class, 'index'])->name('arsip');
-});
 
 // ==========================================
 // ROUTES DOSEN PEMBIMBING
 // ==========================================
 Route::prefix('dosen')->name('dosen.')->group(function () {
     Route::view('/dashboard', 'pages.dashboard')->name('dashboard');
-    Route::view('/validasi', 'pages.validasi')->name('validasi');
+
+
+
+
     Route::view('/mahasiswa', 'pages.mahasiswa')->name('mahasiswa');
     Route::view('/topik', 'pages.topik')->name('topik');
     Route::get('/arsip', [ArsipController::class, 'index'])->name('arsip');
@@ -97,9 +83,7 @@ Route::prefix('gugus-ta')->group(function () {
 // ROUTES KOORPRODI
 // ==========================================
 Route::prefix('koorprodi')->name('koorprodi.')->group(function () {
-    Route::get('/dashboard', function () {
-        return view('koorprodi.dashboard');
-    })->name('dashboard');
+    Route::get('/dashboard', [KoorprodiDashboardController::class, 'index'])->name('dashboard');
     Route::get('/arsip', [ArsipController::class, 'index'])->name('arsip');
 });
 
@@ -113,21 +97,8 @@ Route::post('/pilih-role', [AuthController::class, 'setRole'])->name('set.role')
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 // ==========================================
-// RUTE DARURAT / ALIAS (TANPA DUPELIKAT)
+// RUTE DARURAT / ALIAS (TANPA DUPLIKAT)
 // ==========================================
 Route::get('/dashboard', function () {
     return redirect()->route('mahasiswa.dashboard');
-});
-Route::view('/status-validasi', 'mahasiswa.status_validasi');
-Route::get('/pengajuan-topik', [PengajuanTopikController::class, 'index']);
-Route::get('/pengajuan-judul', [PengajuanJudulController::class, 'index']);
-Route::get('/data-arsip', [DataArsipController::class, 'index']);
-
-//koorprodi
-// ==========================================
-// ROUTES KOORPRODI
-// ==========================================
-Route::prefix('koorprodi')->name('koorprodi.')->group(function () {
-    Route::get('/dashboard', [KoorprodiDashboardController::class, 'index'])->name('dashboard');
-    Route::get('/arsip', [ArsipController::class, 'index'])->name('arsip');
 });
