@@ -1,1092 +1,893 @@
+
 @extends('layout.dosen')
 
 @section('title', 'Verifikasi Judul')
 
 @section('content')
+
+@php
+    /*
+    | Data diambil dari controller.
+    | Pastikan controller mengirim variabel $proposals
+    | dan model PengajuanJudul memiliki relasi user().
+    */
+    $proposalData = collect($proposals ?? [])->map(function ($p) {
+        return [
+            'id' => $p->id,
+            'name' => $p->user->nama ?? '-',
+            'nim' => $p->user->nim ?? '-',
+            'title' => $p->judul_ta ?? '-',
+            'topic' => $p->nama_topik ?? '-',
+            'case' => $p->jenis_kasus ?? '-',
+            'genre' => $p->genre_game ?? '-',
+            'tools' => $p->tools_game ?? '-',
+            'integration' => $p->integrasi_sistem ?? '-',
+            'description' => $p->deskripsi_judul ?? '-',
+            'status' => $p->status ?? 'Menunggu Verifikasi',
+            'date' => $p->created_at
+                ? $p->created_at->format('Y-m-d')
+                : '',
+            'note' => $p->catatan ?? '',
+        ];
+    })->values();
+@endphp
+
 <style>
     .verification-page {
         font-family: Arial, sans-serif;
-        color: #172b4d;
+        color: #153c78;
     }
 
     .verification-page * {
         box-sizing: border-box;
-        font-family: Arial, sans-serif;
     }
 
-    .page-heading {
-        display: flex;
-        align-items: center;
-        gap: 15px;
-        margin-bottom: 24px;
+    .page-heading { margin-bottom: 22px; }
+
+    .page-title {
+        margin: 0 0 5px;
+        color: #153c78;
+        font-size: 28px;
+        font-weight: 700;
     }
 
-    .heading-icon {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        width: 52px;
-        height: 52px;
-        flex-shrink: 0;
-        border-radius: 14px;
-        color: #2563eb;
-        background: #eaf2ff;
-        font-size: 25px;
-    }
-
-    .page-heading h1 {
-        margin: 0 0 7px;
-        font-size: 25px;
-        color: #172b4d;
-    }
-
-    .page-heading p {
+    .page-subtitle {
         margin: 0;
-        color: #718096;
+        color: #6682ad;
         font-size: 13px;
         line-height: 1.6;
     }
 
-    .summary-grid {
+    .stats-grid {
         display: grid;
         grid-template-columns: repeat(4, minmax(0, 1fr));
-        gap: 15px;
-        margin-bottom: 24px;
+        gap: 14px;
+        margin-bottom: 18px;
     }
 
-    .summary-card {
-        padding: 18px;
+    .stat-card {
+        min-height: 116px;
+        padding: 22px;
         background: #fff;
-        border: 1px solid #e5eaf2;
+        border: 1px solid #e1eafa;
         border-radius: 13px;
     }
 
-    .summary-label {
-        color: #718096;
+    .stat-label {
+        display: block;
+        color: #5c78a2;
         font-size: 12px;
-        line-height: 1.5;
+        margin-bottom: 8px;
     }
 
-    .summary-number {
-        margin-top: 10px;
-        font-size: 27px;
+    .stat-number {
+        color: #153c78;
+        font-size: 29px;
         font-weight: 700;
-        color: #172b4d;
     }
 
-    .filter-bar {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        gap: 14px;
-        flex-wrap: wrap;
-        margin-bottom: 16px;
-    }
+    .stat-card.blue { border-color: #c4d9ff; }
+    .stat-card.yellow { border-color: #ffe2a6; }
+    .stat-card.green { border-color: #bcebd8; }
+    .stat-card.pink { border-color: #ffd0dc; }
 
-    .filter-bar h2 {
-        margin: 0;
-        font-size: 18px;
-    }
-
-    .filter-bar p {
-        margin: 6px 0 0;
-        color: #718096;
-        font-size: 12px;
-    }
-
-    .search-input {
-        width: 290px;
-        max-width: 100%;
-        padding: 11px 13px;
-        border: 1px solid #d7dfeb;
-        border-radius: 9px;
-        outline: none;
+    .verification-panel {
+        padding: 19px;
         background: #fff;
-        color: #172b4d;
+        border: 1px solid #e1eafa;
+        border-radius: 13px;
+        margin-bottom: 18px;
+    }
+
+    .filter-grid {
+        display: grid;
+        grid-template-columns: minmax(180px, 2fr)
+            minmax(135px, 1.2fr)
+            minmax(115px, .8fr);
+        gap: 10px;
+    }
+
+    .verification-page .form-control,
+    .verification-page .form-select {
+        min-height: 42px;
+        border: 1px solid #dce7f8;
+        border-radius: 8px;
+        color: #294c7d;
         font-size: 13px;
     }
 
-    .search-input:focus,
-    .form-control:focus {
-        border-color: #2563eb;
-        box-shadow: 0 0 0 3px rgba(37, 99, 235, .1);
+    .panel-heading {
+        margin: 0 0 16px;
+        color: #153c78;
+        font-size: 16px;
+        font-weight: 700;
     }
 
-    .table-card {
-        overflow: hidden;
-        background: #fff;
-        border: 1px solid #e5eaf2;
-        border-radius: 14px;
-        box-shadow: 0 3px 12px rgba(20, 45, 90, .04);
-    }
-
-    .table-responsive {
+    .table-wrap {
         width: 100%;
         overflow-x: auto;
+        border: 1px solid #e1eafa;
+        border-radius: 9px;
     }
 
-    .verification-page table {
+    .proposal-table {
         width: 100%;
-        min-width: 850px;
-        border-collapse: collapse;
+        min-width: 1150px;
+        margin: 0;
+        border-collapse: separate;
+        border-spacing: 0;
     }
 
-    .verification-page th {
-        padding: 15px 17px;
-        background: #f3f7ff;
-        color: #526581;
-        text-align: left;
+    .proposal-table thead th {
+        padding: 14px 12px;
+        background: #f0f5ff;
+        color: #284a7e;
         font-size: 12px;
         white-space: nowrap;
+        border-bottom: 1px solid #dce7f8;
     }
 
-    .verification-page td {
-        padding: 15px 17px;
-        border-top: 1px solid #edf0f5;
-        color: #344563;
-        font-size: 13px;
+    .proposal-table tbody td {
+        padding: 14px 12px;
+        color: #34547e;
+        font-size: 12px;
+        line-height: 1.6;
+        border-bottom: 1px solid #e8eef8;
         vertical-align: middle;
     }
 
-    .verification-page tbody tr:hover {
-        background: #f9fbff;
+    .proposal-table tbody tr:last-child td {
+        border-bottom: 0;
     }
 
-    .student-name {
-        font-weight: 700;
-        color: #172b4d;
-    }
-
-    .student-nim {
-        margin-top: 5px;
-        color: #8290a5;
-        font-size: 11px;
-    }
-
-    .status-badge {
-        display: inline-block;
-        padding: 7px 10px;
-        border-radius: 20px;
-        font-size: 11px;
-        font-weight: 700;
-        white-space: nowrap;
-    }
-
-    .status-waiting {
-        color: #526174;
-        background: #eef2f7;
-    }
-
-    .status-approved {
-        color: #15803d;
-        background: #dcfce7;
-    }
-
-    .status-revision {
-        color: #a16207;
-        background: #fef3c7;
-    }
-
-    .status-rejected {
-        color: #b91c1c;
-        background: #fee2e2;
-    }
-
-    .btn {
-        display: inline-flex;
-        justify-content: center;
-        align-items: center;
-        gap: 6px;
-        padding: 9px 13px;
-        border: 1px solid transparent;
-        border-radius: 8px;
-        font-size: 12px;
-        font-weight: 700;
-        cursor: pointer;
-        text-decoration: none;
-        transition: .2s ease;
-        white-space: nowrap;
-    }
-
-    .btn:hover {
-        filter: brightness(.96);
-        transform: translateY(-1px);
-    }
-
-    .btn-blue {
-        color: #fff;
-        background: #2563eb;
-        border-color: #2563eb;
-    }
-
-    .btn-acc {
-        color: #fff;
-        background: #16a34a;
-        border-color: #16a34a;
-    }
-
-    .btn-revisi {
-        color: #854d0e;
-        background: #facc15;
-        border-color: #facc15;
-    }
-
-    .btn-tolak {
-        color: #fff;
-        background: #dc2626;
-        border-color: #dc2626;
-    }
-
-    .btn-gray {
-        color: #475569;
-        background: #eef2f7;
-        border-color: #e2e8f0;
-    }
-
-    .action-buttons {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 7px;
-    }
-
-    .empty-row {
-        padding: 30px !important;
-        text-align: center;
-        color: #94a3b8 !important;
-    }
-
-    .activity-card {
-        margin-top: 24px;
-        padding: 20px;
-        background: #fff;
-        border: 1px solid #e5eaf2;
-        border-radius: 14px;
-    }
-
-    .activity-card h2 {
-        margin: 0 0 15px;
-        font-size: 17px;
-    }
-
-    .activity-item {
-        padding: 12px 0;
-        border-top: 1px solid #edf0f5;
-        font-size: 12px;
-        line-height: 1.6;
-        color: #526174;
-    }
-
-    .activity-item:first-of-type {
-        border-top: 0;
-    }
-
-    .activity-time {
-        display: block;
-        margin-top: 4px;
-        color: #94a3b8;
-        font-size: 11px;
-    }
-
-    /* Modal */
-    .modal-overlay {
-        display: none;
-        position: fixed;
-        inset: 0;
-        z-index: 9999;
-        align-items: center;
-        justify-content: center;
-        padding: 18px;
-        background: rgba(15, 23, 42, .55);
-    }
-
-    .modal-overlay.show {
-        display: flex;
-    }
-
-    .modal-box {
-        width: 100%;
-        max-width: 650px;
-        max-height: 90vh;
-        overflow-y: auto;
-        padding: 25px;
-        background: #fff;
-        border-radius: 16px;
-        box-shadow: 0 20px 60px rgba(15, 23, 42, .2);
-    }
-
-    .modal-header {
-        display: flex;
-        align-items: flex-start;
-        justify-content: space-between;
-        gap: 15px;
-        margin-bottom: 20px;
-    }
-
-    .modal-header h2 {
-        margin: 0 0 7px;
-        font-size: 21px;
-    }
-
-    .modal-header p {
-        margin: 0;
-        color: #718096;
-        font-size: 12px;
-        line-height: 1.6;
-    }
-
-    .modal-close {
-        width: 35px;
-        height: 35px;
-        border: 0;
-        border-radius: 9px;
-        background: #eef2f7;
-        color: #475569;
-        font-size: 20px;
-        cursor: pointer;
-    }
-
-    .detail-grid {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 15px;
-        margin-bottom: 20px;
-    }
-
-    .detail-item {
-        padding: 13px;
-        border: 1px solid #e8edf5;
-        border-radius: 10px;
-        background: #fafcff;
-    }
-
-    .detail-item.full {
-        grid-column: 1 / -1;
-    }
-
-    .detail-label {
-        margin-bottom: 7px;
-        color: #8290a5;
-        font-size: 11px;
-    }
-
-    .detail-value {
-        color: #172b4d;
-        font-size: 13px;
-        line-height: 1.6;
+    .title-cell {
+        min-width: 240px;
+        max-width: 330px;
         overflow-wrap: anywhere;
     }
 
-    .form-group {
-        margin-top: 17px;
+    .status {
+        display: inline-block;
+        padding: 6px 10px;
+        border-radius: 20px;
+        font-size: 10px;
+        white-space: nowrap;
     }
 
-    .form-group label {
-        display: block;
-        margin-bottom: 8px;
-        color: #344563;
-        font-size: 12px;
+    .status.pending { color: #49658f; background: #eaf1fc; }
+    .status.approved { color: #087c4b; background: #d7f8e9; }
+    .status.revision { color: #925900; background: #fff0c8; }
+    .status.rejected { color: #b42345; background: #ffe0e5; }
+    .status.closed { color: #515b70; background: #e8e9ee; }
+
+    .btn-action {
+        padding: 8px 11px;
+        margin: 2px 1px;
+        border: 0;
+        border-radius: 6px;
+        background: #2865ef;
+        color: #fff;
+        font-size: 11px;
         font-weight: 700;
+        white-space: nowrap;
     }
 
-    .form-control {
-        display: block;
-        width: 100%;
-        padding: 11px 12px;
-        border: 1px solid #d7dfeb;
-        border-radius: 9px;
-        outline: none;
-        color: #172b4d;
-        background: #fff;
+    .btn-action:hover {
+        background: #1e54d0;
+        color: #fff;
+    }
+
+    .table-info {
+        margin-top: 12px;
+        color: #6682ad;
+        font-size: 12px;
+    }
+
+    .verification-page .modal-content {
+        border: 1px solid #e1eafa;
+        border-radius: 13px;
+        color: #153c78;
         font-size: 13px;
     }
 
-    textarea.form-control {
-        min-height: 90px;
-        resize: vertical;
+    .verification-page .modal-header,
+    .verification-page .modal-footer {
+        border-color: #e1eafa;
     }
 
-    .modal-actions {
-        display: flex;
-        justify-content: flex-end;
-        flex-wrap: wrap;
-        gap: 9px;
-        margin-top: 22px;
-        padding-top: 17px;
-        border-top: 1px solid #edf0f5;
+    .verification-page .modal-title {
+        font-size: 17px;
+        font-weight: 700;
     }
 
-    .modal-message {
-        display: none;
-        margin-top: 14px;
-        padding: 11px 13px;
-        border-radius: 8px;
-        background: #fee2e2;
-        color: #b91c1c;
-        font-size: 12px;
+    .detail-table {
+        width: 100%;
     }
 
-    .modal-message.show {
-        display: block;
+    .detail-table td {
+        padding: 10px 5px;
+        vertical-align: top;
+        overflow-wrap: anywhere;
     }
 
-    @media (max-width: 900px) {
-        .summary-grid {
-            grid-template-columns: repeat(2, minmax(0, 1fr));
-        }
+    .detail-label {
+        width: 170px;
+        color: #6682ad;
+        font-weight: 500;
     }
 
-    @media (max-width: 600px) {
-        .summary-grid {
-            grid-template-columns: 1fr 1fr;
-            gap: 10px;
-        }
+    .detail-box {
+        padding: 16px;
+        border: 1px solid #e1eafa;
+        border-radius: 9px;
+        line-height: 1.7;
+        overflow-wrap: anywhere;
+    }
 
-        .summary-card {
-            padding: 14px;
-        }
+    .note-preview {
+        padding: 15px;
+        background: #f4f7fd;
+        border: 1px solid #e1eafa;
+        border-radius: 9px;
+    }
 
-        .summary-number {
-            font-size: 23px;
-        }
+    @media (max-width: 1200px) {
+        .stats-grid { grid-template-columns: repeat(2, 1fr); }
+    }
 
-        .page-heading h1 {
-            font-size: 21px;
-        }
+    @media (max-width: 768px) {
+        .filter-grid { grid-template-columns: repeat(2, 1fr); }
+        .page-title { font-size: 24px; }
+    }
 
-        .search-input {
-            width: 100%;
-        }
+    @media (max-width: 480px) {
+        .stats-grid,
+        .filter-grid { grid-template-columns: 1fr; }
 
-        .filter-bar {
-            align-items: stretch;
-        }
-
-        .filter-bar > div {
-            width: 100%;
-        }
-
-        .detail-grid {
-            grid-template-columns: 1fr;
-        }
-
-        .detail-item.full {
-            grid-column: auto;
-        }
-
-        .modal-box {
-            padding: 19px;
-        }
+        .verification-panel { padding: 13px; }
+        .stat-card { min-height: 95px; padding: 16px; }
+        .detail-label { width: 115px; }
     }
 </style>
 
 <div class="verification-page">
 
     <div class="page-heading">
-        <div class="heading-icon">✓</div>
-        <div>
-            <h1>Verifikasi Judul</h1>
-            <p>Periksa pengajuan judul mahasiswa dan berikan keputusan sesuai hasil verifikasi.</p>
+        <h1 class="page-title">Verifikasi Judul</h1>
+        <p class="page-subtitle">
+            Kelola pengajuan judul mahasiswa dan periksa kelengkapan
+            informasi pengajuan sebelum memberikan keputusan.
+        </p>
+    </div>
+
+    <!-- STATISTIK -->
+    <div class="stats-grid">
+        <div class="stat-card blue">
+            <span class="stat-label">Total Pengajuan</span>
+            <div class="stat-number" id="total">0</div>
+        </div>
+
+        <div class="stat-card yellow">
+            <span class="stat-label">Menunggu Validasi</span>
+            <div class="stat-number" id="pendingCount">0</div>
+        </div>
+
+        <div class="stat-card green">
+            <span class="stat-label">Disetujui (ACC)</span>
+            <div class="stat-number" id="approvedCount">0</div>
+        </div>
+
+        <div class="stat-card pink">
+            <span class="stat-label">Perlu Revisi</span>
+            <div class="stat-number" id="revisionCount">0</div>
         </div>
     </div>
 
-    <div class="summary-grid">
-        <div class="summary-card">
-            <div class="summary-label">Total Pengajuan</div>
-            <div class="summary-number" id="totalCount">0</div>
-        </div>
-
-        <div class="summary-card">
-            <div class="summary-label">Menunggu Validasi</div>
-            <div class="summary-number" id="waitingCount">0</div>
-        </div>
-
-        <div class="summary-card">
-            <div class="summary-label">Disetujui (ACC)</div>
-            <div class="summary-number" id="approvedCount">0</div>
-        </div>
-
-        <div class="summary-card">
-            <div class="summary-label">Perlu Revisi</div>
-            <div class="summary-number" id="revisionCount">0</div>
-        </div>
-    </div>
-
-    <div class="filter-bar">
-        <div>
-            <h2>Daftar Pengajuan Mahasiswa</h2>
-            <p>Pilih Periksa untuk memproses pengajuan atau Lihat untuk melihat detailnya.</p>
-        </div>
-
-        <div>
+    <!-- FILTER -->
+    <div class="verification-panel">
+        <div class="filter-grid">
             <input
                 type="text"
-                id="searchStudent"
-                class="search-input"
+                id="searchInput"
+                class="form-control"
                 placeholder="Cari nama, NIM, atau judul..."
             >
+
+            <select id="statusFilter" class="form-select">
+                <option value="">Semua Status</option>
+                <option value="Menunggu Verifikasi">Menunggu Verifikasi</option>
+                <option value="Menunggu Validasi">Menunggu Validasi</option>
+                <option value="Disetujui (ACC)">Disetujui (ACC)</option>
+                <option value="Revisi">Revisi</option>
+                <option value="Ditolak">Ditolak</option>
+                <option value="Ditutup">Ditutup</option>
+            </select>
+
+            <select id="yearFilter" class="form-select">
+                <option value="">Semua Tahun</option>
+            </select>
         </div>
     </div>
 
-    <div class="table-card">
-        <div class="table-responsive">
-            <table>
+    <!-- TABEL -->
+    <div class="verification-panel">
+        <h2 class="panel-heading">Daftar Pengajuan Judul</h2>
+
+        <div class="table-wrap">
+            <table class="proposal-table">
                 <thead>
                     <tr>
                         <th>No.</th>
                         <th>Mahasiswa</th>
-                        <th>Judul Proposal</th>
-                        <th>Topik</th>
+                        <th>NIM</th>
+                        <th>Judul Tugas Akhir</th>
+                        <th>Topik Utama</th>
+                        <th>Integrasi Sistem</th>
                         <th>Status</th>
+                        <th>Tanggal Pengajuan</th>
                         <th>Aksi</th>
                     </tr>
                 </thead>
 
-                <tbody id="studentRows">
+                <tbody id="proposalTable">
                     <tr>
-                        <td colspan="6" class="empty-row">Memuat data pengajuan...</td>
+                        <td colspan="9" class="text-center">
+                            Memuat data...
+                        </td>
                     </tr>
                 </tbody>
             </table>
         </div>
-    </div>
 
-    <div class="activity-card">
-        <h2>Aktivitas Verifikasi Terbaru</h2>
-        <div id="activityList">
-            <div class="activity-item">Belum ada aktivitas verifikasi.</div>
-        </div>
+        <div class="table-info" id="tableInfo"></div>
     </div>
-
 </div>
 
-<!-- Modal Detail dan Keputusan -->
-<div class="modal-overlay" id="studentModal">
-    <div class="modal-box">
-        <div class="modal-header">
-            <div>
-                <h2 id="modalTitle">Detail Pengajuan</h2>
-                <p>Periksa informasi mahasiswa sebelum memberikan keputusan.</p>
+<!-- MODAL DETAIL -->
+<div class="modal fade" id="detailModal" tabindex="-1">
+    <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Detail Pengajuan Judul</h5>
+                <button type="button" class="btn-close"
+                    data-bs-dismiss="modal"></button>
             </div>
 
-            <button type="button" class="modal-close" id="closeModal" aria-label="Tutup">
-                &times;
-            </button>
-        </div>
+            <div class="modal-body" id="detailContent"></div>
 
-        <div class="detail-grid">
-            <div class="detail-item">
-                <div class="detail-label">Nama Mahasiswa</div>
-                <div class="detail-value" id="detailNama">-</div>
-            </div>
-
-            <div class="detail-item">
-                <div class="detail-label">NIM</div>
-                <div class="detail-value" id="detailNim">-</div>
-            </div>
-
-            <div class="detail-item">
-                <div class="detail-label">Topik</div>
-                <div class="detail-value" id="detailTopik">-</div>
-            </div>
-
-            <div class="detail-item">
-                <div class="detail-label">Status Saat Ini</div>
-                <div class="detail-value" id="detailStatus">-</div>
-            </div>
-
-            <div class="detail-item full">
-                <div class="detail-label">Judul Proposal</div>
-                <div class="detail-value" id="detailJudul">-</div>
-            </div>
-
-            <div class="detail-item full">
-                <div class="detail-label">Deskripsi</div>
-                <div class="detail-value" id="detailDeskripsi">-</div>
-            </div>
-
-            <div class="detail-item full">
-                <div class="detail-label">Catatan Sebelumnya</div>
-                <div class="detail-value" id="detailCatatan">Belum ada catatan.</div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary"
+                    data-bs-dismiss="modal">Tutup</button>
             </div>
         </div>
+    </div>
+</div>
 
-        <div class="form-group" id="noteGroup">
-            <label for="decisionNote">Catatan Dosen</label>
-            <textarea
-                id="decisionNote"
-                class="form-control"
-                placeholder="Masukkan catatan atau alasan keputusan..."
-            ></textarea>
+<!-- MODAL KEPUTUSAN -->
+<div class="modal fade" id="decisionModal" tabindex="-1">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <form id="decisionForm">
+                <div class="modal-header">
+                    <h5 class="modal-title">Periksa Pengajuan Judul</h5>
+                    <button type="button" class="btn-close"
+                        data-bs-dismiss="modal"></button>
+                </div>
+
+                <div class="modal-body">
+                    <input type="hidden" id="decisionId">
+
+                    <div class="detail-box mb-3" id="decisionSummary"></div>
+
+                    <div class="mb-3">
+                        <label for="decisionStatus" class="form-label fw-bold">
+                            Keputusan Verifikasi
+                        </label>
+
+                        <select id="decisionStatus" class="form-select" required>
+                            <option value="Disetujui (ACC)">Disetujui (ACC)</option>
+                            <option value="Revisi">Perlu Revisi</option>
+                            <option value="Ditolak">Ditolak</option>
+                        </select>
+                    </div>
+
+                    <div class="note-preview">
+                        <strong>Catatan Dosen</strong>
+
+                        <p class="mt-2 mb-2" id="noteStatusText">
+                            Belum ada catatan.
+                        </p>
+
+                        <button type="button"
+                            class="btn btn-outline-primary btn-sm"
+                            onclick="openNoteModal()">
+                            + Tambah Catatan
+                        </button>
+                    </div>
+
+                    <textarea id="decisionNote" hidden></textarea>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary"
+                        data-bs-dismiss="modal">Batal</button>
+
+                    <button type="submit" class="btn btn-primary">
+                        Simpan Keputusan
+                    </button>
+                </div>
+            </form>
         </div>
+    </div>
+</div>
 
-        <div class="modal-message" id="modalMessage"></div>
+<!-- MODAL CATATAN -->
+<div class="modal fade" id="noteModal" tabindex="-1">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Tambah Catatan Dosen</h5>
+                <button type="button" class="btn-close"
+                    onclick="cancelNoteModal()"></button>
+            </div>
 
-        <div class="modal-actions" id="decisionActions">
-            <button type="button" class="btn btn-gray" id="cancelModal">Batal</button>
-            <button type="button" class="btn btn-tolak" data-decision="tolak">Tolak</button>
-            <button type="button" class="btn btn-revisi" data-decision="revisi">Revisi</button>
-            <button type="button" class="btn btn-acc" data-decision="acc">ACC</button>
-        </div>
+            <div class="modal-body">
+                <label for="noteDraft" class="form-label fw-bold">
+                    Isi Catatan
+                </label>
 
-        <div class="modal-actions" id="viewActions" style="display:none;">
-            <button type="button" class="btn btn-gray" id="closeView">Tutup</button>
+                <textarea
+                    id="noteDraft"
+                    class="form-control"
+                    rows="5"
+                    maxlength="500"
+                    placeholder="Tuliskan alasan keputusan atau bagian yang perlu diperbaiki..."
+                ></textarea>
+
+                <div class="d-flex justify-content-between mt-2">
+                    <small id="noteRequirement">
+                        Catatan boleh kosong jika ACC.
+                    </small>
+                    <small><span id="noteCharCount">0</span>/500</small>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary"
+                    onclick="cancelNoteModal()">Batal</button>
+
+                <button type="button" class="btn btn-primary"
+                    onclick="saveNoteDraft()">Simpan Catatan</button>
+            </div>
         </div>
     </div>
 </div>
 
 <script>
-(function () {
-    const storageKey = 'sipeta_verifikasi_status_v4';
-    const activityKey = 'sipeta_verifikasi_activities_v4';
+    /*
+    |--------------------------------------------------------------------------
+    | DATA DARI LARAVEL
+    |--------------------------------------------------------------------------
+    */
 
-    const initialStudents = [
-        {
-            id: 1,
-            nama: 'Aditya Pratama',
-            nim: '2301301001',
-            topik: 'Sistem Informasi',
-            integrasi: 'Web',
-            judul: 'Sistem Informasi Pengelolaan Data Akademik Berbasis Web',
-            deskripsi: 'Pengembangan sistem informasi untuk membantu pengelolaan dan pencarian data akademik.',
-            status: 'Menunggu Validasi Judul',
-            catatan: ''
-        },
-        {
-            id: 2,
-            nama: 'Citra Lestari',
-            nim: '2301301002',
-            topik: 'UI/UX',
-            integrasi: 'Mobile',
-            judul: 'Perancangan UI/UX Aplikasi Layanan Informasi Mahasiswa',
-            deskripsi: 'Perancangan antarmuka aplikasi dengan fokus pada kemudahan penggunaan.',
-            status: 'Disetujui Dospem · Proses Gugus TA',
-            catatan: ''
-        },
-        {
-            id: 3,
-            nama: 'Budi Santoso',
-            nim: '2301301003',
-            topik: 'Basis Data',
-            integrasi: 'Web',
-            judul: 'Sistem Pengelolaan Data Inventaris Berbasis Web',
-            deskripsi: 'Sistem untuk mencatat, mengelola, dan memantau data inventaris.',
-            status: 'Menunggu Validasi Judul',
-            catatan: ''
-        },
-        {
-            id: 4,
-            nama: 'Dewi Anggraini',
-            nim: '2301301004',
-            topik: 'Sistem Informasi',
-            integrasi: 'Web',
-            judul: 'Sistem Informasi Pengajuan dan Pengelolaan Surat',
-            deskripsi: 'Aplikasi untuk mempermudah pengajuan serta pengelolaan surat.',
-            status: 'Disetujui Dospem · Proses Gugus TA',
-            catatan: ''
-        },
-        {
-            id: 5,
-            nama: 'Eko Prasetyo',
-            nim: '2301301005',
-            topik: 'Aplikasi Web',
-            integrasi: 'Web',
-            judul: 'Pengembangan Aplikasi Monitoring Kegiatan Mahasiswa',
-            deskripsi: 'Aplikasi untuk membantu pencatatan dan pemantauan kegiatan mahasiswa.',
-            status: 'ACC Final',
-            catatan: 'Judul telah disetujui.'
-        },
-        {
-            id: 6,
-            nama: 'Fitri Handayani',
-            nim: '2301301006',
-            topik: 'UI/UX',
-            integrasi: 'Mobile',
-            judul: 'Perancangan Aplikasi Pengingat Jadwal Kegiatan',
-            deskripsi: 'Perancangan aplikasi pengingat kegiatan dengan antarmuka yang sederhana.',
-            status: 'Revisi (di mahasiswa)',
-            catatan: 'Mohon perjelas fitur utama dan ruang lingkup aplikasi.'
-        }
+    let proposals = @json($proposalData);
+
+    const pendingStatuses = [
+        'Menunggu Validasi',
+        'Menunggu Verifikasi',
+        'Pending'
     ];
 
-    let students = [];
-    let activities = [];
-    let activeStudentId = null;
-    let modalMode = 'view';
+    function escapeHTML(value) {
+        return String(value ?? '-').replace(/[&<>"']/g, char => ({
+            '&': '&amp;',
+            '<': '&lt;',
+            '>': '&gt;',
+            '"': '&quot;',
+            "'": '&#039;'
+        })[char]);
+    }
 
-    const modal = document.getElementById('studentModal');
-    const noteInput = document.getElementById('decisionNote');
-    const modalMessage = document.getElementById('modalMessage');
+    function getModal(id) {
+        return bootstrap.Modal.getOrCreateInstance(
+            document.getElementById(id)
+        );
+    }
 
-    function escapeHtml(value) {
-        return String(value ?? '').replace(/[&<>"']/g, function (char) {
-            return {
-                '&': '&amp;',
-                '<': '&lt;',
-                '>': '&gt;',
-                '"': '&quot;',
-                "'": '&#039;'
-            }[char];
+    function isPending(status) {
+        return pendingStatuses.includes(status);
+    }
+
+    function statusClass(status) {
+        if (isPending(status)) return 'pending';
+        if (status === 'Disetujui (ACC)') return 'approved';
+        if (status === 'Revisi') return 'revision';
+        if (status === 'Ditolak') return 'rejected';
+        if (status === 'Ditutup') return 'closed';
+        return 'pending';
+    }
+
+    function formatDate(date) {
+        if (!date) return '-';
+
+        const parsed = new Date(date + 'T00:00:00');
+
+        if (isNaN(parsed.getTime())) return '-';
+
+        return parsed.toLocaleDateString('id-ID', {
+            day: '2-digit',
+            month: 'long',
+            year: 'numeric'
         });
     }
 
-    function normalizeStatus(status) {
-        const value = String(status || '').toLowerCase();
+    function updateStatistics() {
+        document.getElementById('total').textContent = proposals.length;
 
-        if (value.includes('tolak') || value.includes('ditolak')) {
-            return {
-                label: 'Ditolak',
-                className: 'status-rejected'
-            };
-        }
+        document.getElementById('pendingCount').textContent =
+            proposals.filter(p => isPending(p.status)).length;
 
-        if (value.includes('revisi')) {
-            return {
-                label: 'Revisi',
-                className: 'status-revision'
-            };
-        }
+        document.getElementById('approvedCount').textContent =
+            proposals.filter(p => p.status === 'Disetujui (ACC)').length;
 
-        if (
-            value.includes('disetujui') ||
-            value.includes('acc final') ||
-            value.trim() === 'acc'
-        ) {
-            return {
-                label: 'Disetujui',
-                className: 'status-approved'
-            };
-        }
-
-        return {
-            label: 'Menunggu Validasi',
-            className: 'status-waiting'
-        };
+        document.getElementById('revisionCount').textContent =
+            proposals.filter(p => p.status === 'Revisi').length;
     }
 
-    function isPending(student) {
-        return normalizeStatus(student.status).label === 'Menunggu Validasi';
-    }
-
-    function loadData() {
-        let savedStudents = [];
-        let savedActivities = [];
-
-        try {
-            savedStudents = JSON.parse(localStorage.getItem(storageKey) || '[]');
-            savedActivities = JSON.parse(localStorage.getItem(activityKey) || '[]');
-        } catch (error) {
-            savedStudents = [];
-            savedActivities = [];
-        }
-
-        if (!Array.isArray(savedStudents)) savedStudents = [];
-        if (!Array.isArray(savedActivities)) savedActivities = [];
-
-        // Gabungkan data contoh dengan data yang telah disimpan.
-        const studentMap = new Map();
-
-        initialStudents.forEach(function (student) {
-            studentMap.set(String(student.id), { ...student });
-        });
-
-        savedStudents.forEach(function (student) {
-            if (student && student.id !== undefined && student.id !== null) {
-                const key = String(student.id);
-                const previous = studentMap.get(key) || {};
-                studentMap.set(key, { ...previous, ...student });
-            }
-        });
-
-        students = Array.from(studentMap.values());
-        activities = savedActivities;
-    }
-
-    function saveData() {
-        try {
-            localStorage.setItem(storageKey, JSON.stringify(students));
-            localStorage.setItem(activityKey, JSON.stringify(activities));
-
-            // Memberi tahu halaman lain yang memakai penyimpanan ini.
-            window.dispatchEvent(new CustomEvent('sipeta-data-updated'));
-
-            return true;
-        } catch (error) {
-            showMessage('Data gagal disimpan di browser. Periksa pengaturan penyimpanan browser.');
-            return false;
-        }
-    }
-
-    function showMessage(message) {
-        modalMessage.textContent = message;
-        modalMessage.classList.add('show');
-    }
-
-    function hideMessage() {
-        modalMessage.textContent = '';
-        modalMessage.classList.remove('show');
-    }
-
-    function renderSummary() {
-        let waiting = 0;
-        let approved = 0;
-        let revision = 0;
-
-        students.forEach(function (student) {
-            const label = normalizeStatus(student.status).label;
-
-            if (label === 'Menunggu Validasi') waiting++;
-            if (label === 'Disetujui') approved++;
-            if (label === 'Revisi') revision++;
-        });
-
-        document.getElementById('totalCount').textContent = students.length;
-        document.getElementById('waitingCount').textContent = waiting;
-        document.getElementById('approvedCount').textContent = approved;
-        document.getElementById('revisionCount').textContent = revision;
-    }
+    /*
+    |--------------------------------------------------------------------------
+    | TABEL PENGAJUAN
+    |--------------------------------------------------------------------------
+    */
 
     function renderTable() {
-        const tbody = document.getElementById('studentRows');
-        const search = document.getElementById('searchStudent').value
-            .trim()
-            .toLowerCase();
+        const search = document.getElementById('searchInput')
+            .value.toLowerCase().trim();
 
-        const filteredStudents = students.filter(function (student) {
-            const searchable = [
-                student.nama,
-                student.nim,
-                student.judul,
-                student.topik
-            ].join(' ').toLowerCase();
+        const selectedStatus =
+            document.getElementById('statusFilter').value;
 
-            return searchable.includes(search);
+        const selectedYear =
+            document.getElementById('yearFilter').value;
+
+        const filtered = proposals.filter(p => {
+            const matchesSearch = [
+                p.name,
+                p.nim,
+                p.title,
+                p.topic,
+                p.integration
+            ].some(value =>
+                String(value ?? '').toLowerCase().includes(search)
+            );
+
+            const matchesStatus =
+                !selectedStatus || p.status === selectedStatus;
+
+            const matchesYear =
+                !selectedYear || (p.date || '').startsWith(selectedYear);
+
+            return matchesSearch && matchesStatus && matchesYear;
         });
 
-        if (!filteredStudents.length) {
+        const tbody = document.getElementById('proposalTable');
+
+        if (filtered.length === 0) {
             tbody.innerHTML = `
                 <tr>
-                    <td colspan="6" class="empty-row">
-                        Tidak ada pengajuan yang sesuai dengan pencarian.
+                    <td colspan="9" class="text-center py-4">
+                        Tidak ada data pengajuan.
                     </td>
                 </tr>
             `;
-            renderSummary();
-            return;
-        }
-
-        tbody.innerHTML = filteredStudents.map(function (student) {
-            const status = normalizeStatus(student.status);
-            const actionButton = isPending(student)
-                ? `<button type="button" class="btn btn-blue" data-action="periksa" data-id="${escapeHtml(student.id)}">Periksa</button>`
-                : `<button type="button" class="btn btn-gray" data-action="lihat" data-id="${escapeHtml(student.id)}">Lihat</button>`;
-
-            return `
+        } else {
+            tbody.innerHTML = filtered.map((p, index) => `
                 <tr>
-                    <td>${students.indexOf(student) + 1}</td>
+                    <td>${index + 1}</td>
+                    <td>${escapeHTML(p.name)}</td>
+                    <td>${escapeHTML(p.nim)}</td>
+                    <td class="title-cell">${escapeHTML(p.title)}</td>
+                    <td>${escapeHTML(p.topic)}</td>
+                    <td class="title-cell">${escapeHTML(p.integration)}</td>
                     <td>
-                        <div class="student-name">${escapeHtml(student.nama)}</div>
-                        <div class="student-nim">${escapeHtml(student.nim)}</div>
-                    </td>
-                    <td>${escapeHtml(student.judul)}</td>
-                    <td>${escapeHtml(student.topik || '-')}</td>
-                    <td>
-                        <span class="status-badge ${status.className}">
-                            ${status.label}
+                        <span class="status ${statusClass(p.status)}">
+                            ${escapeHTML(p.status)}
                         </span>
                     </td>
-                    <td>${actionButton}</td>
+                    <td>${formatDate(p.date)}</td>
+                    <td>
+                        ${isPending(p.status) ? `
+                            <button class="btn-action"
+                                onclick="openDecision(${Number(p.id)})">
+                                Periksa
+                            </button>
+                        ` : `
+                            <button class="btn-action"
+                                onclick="showDetail(${Number(p.id)})">
+                                Lihat
+                            </button>
+                        `}
+                    </td>
                 </tr>
-            `;
-        }).join('');
-
-        renderSummary();
-    }
-
-    function renderActivities() {
-        const container = document.getElementById('activityList');
-
-        if (!activities.length) {
-            container.innerHTML = `
-                <div class="activity-item">Belum ada aktivitas verifikasi.</div>
-            `;
-            return;
+            `).join('');
         }
 
-        container.innerHTML = activities.slice(0, 6).map(function (activity) {
-            return `
-                <div class="activity-item">
-                    ${escapeHtml(activity.message)}
-                    <span class="activity-time">${escapeHtml(activity.time)}</span>
-                </div>
-            `;
-        }).join('');
+        document.getElementById('tableInfo').textContent =
+            `Menampilkan ${filtered.length} dari ${proposals.length} pengajuan`;
+
+        updateStatistics();
     }
 
-    function addActivity(message) {
-        activities.unshift({
-            message: message,
-            time: new Date().toLocaleString('id-ID')
+    /*
+    |--------------------------------------------------------------------------
+    | DETAIL LENGKAP SESUAI FORMULIR PENGAJUAN JUDUL
+    |--------------------------------------------------------------------------
+    */
+
+    function showDetail(id) {
+        const p = proposals.find(item => Number(item.id) === Number(id));
+
+        if (!p) return;
+
+        document.getElementById('detailContent').innerHTML = `
+            <table class="detail-table">
+                <tr>
+                    <td class="detail-label">Nama Mahasiswa</td>
+                    <td>${escapeHTML(p.name)}</td>
+                </tr>
+                <tr>
+                    <td class="detail-label">NIM</td>
+                    <td>${escapeHTML(p.nim)}</td>
+                </tr>
+                <tr>
+                    <td class="detail-label">Topik Utama</td>
+                    <td>${escapeHTML(p.topic)}</td>
+                </tr>
+                <tr>
+                    <td class="detail-label">Judul Tugas Akhir</td>
+                    <td><strong>${escapeHTML(p.title)}</strong></td>
+                </tr>
+                <tr>
+                    <td class="detail-label">Jenis Kasus</td>
+                    <td>${escapeHTML(p.case)}</td>
+                </tr>
+                <tr>
+                    <td class="detail-label">Genre Game</td>
+                    <td>${escapeHTML(p.genre)}</td>
+                </tr>
+                <tr>
+                    <td class="detail-label">Tools Game</td>
+                    <td>${escapeHTML(p.tools)}</td>
+                </tr>
+                <tr>
+                    <td class="detail-label">Integrasi Sistem</td>
+                    <td>${escapeHTML(p.integration)}</td>
+                </tr>
+                <tr>
+                    <td class="detail-label">Deskripsi Judul</td>
+                    <td>
+                        <div class="detail-box">
+                            ${escapeHTML(p.description)}
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="detail-label">Status</td>
+                    <td>
+                        <span class="status ${statusClass(p.status)}">
+                            ${escapeHTML(p.status)}
+                        </span>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="detail-label">Tanggal Pengajuan</td>
+                    <td>${formatDate(p.date)}</td>
+                </tr>
+                <tr>
+                    <td class="detail-label">Catatan Dosen</td>
+                    <td>${escapeHTML(p.note || 'Belum ada catatan.')}</td>
+                </tr>
+            </table>
+        `;
+
+        getModal('detailModal').show();
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | MODAL KEPUTUSAN
+    |--------------------------------------------------------------------------
+    */
+
+    function openDecision(id) {
+        const p = proposals.find(item => Number(item.id) === Number(id));
+
+        if (!p || !isPending(p.status)) return;
+
+        document.getElementById('decisionId').value = p.id;
+        document.getElementById('decisionStatus').value = 'Disetujui (ACC)';
+        document.getElementById('decisionNote').value = '';
+        document.getElementById('noteDraft').value = '';
+        document.getElementById('noteCharCount').textContent = '0';
+
+        document.getElementById('decisionSummary').innerHTML = `
+            <strong>${escapeHTML(p.name)}</strong>
+            <span class="text-secondary">(${escapeHTML(p.nim)})</span>
+
+            <div class="mt-2">
+                <strong>Judul:</strong> ${escapeHTML(p.title)}
+            </div>
+
+            <div class="mt-2">
+                <strong>Topik:</strong> ${escapeHTML(p.topic)}
+            </div>
+
+            <div class="mt-2">
+                <strong>Integrasi Sistem:</strong>
+                ${escapeHTML(p.integration)}
+            </div>
+        `;
+
+        updateNoteInformation();
+        getModal('decisionModal').show();
+    }
+
+    function updateNoteInformation() {
+        const status = document.getElementById('decisionStatus').value;
+        const note = document.getElementById('decisionNote').value.trim();
+
+        document.getElementById('noteStatusText').textContent =
+            note ? 'Catatan sudah ditambahkan.' : 'Belum ada catatan.';
+
+        document.getElementById('noteRequirement').textContent =
+            status === 'Disetujui (ACC)'
+                ? 'Catatan boleh dikosongkan jika ACC.'
+                : 'Catatan wajib diisi untuk keputusan Revisi atau Ditolak.';
+    }
+
+    function openNoteModal() {
+        const currentNote =
+            document.getElementById('decisionNote').value;
+
+        document.getElementById('noteDraft').value = currentNote;
+        document.getElementById('noteCharCount').textContent =
+            currentNote.length;
+
+        getModal('decisionModal').hide();
+
+        document.getElementById('decisionModal')
+            .addEventListener('hidden.bs.modal', function () {
+                getModal('noteModal').show();
+            }, { once: true });
+    }
+
+    function saveNoteDraft() {
+        const note = document.getElementById('noteDraft').value.trim();
+
+        document.getElementById('decisionNote').value = note;
+
+        updateNoteInformation();
+        getModal('noteModal').hide();
+
+        document.getElementById('noteModal')
+            .addEventListener('hidden.bs.modal', function () {
+                getModal('decisionModal').show();
+            }, { once: true });
+    }
+
+    function cancelNoteModal() {
+        getModal('noteModal').hide();
+
+        document.getElementById('noteModal')
+            .addEventListener('hidden.bs.modal', function () {
+                getModal('decisionModal').show();
+            }, { once: true });
+    }
+
+    document.getElementById('noteDraft')
+        .addEventListener('input', function () {
+            document.getElementById('noteCharCount').textContent =
+                this.value.length;
         });
 
-        activities = activities.slice(0, 20);
-    }
+    document.getElementById('decisionStatus')
+        .addEventListener('change', updateNoteInformation);
 
-    function findStudent(id) {
-        return students.find(function (student) {
-            return String(student.id) === String(id);
-        });
-    }
+    /*
+    |--------------------------------------------------------------------------
+    | SIMPAN KEPUTUSAN SEMENTARA DI TAMPILAN
+    |--------------------------------------------------------------------------
+    | Bagian ini belum menyimpan perubahan ke database.
+    | Integrasi penyimpanan memerlukan route dan controller Laravel.
+    */
 
-    function openModal(id, mode) {
-        const student = findStudent(id);
-        if (!student) return;
+    document.getElementById('decisionForm')
+        .addEventListener('submit', function (event) {
+            event.preventDefault();
 
-        activeStudentId = student.id;
-        modalMode = mode;
+            const id = Number(
+                document.getElementById('decisionId').value
+            );
 
-        hideMessage();
+            const p = proposals.find(item => Number(item.id) === id);
 
-        document.getElementById('modalTitle').textContent =
-            mode === 'review' ? 'Periksa Pengajuan' : 'Detail Pengajuan';
+            const status =
+                document.getElementById('decisionStatus').value;
 
-        document.getElementById('detailNama').textContent = student.nama || '-';
-        document.getElementById('detailNim').textContent = student.nim || '-';
-        document.getElementById('detailTopik').textContent = student.topik || '-';
-        document.getElementById('detailJudul').textContent = student.judul || '-';
-        document.getElementById('detailDeskripsi').textContent =
-            student.deskripsi || 'Tidak ada deskripsi.';
-        document.getElementById('detailCatatan').textContent =
-            student.catatan || 'Belum ada catatan.';
+            const note =
+                document.getElementById('decisionNote').value.trim();
 
-        const status = normalizeStatus(student.status);
-        document.getElementById('detailStatus').innerHTML =
-            `<span class="status-badge ${status.className}">${status.label}</span>`;
+            if (!p || !isPending(p.status)) return;
 
-        const noteGroup = document.getElementById('noteGroup');
-        const decisionActions = document.getElementById('decisionActions');
-        const viewActions = document.getElementById('viewActions');
+            if (
+                (status === 'Revisi' || status === 'Ditolak') &&
+                !note
+            ) {
+                alert('Catatan wajib diisi untuk keputusan Revisi atau Ditolak.');
+                return;
+            }
 
-        if (mode === 'review' && isPending(student)) {
-            noteGroup.style.display = 'block';
-            decisionActions.style.display = 'flex';
-            viewActions.style.display = 'none';
-            noteInput.value = '';
-            noteInput.placeholder = 'Isi catatan jika perlu revisi atau menolak pengajuan...';
-        } else {
-            noteGroup.style.display = 'none';
-            decisionActions.style.display = 'none';
-            viewActions.style.display = 'flex';
-        }
+            p.status = status;
+            p.note = note;
 
-        modal.classList.add('show');
-    }
-
-    function closeModal() {
-        modal.classList.remove('show');
-        activeStudentId = null;
-        hideMessage();
-    }
-
-    function processDecision(decision) {
-        const student = findStudent(activeStudentId);
-        if (!student) return;
-
-        if (!isPending(student)) {
-            showMessage('Pengajuan ini sudah diproses sebelumnya.');
-            return;
-        }
-
-        const note = noteInput.value.trim();
-
-        if ((decision === 'revisi' || decision === 'tolak') && !note) {
-            showMessage('Isi catatan terlebih dahulu untuk keputusan Revisi atau Tolak.');
-            noteInput.focus();
-            return;
-        }
-
-        let activityMessage = '';
-
-        if (decision === 'acc') {
-            student.status = 'Disetujui Dospem · Proses Gugus TA';
-            student.catatan = note || 'Judul disetujui oleh dosen pembimbing.';
-            activityMessage = student.nama + ' — pengajuan Disetujui.';
-        } else if (decision === 'revisi') {
-            student.status = 'Revisi (di mahasiswa)';
-            student.catatan = note;
-            activityMessage = student.nama + ' — pengajuan perlu Revisi.';
-        } else if (decision === 'tolak') {
-            student.status = 'Ditolak Dospem';
-            student.catatan = note;
-            activityMessage = student.nama + ' — pengajuan Ditolak.';
-        } else {
-            return;
-        }
-
-        addActivity(activityMessage);
-
-        if (!saveData()) return;
-
-        renderTable();
-        renderActivities();
-        closeModal();
-    }
-
-    document.getElementById('studentRows').addEventListener('click', function (event) {
-        const button = event.target.closest('button[data-action]');
-        if (!button) return;
-
-        const id = button.dataset.id;
-        const action = button.dataset.action;
-
-        if (action === 'periksa') {
-            openModal(id, 'review');
-        } else if (action === 'lihat') {
-            openModal(id, 'view');
-        }
-    });
-
-    document.getElementById('searchStudent').addEventListener('input', renderTable);
-
-    document.querySelectorAll('[data-decision]').forEach(function (button) {
-        button.addEventListener('click', function () {
-            processDecision(button.dataset.decision);
-        });
-    });
-
-    document.getElementById('closeModal').addEventListener('click', closeModal);
-    document.getElementById('cancelModal').addEventListener('click', closeModal);
-    document.getElementById('closeView').addEventListener('click', closeModal);
-
-    modal.addEventListener('click', function (event) {
-        if (event.target === modal) closeModal();
-    });
-
-    document.addEventListener('keydown', function (event) {
-        if (event.key === 'Escape') closeModal();
-    });
-
-    window.addEventListener('storage', function (event) {
-        if (event.key === storageKey || event.key === activityKey) {
-            loadData();
+            getModal('decisionModal').hide();
             renderTable();
-            renderActivities();
-        }
+
+            alert(
+                'Tampilan berhasil diperbarui. Keputusan belum tersimpan ke database.'
+            );
+        });
+
+    /*
+    |--------------------------------------------------------------------------
+    | FILTER
+    |--------------------------------------------------------------------------
+    */
+
+    document.getElementById('searchInput')
+        .addEventListener('input', renderTable);
+
+    document.getElementById('statusFilter')
+        .addEventListener('change', renderTable);
+
+    document.getElementById('yearFilter')
+        .addEventListener('change', renderTable);
+
+    const years = [
+        ...new Set(
+            proposals
+                .map(p => (p.date || '').substring(0, 4))
+                .filter(Boolean)
+        )
+    ].sort().reverse();
+
+    years.forEach(year => {
+        document.getElementById('yearFilter').add(
+            new Option(year, year)
+        );
     });
-
-    window.addEventListener('sipeta-data-updated', function () {
-        renderTable();
-        renderActivities();
-    });
-
-    loadData();
-
-    // Simpan data contoh hanya jika belum ada data tersimpan.
-    if (localStorage.getItem(storageKey) === null) {
-        saveData();
-    }
 
     renderTable();
-    renderActivities();
-})();
 </script>
+
 @endsection

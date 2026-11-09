@@ -1,644 +1,946 @@
+
 <!DOCTYPE html>
 <html lang="id">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>@yield('title', 'SIPETA')</title>
+    <title>@yield('title', 'SiPETA Politala') - SiPETA</title>
 
     <style>
+        /* RESET */
         * {
             box-sizing: border-box;
-            margin: 0;
-            padding: 0;
         }
 
-        html,
-        body {
-            width: 100%;
+        html, body {
+            margin: 0;
+            padding: 0;
             min-height: 100%;
         }
 
         body {
             font-family: Arial, Helvetica, sans-serif;
             background: #f8fafc;
-            color: #000000;
+            color: #1e293b;
         }
 
         a {
-            color: inherit;
             text-decoration: none;
         }
 
-        button,
-        input,
-        select,
-        textarea {
-            font-family: Arial, Helvetica, sans-serif;
+        button, input, select, textarea {
+            font-family: inherit;
+        }
+
+        /* LAYOUT UTAMA */
+        .dosen-layout {
+            display: flex;
+            min-height: 100vh;
+            width: 100%;
         }
 
         /* SIDEBAR */
-        .sidebar {
-            position: fixed;
-            inset: 0 auto 0 0;
-            width: 280px;
+        .dosen-sidebar {
+            width: 245px;
+            min-width: 245px;
             height: 100vh;
-            background: #07132f;
+            position: sticky;
+            top: 0;
+            background: #0f172a;
             color: #fff;
             display: flex;
             flex-direction: column;
+            justify-content: space-between;
+            flex-shrink: 0;
+            box-shadow: 3px 0 12px rgba(0,0,0,.08);
             z-index: 100;
         }
 
-        /* LOGO SIPETA */
-        .sidebar-brand {
-            height: 72px;
-            min-height: 72px;
-            padding: 0 25px;
+        /* BRAND SIPETA */
+        .dosen-brand {
+            min-height: 100px;
+            padding: 18px 22px;
             display: flex;
             align-items: center;
             gap: 10px;
-            background: #050e25;
-            border-bottom: 1px solid rgba(255, 255, 255, .09);
+            border-bottom: 1px solid rgba(255,255,255,.08);
         }
 
-        .sidebar-brand svg {
-            width: 25px;
-            height: 25px;
+        .dosen-brand-icon {
+            width: 36px;
+            height: 36px;
             flex-shrink: 0;
-            color: #3b82f6;
+            color: #fff;
         }
 
-        .sidebar-brand span {
-            font-size: 21px;
-            font-weight: 700;
-            letter-spacing: .2px;
-        }
-
-        /* MENU SIDEBAR */
-        .menu {
-            padding: 18px 12px;
-        }
-
-        .menu a {
-            display: block;
-            padding: 13px 16px;
-            margin-bottom: 5px;
-            border: 1px solid transparent;
-            border-radius: 10px;
-            color: #e2e8f0;
-            font-size: 15px;
-            font-weight: 600;
-            transition: background .2s, color .2s;
-        }
-
-        .menu a:hover {
-            background: #13275a;
-            color: #60a5fa;
-        }
-
-        .menu a.active {
-            background: #14275b;
-            border-color: #2452a4;
-            color: #60a5fa;
-        }
-
-        .sidebar-footer {
-            margin-top: auto;
-            padding: 17px 10px;
-            text-align: center;
-            color: #7185a9;
-            font-size: 12px;
-            border-top: 1px solid rgba(255, 255, 255, .08);
-        }
-
-        /* AREA UTAMA */
-        .main {
-            margin-left: 280px;
-            min-height: 100vh;
-            min-width: 0;
-        }
-
-        /* NAVBAR ATAS */
-        .top-navbar {
-            position: sticky;
-            top: 0;
-            z-index: 50;
-            width: 100%;
-            height: 72px;
-            padding: 0 28px;
+        .dosen-brand-text {
             display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 20px;
-            background: #fff;
-            border-bottom: 1px solid #e2e8f0;
+            flex-direction: column;
         }
 
-        .top-navbar h1 {
+        .dosen-brand-text h1 {
             margin: 0;
-            font-size: 16px;
-            line-height: 1.4;
-            font-weight: 600;
-            color: #475569;
+            font-size: 20px;
+            line-height: 1.2;
+            font-weight: 800;
+            letter-spacing: .3px;
+            color: #fff;
         }
 
-        .navbar-profile {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            flex-shrink: 0;
-            position: relative;
-        }
-
-        .profile-btn {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            background: none;
-            border: none;
-            cursor: pointer;
-            padding: 4px 8px;
-            border-radius: 8px;
-            transition: background 0.2s;
-        }
-
-        .profile-btn:hover {
-            background: #f1f5f9;
-        }
-
-        .role-label {
-            padding: 8px 12px;
-            border: 1px solid #e2e8f0;
-            border-radius: 7px;
-            background: #f1f5f9;
-            color: #475569;
-            font-size: 12px;
-            font-weight: 600;
+        .dosen-brand-text p {
+            margin: 3px 0 0;
+            font-size: 11px;
+            font-weight: 500;
+            color: #cbd5e1;
             white-space: nowrap;
         }
 
-        .profile-avatar {
-            width: 38px;
-            height: 38px;
+        /* MENU SIDEBAR */
+        .dosen-menu {
+            padding: 14px 11px;
+            flex: 1;
+        }
+
+        .dosen-menu a {
+            display: flex;
+            align-items: center;
+            gap: 11px;
+            padding: 11px 15px;
+            margin-bottom: 5px;
+            border-radius: 12px;
+            color: #cbd5e1;
+            font-size: 13px;
+            font-weight: 700;
+            transition: all .2s ease;
+        }
+
+        .dosen-menu a svg {
+            width: 19px;
+            height: 19px;
+            min-width: 19px;
+            stroke: currentColor;
+        }
+
+        .dosen-menu a:hover {
+            background: rgba(51,65,85,.7);
+            color: #fff;
+        }
+
+        .dosen-menu a.active {
+            background: #2864e8;
+            color: #fff;
+            box-shadow: 0 4px 10px rgba(37,99,235,.15);
+        }
+
+        /* FOOTER SIDEBAR */
+        .dosen-sidebar-footer {
+            padding: 14px 10px;
+            border-top: 1px solid rgba(255,255,255,.08);
+            text-align: center;
+        }
+
+        .dosen-sidebar-footer p {
+            margin: 0;
+            font-size: 10px;
+            font-weight: 600;
+            color: #94a3b8;
+            letter-spacing: .3px;
+        }
+
+        /* AREA KONTEN */
+        .dosen-main {
+            flex: 1;
+            min-width: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* NAVBAR */
+        .dosen-navbar {
+            height: 70px;
+            min-height: 70px;
+            background: #fff;
+            border-bottom: 1px solid #e2e8f0;
+            padding: 0 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 15px;
+            position: sticky;
+            top: 0;
+            z-index: 50;
+        }
+
+        .dosen-navbar-title {
+            font-size: 15px;
+            font-weight: 600;
+            color: #334155;
+        }
+
+        /* PROFIL DOSEN */
+        .dosen-profile {
+            position: relative;
+        }
+
+        .dosen-profile-btn {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 5px;
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            border-radius: 10px;
+        }
+
+        .dosen-profile-btn:hover {
+            background: #f1f5f9;
+        }
+
+        .dosen-role-label {
+            padding: 9px 13px;
+            background: #f1f5f9;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 600;
+            color: #475569;
+        }
+
+        .dosen-avatar {
+            width: 40px;
+            height: 40px;
             display: flex;
             align-items: center;
             justify-content: center;
             border-radius: 50%;
             background: #2864e8;
             color: #fff;
-            font-size: 12px;
-            font-weight: 700;
+            font-size: 13px;
+            font-weight: 800;
         }
 
         /* DROPDOWN PROFIL */
-        .profile-dropdown {
+        .dosen-dropdown {
             position: absolute;
-            top: 100%;
+            top: calc(100% + 10px);
             right: 0;
-            margin-top: 8px;
-            width: 200px;
+            width: 220px;
             background: #fff;
             border: 1px solid #e2e8f0;
             border-radius: 12px;
-            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
-            padding: 6px 0;
+            box-shadow: 0 10px 25px rgba(0,0,0,.12);
+            overflow: hidden;
             z-index: 200;
         }
 
-        .profile-dropdown.hidden {
+        .dosen-dropdown.is-hidden {
             display: none;
         }
 
-        .dropdown-header {
-            padding: 10px 16px;
-            border-bottom: 1px solid #f1f5f9;
+        .dosen-dropdown-header {
+            padding: 13px 16px;
+            border-bottom: 1px solid #e2e8f0;
         }
 
-        .dropdown-header .user-name {
+        .dosen-dropdown-header strong {
+            display: block;
             font-size: 13px;
-            font-weight: 700;
             color: #1e293b;
         }
 
-        .dropdown-header .user-email {
+        .dosen-dropdown-header small {
+            display: block;
+            margin-top: 4px;
             font-size: 11px;
             color: #64748b;
         }
 
-        .dropdown-item {
+        .dosen-dropdown-item {
+            width: 100%;
             display: flex;
             align-items: center;
             gap: 10px;
-            width: 100%;
-            padding: 10px 16px;
-            background: none;
+            padding: 12px 16px;
+            background: #fff;
             border: none;
+            text-align: left;
             font-size: 13px;
             font-weight: 600;
             color: #475569;
-            text-align: left;
             cursor: pointer;
-            transition: background 0.2s, color 0.2s;
         }
 
-        .dropdown-item:hover {
+        .dosen-dropdown-item:hover {
             background: #eff6ff;
             color: #2563eb;
         }
 
-        .dropdown-item.danger {
+        .dosen-dropdown-item.danger {
             color: #dc2626;
         }
 
-        .dropdown-item.danger:hover {
+        .dosen-dropdown-item.danger:hover {
             background: #fef2f2;
-            color: #b91c1c;
+        }
+
+        .dosen-dropdown-item svg {
+            width: 17px;
+            height: 17px;
+            flex-shrink: 0;
+        }
+
+        /* KONTEN HALAMAN */
+        .dosen-content {
+            flex: 1;
+            min-width: 0;
+            padding: 28px;
         }
 
         /* MODAL GANTI ROLE */
-        .role-modal-overlay {
+        .dosen-modal {
             position: fixed;
             inset: 0;
-            background: rgba(15, 23, 42, 0.6);
-            backdrop-filter: blur(4px);
-            z-index: 999;
+            background: rgba(15,23,42,.6);
+            backdrop-filter: blur(3px);
             display: flex;
-            align-items: center;
             justify-content: center;
+            align-items: center;
             padding: 20px;
+            z-index: 9999;
         }
 
-        .role-modal-overlay.hidden {
+        .dosen-modal.is-hidden {
             display: none;
         }
 
-        .role-modal-card {
+        .dosen-modal-overlay {
+            position: absolute;
+            inset: 0;
+        }
+
+        .dosen-modal-card {
+            position: relative;
+            width: 100%;
+            max-width: 400px;
+            padding: 25px;
             background: #fff;
             border-radius: 16px;
-            width: 100%;
-            max-width: 380px;
-            padding: 24px;
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
-            position: relative;
+            box-shadow: 0 20px 40px rgba(0,0,0,.2);
         }
 
-        .role-modal-header {
+        .dosen-modal-header {
             display: flex;
-            align-items: center;
             justify-content: space-between;
-            margin-bottom: 18px;
+            align-items: center;
+            margin-bottom: 20px;
         }
 
-        .role-modal-header h3 {
-            font-size: 16px;
+        .dosen-modal-header h3 {
+            margin: 0;
+            font-size: 17px;
             font-weight: 700;
-            color: #0f172a;
+            color: #1e293b;
         }
 
-        .close-modal-btn {
+        .dosen-modal-close {
             background: none;
             border: none;
+            font-size: 25px;
             color: #94a3b8;
             cursor: pointer;
-            font-size: 20px;
-            line-height: 1;
         }
 
-        .close-modal-btn:hover {
-            color: #f43f5e;
+        .dosen-modal-close:hover {
+            color: #dc2626;
         }
 
-        .role-option-list {
+        .dosen-role-list {
             display: flex;
             flex-direction: column;
-            gap: 10px;
+            gap: 11px;
         }
 
-        .role-option-item {
+        .dosen-role-item {
             display: flex;
-            align-items: center;
             justify-content: space-between;
-            padding: 12px;
-            border-radius: 12px;
+            align-items: center;
+            padding: 13px;
             border: 1px solid #e2e8f0;
-            text-decoration: none;
+            border-radius: 12px;
             color: inherit;
-            transition: all 0.2s;
+            transition: .2s;
         }
 
-        .role-option-item:hover {
-            border-color: #cbd5e1;
+        .dosen-role-item:hover {
             background: #f8fafc;
+            border-color: #93c5fd;
         }
 
-        .role-option-item.active {
-            border: 2px solid #2563eb;
+        .dosen-role-item.current {
             background: #eff6ff;
+            border: 2px solid #2563eb;
         }
 
-        .role-option-left {
+        .dosen-role-info {
             display: flex;
             align-items: center;
             gap: 12px;
         }
 
-        .role-avatar-badge {
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            background: #f1f5f9;
-            color: #64748b;
+        .dosen-role-avatar {
+            width: 38px;
+            height: 38px;
             display: flex;
             align-items: center;
             justify-content: center;
+            border-radius: 50%;
+            background: #e2e8f0;
+            color: #475569;
             font-size: 12px;
             font-weight: 700;
         }
 
-        .role-option-item.active .role-avatar-badge {
+        .dosen-role-item.current .dosen-role-avatar {
             background: #2563eb;
             color: #fff;
         }
 
-        .role-option-title {
+        .dosen-role-name {
             font-size: 13px;
-            font-weight: 600;
+            font-weight: 700;
             color: #334155;
         }
 
-        .role-option-item.active .role-option-title {
-            color: #1e3a8a;
-            font-weight: 700;
-        }
-
-        .role-option-desc {
+        .dosen-role-desc {
+            margin-top: 4px;
             font-size: 10px;
             color: #94a3b8;
         }
 
-        .role-option-item.active .role-option-desc {
-            color: #2563eb;
-            font-weight: 600;
-            text-transform: uppercase;
+        .dosen-role-item.current .dosen-role-name {
+            color: #1e40af;
         }
 
-        /* KONTEN HALAMAN */
-        .content {
-            width: 100%;
-            padding: 28px;
-            margin: 0;
+        .dosen-role-item.current .dosen-role-desc {
+            color: #2563eb;
         }
 
         /* RESPONSIVE */
-        @media (max-width: 1100px) {
-            .sidebar {
-                width: 240px;
+        @media (max-width: 900px) {
+            .dosen-sidebar {
+                width: 230px;
+                min-width: 230px;
             }
 
-            .main {
-                margin-left: 240px;
+            .dosen-brand {
+                padding: 18px;
+                gap: 10px;
             }
 
-            .content {
-                padding: 22px;
+            .dosen-content {
+                padding: 20px;
+            }
+
+            .dosen-navbar {
+                padding: 0 18px;
             }
         }
 
-        @media (max-width: 700px) {
-            .sidebar {
-                position: relative;
+        @media (max-width: 600px) {
+            .dosen-layout {
+                flex-direction: column;
+            }
+
+            .dosen-sidebar {
                 width: 100%;
+                min-width: 100%;
                 height: auto;
                 min-height: auto;
+                position: relative;
             }
 
-            .sidebar-brand {
-                height: 65px;
-                min-height: 65px;
+            .dosen-brand {
+                min-height: 85px;
+                padding: 12px 20px;
             }
 
-            .menu {
+            .dosen-menu {
                 padding: 10px;
             }
 
-            .menu a {
-                padding: 11px 13px;
-            }
-
-            .sidebar-footer {
+            .dosen-sidebar-footer {
                 padding: 12px;
             }
 
-            .main {
-                margin-left: 0;
-                width: 100%;
-            }
-
-            .top-navbar {
+            .dosen-navbar {
                 position: relative;
+                min-height: 65px;
                 height: auto;
-                min-height: 68px;
-                padding: 14px 16px;
-                gap: 12px;
+                padding: 12px;
             }
 
-            .top-navbar h1 {
-                font-size: 13px;
+            .dosen-navbar-title {
+                font-size: 11px;
             }
 
-            .role-label {
+            .dosen-role-label {
                 display: none;
             }
 
-            .content {
-                padding: 16px;
+            .dosen-content {
+                padding: 15px;
             }
         }
     </style>
+
+    @yield('styles')
+    @stack('styles')
+
 </head>
 
 <body>
 
+<div class="dosen-layout">
+
     <!-- SIDEBAR -->
-    <aside class="sidebar">
 
-        <div class="sidebar-brand">
-            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M12 14l9-5-9-5-9 5 9 5z" />
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"
-                    d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z" />
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M12 14v7" />
-            </svg>
+    <aside class="dosen-sidebar">
 
-            <span>SIPETA</span>
+        <div>
+
+            <!-- LOGO SIPETA -->
+
+            <div class="dosen-brand">
+
+                <svg class="dosen-brand-icon"
+                    fill="currentColor"
+                    viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg">
+
+                    <path d="M12 2L1 7.5L12 13L21 8.5V15H23V7.5L12 2Z"/>
+                    <path d="M4 11.2V16C4 17.8 7.6 20.2 12 20.2C16.4 20.2 20 17.8 20 16V11.2L12 15.5L4 11.2Z"/>
+
+                </svg>
+
+                <div class="dosen-brand-text">
+                    <h1>SIPETA</h1>
+                    <p>Tugas Akhir Politala</p>
+                </div>
+
+            </div>
+
+
+            <!-- MENU SIDEBAR -->
+
+            <nav class="dosen-menu">
+
+                <!-- DASHBOARD -->
+
+                <a href="{{ route('dosen.dashboard') }}"
+                    class="{{ request()->routeIs('dosen.dashboard') ? 'active' : '' }}">
+
+                    <svg fill="none" stroke="currentColor"
+                        viewBox="0 0 24 24" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+
+                        <path d="M3 10.5L12 3L21 10.5"/>
+                        <path d="M5 9.5V21H19V9.5"/>
+                        <path d="M9 21V14H15V21"/>
+
+                    </svg>
+
+                    <span>Dashboard</span>
+
+                </a>
+
+
+                <!-- VERIFIKASI JUDUL -->
+
+                <a href="{{ route('dosen.validasi') }}"
+                    class="{{ request()->routeIs('dosen.validasi') ? 'active' : '' }}">
+
+                    <svg fill="none" stroke="currentColor"
+                        viewBox="0 0 24 24" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+
+                        <path d="M14 2H6A2 2 0 004 4V20A2 2 0 006 22H18A2 2 0 0020 20V8Z"/>
+                        <path d="M14 2V8H20"/>
+                        <path d="M8 13H16"/>
+                        <path d="M8 17H16"/>
+
+                    </svg>
+
+                    <span>Verifikasi Judul</span>
+
+                </a>
+
+
+                <!-- DATA ARSIP -->
+
+                <a href="{{ route('dosen.arsip') }}"
+                    class="{{ request()->routeIs('dosen.arsip*') ? 'active' : '' }}">
+
+                    <svg fill="none" stroke="currentColor"
+                        viewBox="0 0 24 24" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+
+                        <path d="M4 4H20V8H4Z"/>
+                        <path d="M5 8V20H19V8"/>
+                        <path d="M9 12H15"/>
+
+                    </svg>
+
+                    <span>Data Arsip</span>
+
+                </a>
+
+            </nav>
+
         </div>
 
-        <nav class="menu">
-            <a href="{{ route('dosen.dashboard') }}"
-                class="{{ request()->routeIs('dosen.dashboard') ? 'active' : '' }}">
-                Dashboard
-            </a>
 
-            <a href="{{ route('dosen.validasi') }}" class="{{ request()->routeIs('dosen.validasi') ? 'active' : '' }}">
-                Verifikasi Judul
-            </a>
+        <!-- FOOTER SIDEBAR -->
 
-            <a href="{{ route('dosen.arsip') }}" class="{{ request()->routeIs('dosen.arsip') ? 'active' : '' }}">
-                Data Arsip
-            </a>
-        </nav>
+        <div class="dosen-sidebar-footer">
 
-        <div class="sidebar-footer">
-            Dospem POV &copy; 2026
+            <p>Dosen Pembimbing POV &copy; 2026</p>
+
         </div>
 
     </aside>
 
-    <!-- KONTEN UTAMA -->
-    <div class="main">
 
-        <!-- TOP NAVBAR -->
-        <header class="top-navbar">
-            <h1>Sistem Informasi Proposal dan Tugas Akhir</h1>
+    <!-- MAIN CONTENT -->
 
-            <!-- User Profile & Dropdown Container -->
-            <div class="navbar-profile">
-                <button id="profileBtn" type="button" class="profile-btn">
-                    <span class="role-label">Dosen Pembimbing</span>
-                    <div class="profile-avatar">DP</div>
+    <div class="dosen-main">
+
+
+        <!-- NAVBAR ATAS -->
+
+        <header class="dosen-navbar">
+
+            <div class="dosen-navbar-title">
+                Sistem Informasi Proposal dan Tugas Akhir
+            </div>
+
+
+            <!-- PROFIL DOSEN -->
+
+            <div class="dosen-profile">
+
+                <button type="button"
+                    id="profileBtn"
+                    class="dosen-profile-btn">
+
+                    <span class="dosen-role-label">
+                        Dosen Pembimbing
+                    </span>
+
+                    <span class="dosen-avatar">
+                        DP
+                    </span>
+
                 </button>
 
-                <!-- Dropdown Menu -->
-                <div id="profileDropdown" class="profile-dropdown hidden">
-                    <div class="dropdown-header">
-                        <p class="user-name">Dosen Pembimbing</p>
-                        <p class="user-email">dosen@politala.ac.id</p>
+
+                <!-- DROPDOWN -->
+
+                <div id="profileDropdown"
+                    class="dosen-dropdown is-hidden">
+
+                    <div class="dosen-dropdown-header">
+
+                        <strong>Dosen Pembimbing</strong>
+                        <small>dosen@politala.ac.id</small>
+
                     </div>
 
-                    <button type="button" id="btnGantiRole" class="dropdown-item">
-                        <svg style="width: 16px; height: 16px;" fill="none" stroke="currentColor"
-                            viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"></path>
+
+                    <!-- GANTI ROLE -->
+
+                    <button type="button"
+                        id="btnGantiRole"
+                        class="dosen-dropdown-item">
+
+                        <svg fill="none" stroke="currentColor"
+                            viewBox="0 0 24 24" stroke-width="2">
+
+                            <path d="M8 7H20M20 7L16 3M20 7L16 11"/>
+                            <path d="M16 17H4M4 17L8 13M4 17L8 21"/>
+
                         </svg>
+
                         Ganti Role
+
                     </button>
 
-                    <form action="/logout" method="POST" style="margin: 0;">
+
+                    <!-- KELUAR SISTEM -->
+
+                    <form action="/logout" method="POST">
+
                         @csrf
-                        <button type="submit" class="dropdown-item danger">
-                            <svg style="width: 16px; height: 16px;" fill="none" stroke="currentColor"
-                                viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1">
-                                </path>
+
+                        <button type="submit"
+                            class="dosen-dropdown-item danger">
+
+                            <svg fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24" stroke-width="2">
+
+                                <path d="M9 21H5A2 2 0 013 19V5A2 2 0 015 3H9"/>
+                                <path d="M16 17L21 12L16 7"/>
+                                <path d="M21 12H9"/>
+
                             </svg>
+
                             Keluar Sistem
+
                         </button>
+
                     </form>
+
                 </div>
+
             </div>
+
         </header>
 
-        <!-- ISI HALAMAN -->
-        <main class="content">
+
+        <!-- KONTEN HALAMAN -->
+
+        <main class="dosen-content">
+
             @yield('content')
+
         </main>
 
     </div>
 
-    <!-- MODAL GANTI ROLE -->
-    <div id="modalRole" class="role-modal-overlay hidden">
-        <div id="modalOverlay" style="position: absolute; inset: 0;"></div>
+</div>
 
-        <div class="role-modal-card">
-            <div class="role-modal-header">
-                <h3>Pilih Hak Akses</h3>
-                <button type="button" id="closeModalRole" class="close-modal-btn">&times;</button>
-            </div>
 
-            <div class="role-option-list">
-                <!-- Admin Gugus TA -->
-                <a href="{{ url('/gugus-ta/dashboard') }}" class="role-option-item">
-                    <div class="role-option-left">
-                        <div class="role-avatar-badge">AG</div>
-                        <div>
-                            <div class="role-option-title">Admin Gugus TA</div>
-                            <div class="role-option-desc">Pusat Kendali Sistem</div>
+<!-- MODAL GANTI ROLE -->
+
+<div id="modalRole" class="dosen-modal is-hidden">
+
+    <div id="modalOverlay" class="dosen-modal-overlay"></div>
+
+    <div class="dosen-modal-card">
+
+        <div class="dosen-modal-header">
+
+            <h3>Pilih Hak Akses</h3>
+
+            <button type="button"
+                id="closeModalRole"
+                class="dosen-modal-close">
+
+                &times;
+
+            </button>
+
+        </div>
+
+
+        <div class="dosen-role-list">
+
+
+            <!-- ADMIN GUGUS TA -->
+
+            <a href="{{ url('/gugus-ta/dashboard') }}"
+                class="dosen-role-item">
+
+                <div class="dosen-role-info">
+
+                    <div class="dosen-role-avatar">AG</div>
+
+                    <div>
+
+                        <div class="dosen-role-name">
+                            Admin Gugus TA
                         </div>
-                    </div>
-                </a>
 
-                <!-- Dosen Pembimbing (Aktif) -->
-                <div class="role-option-item active">
-                    <div class="role-option-left">
-                        <div class="role-avatar-badge">DP</div>
-                        <div>
-                            <div class="role-option-title">Dosen Pembimbing</div>
-                            <div class="role-option-desc">Sedang Aktif</div>
+                        <div class="dosen-role-desc">
+                            Pusat Kendali Sistem
                         </div>
+
                     </div>
-                    <svg style="width: 20px; height: 20px; color: #2563eb;" fill="none" stroke="currentColor"
-                        viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                    </svg>
+
                 </div>
 
-                <!-- Koordinator Prodi -->
-                <a href="{{ url('/koorprodi/dashboard') }}" class="role-option-item">
-                    <div class="role-option-left">
-                        <div class="role-avatar-badge">KP</div>
-                        <div>
-                            <div class="role-option-title">Koordinator Prodi</div>
-                            <div class="role-option-desc">Akses Penuh Akademik</div>
+            </a>
+
+
+            <!-- DOSEN PEMBIMBING -->
+
+            <div class="dosen-role-item current">
+
+                <div class="dosen-role-info">
+
+                    <div class="dosen-role-avatar">DP</div>
+
+                    <div>
+
+                        <div class="dosen-role-name">
+                            Dosen Pembimbing
                         </div>
+
+                        <div class="dosen-role-desc">
+                            Sedang Aktif
+                        </div>
+
                     </div>
-                </a>
+
+                </div>
+
+                <svg width="22" height="22"
+                    fill="none" stroke="#2563eb"
+                    viewBox="0 0 24 24" stroke-width="2">
+
+                    <path stroke-linecap="round"
+                        stroke-linejoin="round"
+                        d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+
+                </svg>
+
             </div>
+
+
+            <!-- KOORDINATOR PRODI -->
+
+            <a href="{{ url('/koorprodi/dashboard') }}"
+                class="dosen-role-item">
+
+                <div class="dosen-role-info">
+
+                    <div class="dosen-role-avatar">KP</div>
+
+                    <div>
+
+                        <div class="dosen-role-name">
+                            Koordinator Prodi
+                        </div>
+
+                        <div class="dosen-role-desc">
+                            Akses Penuh Akademik
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </a>
+
         </div>
+
     </div>
 
-    <!-- SCRIPT DROPDOWN & MODAL -->
-    <script>
-        const profileBtn = document.getElementById('profileBtn');
-        const profileDropdown = document.getElementById('profileDropdown');
+</div>
 
-        if (profileBtn) {
-            profileBtn.addEventListener('click', (event) => {
-                event.stopPropagation();
-                profileDropdown.classList.toggle('hidden');
-            });
-        }
 
-        document.addEventListener('click', (event) => {
-            if (profileDropdown && !profileDropdown.contains(event.target) && !profileDropdown.classList.contains(
-                    'hidden')) {
-                profileDropdown.classList.add('hidden');
-            }
+<!-- JAVASCRIPT -->
+
+<script>
+
+    // DROPDOWN PROFIL
+
+    const profileBtn = document.getElementById('profileBtn');
+    const profileDropdown = document.getElementById('profileDropdown');
+
+    if (profileBtn && profileDropdown) {
+
+        profileBtn.addEventListener('click', function(event) {
+
+            event.stopPropagation();
+
+            profileDropdown.classList.toggle('is-hidden');
+
         });
 
-        const btnGantiRole = document.getElementById('btnGantiRole');
-        const modalRole = document.getElementById('modalRole');
-        const closeModalRole = document.getElementById('closeModalRole');
-        const modalOverlay = document.getElementById('modalOverlay');
+    }
 
-        if (btnGantiRole) {
-            btnGantiRole.addEventListener('click', () => {
-                profileDropdown.classList.add('hidden');
-                modalRole.classList.remove('hidden');
-            });
+
+    // TUTUP DROPDOWN KETIKA KLIK DI LUAR
+
+    document.addEventListener('click', function(event) {
+
+        if (
+            profileDropdown &&
+            profileBtn &&
+            !profileDropdown.contains(event.target) &&
+            !profileBtn.contains(event.target)
+        ) {
+
+            profileDropdown.classList.add('is-hidden');
+
         }
 
-        const tutupModalRole = () => modalRole.classList.add('hidden');
-        if (closeModalRole) closeModalRole.addEventListener('click', tutupModalRole);
-        if (modalOverlay) modalOverlay.addEventListener('click', tutupModalRole);
-    </script>
+    });
 
-    @yield('script')
+
+    // MODAL GANTI ROLE
+
+    const btnGantiRole = document.getElementById('btnGantiRole');
+    const modalRole = document.getElementById('modalRole');
+    const closeModalRole = document.getElementById('closeModalRole');
+    const modalOverlay = document.getElementById('modalOverlay');
+
+    if (btnGantiRole && modalRole) {
+
+        btnGantiRole.addEventListener('click', function() {
+
+            profileDropdown.classList.add('is-hidden');
+
+            modalRole.classList.remove('is-hidden');
+
+        });
+
+    }
+
+
+    // TUTUP MODAL
+
+    function tutupModalRole() {
+
+        if (modalRole) {
+            modalRole.classList.add('is-hidden');
+        }
+
+    }
+
+    if (closeModalRole) {
+        closeModalRole.addEventListener('click', tutupModalRole);
+    }
+
+    if (modalOverlay) {
+        modalOverlay.addEventListener('click', tutupModalRole);
+    }
+
+
+    // TUTUP DENGAN ESCAPE
+
+    document.addEventListener('keydown', function(event) {
+
+        if (event.key === 'Escape') {
+
+            tutupModalRole();
+
+            if (profileDropdown) {
+                profileDropdown.classList.add('is-hidden');
+            }
+
+        }
+
+    });
+
+</script>
+
+
+@yield('script')
+@stack('scripts')
 
 </body>
-
 </html>
