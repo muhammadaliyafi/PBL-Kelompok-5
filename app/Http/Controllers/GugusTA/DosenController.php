@@ -13,13 +13,13 @@ class DosenController extends Controller
     {
         $query = User::where('role', 'dosen');
 
-        // Pencarian jika ada input search
+        // Pencarian jika ada input search (Ganti 'name' jadi 'nama')
         if ($request->has('search') && $request->search != '') {
             $search = $request->search;
-            $query->where(function($q) use ($search) {
-                $q->where('name', 'like', "%{$search}%")
-                  ->orWhere('nip', 'like', "%{$search}%")
-                  ->orWhere('keahlian', 'like', "%{$search}%");
+            $query->where(function ($q) use ($search) {
+                $q->where('nama', 'like', "%{$search}%")
+                    ->orWhere('nip', 'like', "%{$search}%")
+                    ->orWhere('keahlian', 'like', "%{$search}%");
             });
         }
 
@@ -50,11 +50,13 @@ class DosenController extends Controller
             'keahlian.required'  => 'Bidang Keahlian wajib diisi!',
         ]);
 
-        $emailDefault = strtolower(str_replace(' ', '', $request->name)) . '@politala.ac.id';
+        // Bersihkan nama dari simbol/gelar supaya email kampus bersih (contoh: nindy@politala.ac.id)
+        $cleanName = preg_replace('/[^a-zA-Z]/', '', $request->name);
+        $emailDefault = strtolower($cleanName) . '@politala.ac.id';
 
         User::create([
             'nip'      => $request->nip,
-            'name'     => $request->name,
+            'nama'     => $request->name,     // <-- Diubah dari 'name' ke 'nama' sesuai database
             'keahlian' => $request->keahlian,
             'email'    => $request->email ?? $emailDefault,
             'role'     => 'dosen',
@@ -83,7 +85,7 @@ class DosenController extends Controller
         $dosen = User::findOrFail($id);
         $dosen->update([
             'nip'      => $request->nip,
-            'name'     => $request->name,
+            'nama'     => $request->name,     // <-- Diubah dari 'name' ke 'nama'
             'keahlian' => $request->keahlian,
         ]);
 

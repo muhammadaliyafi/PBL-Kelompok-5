@@ -20,7 +20,6 @@
                 <!-- Logo & Brand -->
                 <div class="flex items-center gap-3 px-3 py-4 mb-4">
                     <div class="text-white">
-                        <!-- Icon Topi Toga (Mortarboard) -->
                         <svg class="w-9 h-9" fill="currentColor" viewBox="0 0 24 24">
                             <path d="M12 3L1 9l11 6 9-4.91V17h2V9L12 3zM5 13.18v4L12 21l7-3.82v-4L12 17l-7-3.82z" />
                         </svg>
@@ -33,7 +32,6 @@
 
                 <!-- Navigation Menu -->
                 <nav class="space-y-1.5">
-                    <!-- Dashboard -->
                     <a href="{{ route('gugusta.dashboard') }}"
                         class="flex items-center gap-3 px-4 py-3 text-sm font-semibold rounded-2xl text-slate-200 hover:bg-slate-800/60 transition-all">
                         <svg class="w-5 h-5 stroke-[2]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -43,7 +41,6 @@
                         <span>Dashboard</span>
                     </a>
 
-                    <!-- Verifikasi Proposal -->
                     <a href="{{ route('gugusta.verifikasi') }}"
                         class="flex items-center gap-3 px-4 py-3 text-sm font-semibold rounded-2xl text-slate-200 hover:bg-slate-800/60 transition-all">
                         <svg class="w-5 h-5 stroke-[2]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -53,7 +50,6 @@
                         <span>Verifikasi Proposal</span>
                     </a>
 
-                    <!-- Kelola Bank Topik -->
                     <a href="{{ route('topik.index') }}"
                         class="flex items-center gap-3 px-4 py-3 text-sm font-semibold rounded-2xl text-slate-200 hover:bg-slate-800/60 transition-all">
                         <svg class="w-5 h-5 stroke-[2]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -63,7 +59,6 @@
                         <span>Kelola Bank Topik</span>
                     </a>
 
-                    <!-- Data Mahasiswa -->
                     <a href="{{ url('/gugus-ta/mahasiswa') }}"
                         class="flex items-center gap-3 px-4 py-3 text-sm font-semibold rounded-2xl text-slate-200 hover:bg-slate-800/60 transition-all">
                         <svg class="w-5 h-5 stroke-[2]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -73,7 +68,6 @@
                         <span>Data Mahasiswa</span>
                     </a>
 
-                    <!-- Data Dosen -->
                     <a href="{{ url('/gugus-ta/dosen') }}"
                         class="flex items-center gap-3 px-4 py-3 text-sm font-semibold rounded-2xl text-slate-200 hover:bg-slate-800/60 transition-all">
                         <svg class="w-5 h-5 stroke-[2]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -83,7 +77,6 @@
                         <span>Data Dosen</span>
                     </a>
 
-                    <!-- Ploting Dospem (Active) -->
                     <a href="/gugus-ta/ploting"
                         class="flex items-center gap-3 px-4 py-3 text-sm font-bold rounded-2xl bg-blue-600 text-white shadow-lg shadow-blue-600/30 transition-all">
                         <svg class="w-5 h-5 stroke-[2.5]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -93,7 +86,6 @@
                         <span>Ploting Dospem</span>
                     </a>
 
-                    <!-- Arsip Judul -->
                     <a href="{{ route('arsip.index') }}"
                         class="flex items-center gap-3 px-4 py-3 text-sm font-semibold rounded-2xl text-slate-200 hover:bg-slate-800/60 transition-all">
                         <svg class="w-5 h-5 stroke-[2]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -118,7 +110,6 @@
                 class="h-16 bg-white border-b border-slate-200/80 flex items-center justify-between px-8 sticky top-0 z-10">
                 <h1 class="text-sm font-medium text-slate-600">Sistem Informasi Proposal dan Tugas Akhir</h1>
 
-                <!-- User Profile & Dropdown Container -->
                 <div class="relative">
                     <button id="profileBtn"
                         class="flex items-center gap-3 focus:outline-none hover:bg-slate-50 p-1.5 rounded-lg transition-colors cursor-pointer">
@@ -130,7 +121,6 @@
                             AG</div>
                     </button>
 
-                    <!-- Dropdown Menu -->
                     <div id="profileDropdown"
                         class="hidden absolute right-0 mt-2 w-48 bg-white rounded-xl border border-slate-200/80 shadow-lg py-1.5 z-50">
                         <div class="px-4 py-2.5 border-b border-slate-100">
@@ -166,7 +156,6 @@
             <!-- PAGE CONTENT -->
             <main class="p-8 max-w-7xl w-full mx-auto">
 
-                <!-- NOTIFIKASI SUKSES / ERROR -->
                 @if (session('success'))
                     <div
                         class="mb-6 p-4 bg-emerald-50 border border-emerald-200 text-emerald-800 rounded-xl text-sm flex items-center gap-2 shadow-sm">
@@ -203,7 +192,7 @@
                 <!-- CARD FORM TAMBAH & TABEL -->
                 <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 items-start">
 
-                    <!-- Kolom Kiri: Form Ploting (Dospem Tunggal) -->
+                    <!-- Form Ploting -->
                     <div class="bg-white p-6 rounded-xl border border-slate-200/80 shadow-sm">
                         <h3
                             class="text-sm font-semibold text-slate-900 mb-4 pb-3 border-b border-slate-100 flex items-center justify-between">
@@ -218,8 +207,9 @@
                                     class="w-full px-3 py-2 text-xs rounded-lg border border-slate-200 bg-white text-slate-700 focus:outline-none focus:border-slate-400 focus:ring-1 focus:ring-slate-400 transition-all cursor-pointer">
                                     <option value="">-- Pilih Mahasiswa --</option>
                                     @foreach ($mahasiswas as $mhs)
+                                        <!-- DIUBAH: $mhs->name -> $mhs->nama -->
                                         <option value="{{ $mhs->id }}">{{ $mhs->nim ?? '-' }} -
-                                            {{ $mhs->name }}</option>
+                                            {{ $mhs->nama }}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -230,7 +220,8 @@
                                     class="w-full px-3 py-2 text-xs rounded-lg border border-slate-200 bg-white text-slate-700 focus:outline-none focus:border-slate-400 focus:ring-1 focus:ring-slate-400 transition-all cursor-pointer">
                                     <option value="">-- Pilih Dosen Pembimbing --</option>
                                     @foreach ($dosens as $dosen)
-                                        <option value="{{ $dosen->id }}">{{ $dosen->name }}</option>
+                                        <!-- DIUBAH: $dosen->name -> $dosen->nama -->
+                                        <option value="{{ $dosen->id }}">{{ $dosen->nama }}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -242,7 +233,7 @@
                         </form>
                     </div>
 
-                    <!-- Kolom Kanan: Tabel Daftar Ploting -->
+                    <!-- Tabel Daftar Ploting -->
                     <div
                         class="lg:col-span-2 bg-white rounded-xl border border-slate-200/80 shadow-sm overflow-hidden">
                         <div
@@ -281,13 +272,15 @@
                                             <td class="py-3 px-4 text-center text-slate-400 font-mono">
                                                 {{ $index + 1 }}</td>
                                             <td class="py-3 px-5">
+                                                <!-- DIUBAH: $item->mahasiswa->name -> $item->mahasiswa->nama -->
                                                 <div class="font-medium text-slate-900">
-                                                    {{ $item->mahasiswa->name ?? 'Mahasiswa Terhapus' }}</div>
+                                                    {{ $item->mahasiswa->nama ?? 'Mahasiswa Terhapus' }}</div>
                                                 <div class="text-[10px] text-slate-400 font-mono">
                                                     {{ $item->mahasiswa->nim ?? '-' }}</div>
                                             </td>
+                                            <!-- DIUBAH: $item->dospem->name -> $item->dospem->nama -->
                                             <td class="py-3 px-5 font-medium text-slate-700">
-                                                {{ $item->dospem->name ?? 'Dosen Terhapus' }}</td>
+                                                {{ $item->dospem->nama ?? 'Dosen Terhapus' }}</td>
                                             <td class="py-3 px-5 text-center">
                                                 @if ($item->status == 'Disetujui')
                                                     <span
@@ -302,9 +295,9 @@
                                             </td>
                                             <td class="py-3 px-5 text-center">
                                                 <div class="flex items-center justify-center gap-1">
-                                                    <!-- Tombol Edit Modal -->
+                                                    <!-- DIUBAH: Parameter JS $item->mahasiswa->name -> $item->mahasiswa->nama -->
                                                     <button type="button"
-                                                        onclick="openEditPlotingModal('{{ $item->id }}', '{{ $item->dospem_id }}', '{{ $item->status }}', '{{ $item->mahasiswa->name ?? '' }}')"
+                                                        onclick="openEditPlotingModal('{{ $item->id }}', '{{ $item->dospem_id }}', '{{ $item->status }}', '{{ $item->mahasiswa->nama ?? '' }}')"
                                                         class="p-1.5 text-slate-400 hover:text-blue-600 hover:bg-blue-50 rounded-md transition-colors"
                                                         title="Edit Data">
                                                         <svg class="w-4 h-4" fill="none" stroke="currentColor"
@@ -316,7 +309,6 @@
                                                         </svg>
                                                     </button>
 
-                                                    <!-- Tombol Hapus -->
                                                     <form action="/gugus-ta/ploting/{{ $item->id }}"
                                                         method="POST"
                                                         onsubmit="return confirm('Yakin ingin menghapus ploting ini?')">
@@ -384,7 +376,8 @@
                     <select id="edit_dospem_id" name="dospem_id" required
                         class="w-full px-3 py-2 text-xs rounded-lg border border-slate-200 bg-white focus:outline-none focus:border-slate-400 focus:ring-1 focus:ring-slate-400 transition-all cursor-pointer">
                         @foreach ($dosens as $dosen)
-                            <option value="{{ $dosen->id }}">{{ $dosen->name }}</option>
+                            <!-- DIUBAH: $dosen->name -> $dosen->nama -->
+                            <option value="{{ $dosen->id }}">{{ $dosen->nama }}</option>
                         @endforeach
                     </select>
                 </div>
@@ -427,7 +420,6 @@
             </div>
 
             <div class="space-y-3">
-                <!-- Admin Gugus TA (Aktif) -->
                 <div
                     class="w-full flex items-center justify-between p-3 rounded-xl border-2 border-blue-500 bg-blue-50 text-left cursor-default">
                     <div class="flex items-center gap-3">
@@ -446,7 +438,6 @@
                     </svg>
                 </div>
 
-                <!-- Dosen Pembimbing -->
                 <a href="{{ url('/dosen/dashboard') }}"
                     class="w-full flex items-center justify-between p-3 rounded-xl border border-slate-200 hover:border-slate-300 hover:bg-slate-50 text-left transition-all group">
                     <div class="flex items-center gap-3">
@@ -461,7 +452,6 @@
                     </div>
                 </a>
 
-                <!-- Koordinator Prodi -->
                 <a href="{{ url('/koorprodi/dashboard') }}"
                     class="w-full flex items-center justify-between p-3 rounded-xl border border-slate-200 hover:border-slate-300 hover:bg-slate-50 text-left transition-all group">
                     <div class="flex items-center gap-3">
@@ -479,7 +469,7 @@
         </div>
     </div>
 
-    <!-- SCRIPT UNTUK DROPDOWN PROFIL & MODAL EDIT -->
+    <!-- SCRIPT -->
     <script>
         const profileBtn = document.getElementById('profileBtn');
         const profileDropdown = document.getElementById('profileDropdown');

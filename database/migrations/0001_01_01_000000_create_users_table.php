@@ -13,15 +13,16 @@ return new class extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
+            $table->string('nim')->unique()->nullable(); // Dibuat nullable kalau login pakai Google pertama kali
+            $table->string('nama');
             $table->string('email')->unique();
-            $table->timestamp('email_verified_at')->nullable();
-            $table->string('password');
+            $table->string('google_id')->nullable(); // <--- TAMBAHKAN INI BUAT GOOGLE SSO
+            $table->string('prodi')->default('Teknologi Informasi');
+            $table->string('jurusan')->default('Komputer dan Bisnis');
+            $table->integer('angkatan')->default(2025);
+            $table->string('password')->nullable(); // Dibuat nullable juga biar akun Google nggak wajib isi password manual
+            $table->enum('role', ['mahasiswa', 'dosen', 'kaprodi', 'admin'])->default('mahasiswa');
             $table->rememberToken();
-
-            $table->string('nim')->unique()->nullable();
-            $table->string('role')->default('mahasiswa');
-
             $table->timestamps();
         });
 

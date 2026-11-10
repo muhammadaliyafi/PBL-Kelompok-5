@@ -17,14 +17,14 @@ class MahasiswaController extends Controller
         if ($request->filled('search')) {
             $search = $request->search;
             $query->where(function ($q) use ($search) {
-                $q->where('name', 'like', "%{$search}%")
+                $q->where('nama', 'like', "%{$search}%") // Diubah dari 'name' ke 'nama'
                     ->orWhere('nim', 'like', "%{$search}%");
             });
         }
 
         // Filter Tahun Angkatan
-        if ($request->filled('tahun_angkatan')) {
-            $query->where('tahun_angkatan', $request->tahun_angkatan);
+        if ($request->filled('angkatan')) {
+            $query->where('angkatan', $request->angkatan); // Sesuaikan juga jika filternya pakai angkatan
         }
 
         $mahasiswa = $query->get();
@@ -35,24 +35,24 @@ class MahasiswaController extends Controller
     {
         $request->validate([
             'nim' => 'required|unique:users,nim',
-            'name' => 'required',
-            'tahun_angkatan' => 'required|numeric|digits:4|min:2015|max:2030',
+            'nama' => 'required', // Diubah dari 'name' ke 'nama'
+            'angkatan' => 'required|numeric|digits:4|min:2015|max:2030',
         ], [
             'nim.required' => 'NIM wajib diisi!',
             'nim.unique' => 'NIM sudah terdaftar di sistem!',
-            'name.required' => 'Nama lengkap wajib diisi!',
-            'tahun_angkatan.required' => 'Tahun angkatan wajib diisi!',
-            'tahun_angkatan.numeric' => 'Tahun angkatan harus berupa angka!',
-            'tahun_angkatan.digits' => 'Tahun angkatan harus 4 digit angka!',
-            'tahun_angkatan.min' => 'Tahun angkatan minimal tahun 2015!',
-            'tahun_angkatan.max' => 'Tahun angkatan maksimal tahun 2030!',
+            'nama.required' => 'Nama lengkap wajib diisi!', // Diubah dari 'name.required'
+            'angkatan.required' => 'Tahun angkatan wajib diisi!',
+            'angkatan.numeric' => 'Tahun angkatan harus berupa angka!',
+            'angkatan.digits' => 'Tahun angkatan harus 4 digit angka!',
+            'angkatan.min' => 'Tahun angkatan minimal tahun 2015!',
+            'angkatan.max' => 'Tahun angkatan maksimal tahun 2030!',
         ]);
 
         User::create([
             'nim' => $request->nim,
-            'name' => $request->name,
-            'email' => $request->nim . '@mhs.politala.ac.id', // <-- Otomatis generate email dari NIM
-            'tahun_angkatan' => $request->tahun_angkatan,
+            'nama' => $request->nama, // Diubah dari 'name' ke 'nama'
+            'email' => $request->nim . '@mhs.politala.ac.id',
+            'angkatan' => $request->angkatan, // Sesuai kolom database 'angkatan'
             'status_aktif' => 'Aktif',
             'role' => 'mahasiswa',
             'password' => bcrypt('password'),
@@ -73,27 +73,27 @@ class MahasiswaController extends Controller
     {
         $request->validate([
             'nim' => 'required|unique:users,nim,' . $id,
-            'name' => 'required',
-            'tahun_angkatan' => 'required|numeric|digits:4|min:2015|max:2030',
+            'nama' => 'required', // Diubah dari 'name' ke 'nama'
+            'angkatan' => 'required|numeric|digits:4|min:2015|max:2030',
             'status_aktif' => 'required',
         ], [
             'nim.required' => 'NIM wajib diisi!',
             'nim.unique' => 'NIM sudah terdaftar di sistem!',
-            'name.required' => 'Nama lengkap wajib diisi!',
-            'tahun_angkatan.required' => 'Tahun angkatan wajib diisi!',
-            'tahun_angkatan.numeric' => 'Tahun angkatan harus berupa angka!',
-            'tahun_angkatan.digits' => 'Tahun angkatan harus 4 digit angka!',
-            'tahun_angkatan.min' => 'Tahun angkatan minimal tahun 2015!',
-            'tahun_angkatan.max' => 'Tahun angkatan maksimal tahun 2030!',
+            'nama.required' => 'Nama lengkap wajib diisi!',
+            'angkatan.required' => 'Tahun angkatan wajib diisi!',
+            'angkatan.numeric' => 'Tahun angkatan harus berupa angka!',
+            'angkatan.digits' => 'Tahun angkatan harus 4 digit angka!',
+            'angkatan.min' => 'Tahun angkatan minimal tahun 2015!',
+            'angkatan.max' => 'Tahun angkatan maksimal tahun 2030!',
             'status_aktif.required' => 'Status aktif wajib dipilih!',
         ]);
 
         $mhs = User::findOrFail($id);
         $mhs->update([
             'nim' => $request->nim,
-            'name' => $request->name,
-            'email' => $request->nim . '@mhs.politala.ac.id', // <-- Update email jika NIM diubah
-            'tahun_angkatan' => $request->tahun_angkatan,
+            'nama' => $request->nama, // Diubah dari 'name' ke 'nama'
+            'email' => $request->nim . '@mhs.politala.ac.id',
+            'angkatan' => $request->angkatan,
             'status_aktif' => $request->status_aktif,
         ]);
 
@@ -139,9 +139,9 @@ class MahasiswaController extends Controller
                 User::updateOrCreate(
                     ['nim' => $nim],
                     [
-                        'name'           => $nama,
-                        'email'          => $nim . '@mhs.politala.ac.id', // <-- Tambahkan email di CSV import
-                        'tahun_angkatan' => $tahunAngkatan,
+                        'nama'           => $nama, // Diubah dari 'name' ke 'nama'
+                        'email'          => $nim . '@mhs.politala.ac.id',
+                        'angkatan'       => $tahunAngkatan,
                         'status_aktif'   => 'Aktif',
                         'role'           => 'mahasiswa',
                         'password'       => Hash::make($nim)

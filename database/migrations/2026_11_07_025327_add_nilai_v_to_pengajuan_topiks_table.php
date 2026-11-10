@@ -11,14 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('arsip_juduls', function (Blueprint $table) {
-            $table->id();
-            $table->integer('tahun');
-            $table->string('nim');
-            $table->string('nama');
-            $table->text('judul');
-            $table->string('topik');
-            $table->timestamps();
+        Schema::table('pengajuan_topiks', function (Blueprint $table) {
+            $table->string('nilai_v')->nullable()->after('nama_topik');
         });
     }
 
@@ -27,6 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('arsip_juduls');
+        Schema::table('pengajuan_topiks', function (Blueprint $table) {
+            $table->dropColumn('nilai_v');
+        });
     }
 };

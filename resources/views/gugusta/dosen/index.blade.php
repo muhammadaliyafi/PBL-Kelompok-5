@@ -298,7 +298,7 @@
                                                 {{ $index + 1 }}</td>
                                             <td class="py-3 px-5 font-mono text-slate-700 font-medium">
                                                 {{ $dosen->nip }}</td>
-                                            <td class="py-3 px-5 font-medium text-slate-900">{{ $dosen->name }}</td>
+                                            <td class="py-3 px-5 font-medium text-slate-900">{{ $dosen->nama }}</td>
                                             <td class="py-3 px-5 text-slate-600">{{ $dosen->keahlian }}</td>
                                             <td class="py-3 px-5 text-center">
                                                 <span
@@ -309,7 +309,7 @@
                                             <td class="py-3 px-5 text-center">
                                                 <div class="flex items-center justify-center gap-1">
                                                     <button type="button"
-                                                        onclick="openEditModal('{{ $dosen->id }}', '{{ $dosen->nip }}', '{{ $dosen->name }}', '{{ $dosen->keahlian }}')"
+                                                        onclick="openEditModal('{{ $dosen->id }}', '{{ $dosen->nip }}', '{{ $dosen->nama }}', '{{ $dosen->keahlian }}')"
                                                         class="p-1.5 text-slate-400 hover:text-blue-600 hover:bg-blue-50 rounded-md transition-colors"
                                                         title="Edit Dosen">
                                                         <svg class="w-4 h-4" fill="none" stroke="currentColor"

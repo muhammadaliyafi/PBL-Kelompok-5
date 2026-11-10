@@ -264,12 +264,12 @@
                             </div>
                             <div>
                                 <label class="block text-xs font-medium text-slate-700 mb-1.5">Nama Lengkap</label>
-                                <input type="text" name="name" placeholder="Contoh: Muhammad Ali Yafi" required
+                                <input type="text" name="nama" placeholder="Contoh: Muhammad Ali Yafi" required
                                     class="w-full px-3 py-2 text-xs rounded-lg border border-slate-200 focus:outline-none focus:border-slate-400 focus:ring-1 focus:ring-slate-400 transition-all placeholder:text-slate-400">
                             </div>
                             <div>
                                 <label class="block text-xs font-medium text-slate-700 mb-1.5">Tahun Angkatan</label>
-                                <input type="number" name="tahun_angkatan" placeholder="Contoh: 2023" required
+                                <input type="number" name="angkatan" placeholder="Contoh: 2023" required
                                     min="2015" max="2030"
                                     class="w-full px-3 py-2 text-xs rounded-lg border border-slate-200 focus:outline-none focus:border-slate-400 focus:ring-1 focus:ring-slate-400 transition-all placeholder:text-slate-400 bg-white text-slate-700">
                             </div>
@@ -291,22 +291,18 @@
                                 Mahasiswa</span>
 
                             <form action="/gugus-ta/mahasiswa" method="GET" class="flex items-center gap-2">
-                                <select name="tahun_angkatan" onchange="this.form.submit()"
+                                <select name="angkatan" onchange="this.form.submit()"
                                     class="px-2.5 py-1.5 text-xs rounded-lg border border-slate-200 bg-white text-slate-600 focus:outline-none focus:border-slate-400 cursor-pointer">
                                     <option value="">Semua Angkatan</option>
-                                    <option value="2025" {{ request('tahun_angkatan') == '2025' ? 'selected' : '' }}>
+                                    <option value="2025" {{ request('angkatan') == '2025' ? 'selected' : '' }}>
                                         2025</option>
-                                    <option value="2024"
-                                        {{ request('tahun_angkatan') == '2024' ? 'selected' : '' }}>
+                                    <option value="2024" {{ request('angkatan') == '2024' ? 'selected' : '' }}>
                                         2024</option>
-                                    <option value="2023"
-                                        {{ request('tahun_angkatan') == '2023' ? 'selected' : '' }}>
+                                    <option value="2023" {{ request('angkatan') == '2023' ? 'selected' : '' }}>
                                         2023</option>
-                                    <option value="2022"
-                                        {{ request('tahun_angkatan') == '2022' ? 'selected' : '' }}>
+                                    <option value="2022" {{ request('angkatan') == '2022' ? 'selected' : '' }}>
                                         2022</option>
-                                    <option value="2021"
-                                        {{ request('tahun_angkatan') == '2021' ? 'selected' : '' }}>
+                                    <option value="2021" {{ request('angkatan') == '2021' ? 'selected' : '' }}>
                                         2021</option>
                                 </select>
 
@@ -317,7 +313,7 @@
                                 <button type="submit"
                                     class="bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-200 text-xs font-medium px-3 py-1.5 rounded-lg transition-colors">Cari</button>
 
-                                @if (request('search') || request('tahun_angkatan'))
+                                @if (request('search') || request('angkatan'))
                                     <a href="/gugus-ta/mahasiswa"
                                         class="text-xs text-slate-400 hover:text-slate-600 px-1">Reset</a>
                                 @endif
@@ -378,14 +374,14 @@
                                                     {{ $index + 1 }}</td>
                                                 <td class="py-3 px-5 font-mono text-slate-700 font-medium">
                                                     {{ $mhs->nim }}</td>
-                                                <td class="py-3 px-5 font-medium text-slate-900">{{ $mhs->name }}
+                                                <td class="py-3 px-5 font-medium text-slate-900">{{ $mhs->nama }}
                                                 </td>
                                                 <td class="py-3 px-5">
                                                     <div class="flex items-center">
                                                         <span
-                                                            class="font-medium text-slate-700">{{ $mhs->tahun_angkatan }}</span>
+                                                            class="font-medium text-slate-700">{{ $mhs->angkatan }}</span>
 
-                                                        @if (now()->year - $mhs->tahun_angkatan >= 3)
+                                                        @if (now()->year - $mhs->angkatan >= 3)
                                                             <span
                                                                 class="ml-2 inline-flex items-center px-2 py-0.5 rounded-md text-[11px] font-medium bg-amber-50 text-amber-600 border border-amber-200/60"
                                                                 title="Mahasiswa Overtime">
@@ -423,7 +419,7 @@
                                                 <td class="py-3 px-5 text-center">
                                                     <div class="flex items-center justify-center gap-1">
                                                         <button type="button"
-                                                            onclick="openEditMhsModal('{{ $mhs->id }}', '{{ $mhs->nim }}', '{{ $mhs->name }}', '{{ $mhs->tahun_angkatan }}', '{{ $mhs->status_aktif ?? 'Aktif' }}')"
+                                                            onclick="openEditMhsModal('{{ $mhs->id }}', '{{ $mhs->nim }}', '{{ $mhs->nama }}', '{{ $mhs->angkatan }}', '{{ $mhs->status_aktif ?? 'Aktif' }}')"
                                                             class="p-1.5 text-slate-400 hover:text-blue-600 hover:bg-blue-50 rounded-md transition-colors"
                                                             title="Edit Data Mahasiswa">
                                                             <svg class="w-4 h-4" fill="none" stroke="currentColor"
@@ -484,13 +480,13 @@
 
                 <div>
                     <label class="block text-xs font-medium text-slate-700 mb-1.5">Nama Lengkap</label>
-                    <input type="text" id="edit_mhs_name" name="name" required
+                    <input type="text" id="edit_mhs_name" name="nama" required
                         class="w-full px-3 py-2 text-xs rounded-lg border border-slate-200 focus:outline-none focus:border-slate-400 focus:ring-1 focus:ring-slate-400 transition-all">
                 </div>
 
                 <div>
                     <label class="block text-xs font-medium text-slate-700 mb-1.5">Tahun Angkatan</label>
-                    <input type="number" id="edit_mhs_tahun_angkatan" name="tahun_angkatan" required min="2015"
+                    <input type="number" id="edit_mhs_angkatan" name="angkatan" required min="2015"
                         max="2030"
                         class="w-full px-3 py-2 text-xs rounded-lg border border-slate-200 focus:outline-none focus:border-slate-400 focus:ring-1 focus:ring-slate-400 transition-all">
                 </div>
@@ -654,11 +650,11 @@
         if (modalOverlay) modalOverlay.addEventListener('click', tutupModalRole);
 
         // Modal Edit Mahasiswa
-        function openEditMhsModal(id, nim, name, tahun_angkatan, status_aktif) {
+        function openEditMhsModal(id, nim, name, angkatan, status_aktif) {
             document.getElementById('editMhsForm').action = '/gugus-ta/mahasiswa/' + id;
             document.getElementById('edit_mhs_nim').value = nim;
             document.getElementById('edit_mhs_name').value = name;
-            document.getElementById('edit_mhs_tahun_angkatan').value = tahun_angkatan;
+            document.getElementById('edit_mhs_angkatan').value = angkatan;
             document.getElementById('edit_mhs_status_aktif').value = status_aktif;
 
             const modal = document.getElementById('editMhsModal');

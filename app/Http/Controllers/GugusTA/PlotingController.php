@@ -11,24 +11,30 @@ class PlotingController extends Controller
 {
     public function index(Request $request)
     {
-        // Ambil data mahasiswa dan dosen untuk dropdown
-        $mahasiswas = User::where('role', 'mahasiswa')->orWhereNotNull('tahun_angkatan')->get();
+        // Ambil data mahasiswa (HANYA role mahasiswa) & dosen untuk dropdown
+        $mahasiswas = User::where('role', 'mahasiswa')->get();
         $dosens     = User::where('role', 'dosen')->get();
 
         // Ambil data ploting beserta relasi mahasiswa & dosen
         $query = Ploting::with(['mahasiswa', 'dospem']);
 
-        // Fitur Cari
+        // Fitur Cari (Ubah 'name' ke 'nama')
         if ($request->has('search') && $request->search != '') {
             $search = $request->search;
             $query->whereHas('mahasiswa', function ($q) use ($search) {
-                $q->where('name', 'like', "%{$search}%")->orWhere('nim', 'like', "%{$search}%");
+                $q->where('nama', 'like', "%{$search}%")
+                    ->orWhere('nim', 'like', "%{$search}%");
             })->orWhereHas('dospem', function ($q) use ($search) {
-                $q->where('name', 'like', "%{$search}%");
+                $q->where('nama', 'like', "%{$search}%")
+                    ->orWhere('nip', 'like', "%{$search}%");
             });
         }
 
         $plotings = $query->latest()->get();
+
+        if (view()->exists('gugusta.ploting.index')) {
+            return view('gugusta.ploting.index', compact('mahasiswas', 'dosens', 'plotings'));
+        }
 
         return view('gugusta.ploting', compact('mahasiswas', 'dosens', 'plotings'));
     }

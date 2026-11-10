@@ -20,7 +20,6 @@
                 <!-- Logo & Brand -->
                 <div class="flex items-center gap-3 px-3 py-4 mb-4">
                     <div class="text-white">
-                        <!-- Icon Topi Toga (Mortarboard) -->
                         <svg class="w-9 h-9" fill="currentColor" viewBox="0 0 24 24">
                             <path d="M12 3L1 9l11 6 9-4.91V17h2V9L12 3zM5 13.18v4L12 21l7-3.82v-4L12 17l-7-3.82z" />
                         </svg>
@@ -33,7 +32,6 @@
 
                 <!-- Navigation Menu -->
                 <nav class="space-y-1.5">
-                    <!-- Dashboard -->
                     <a href="{{ route('gugusta.dashboard') }}"
                         class="flex items-center gap-3 px-4 py-3 text-sm font-semibold rounded-2xl text-slate-200 hover:bg-slate-800/60 transition-all">
                         <svg class="w-5 h-5 stroke-[2]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -53,7 +51,6 @@
                         <span>Verifikasi Proposal</span>
                     </a>
 
-                    <!-- Kelola Bank Topik -->
                     <a href="{{ route('topik.index') }}"
                         class="flex items-center gap-3 px-4 py-3 text-sm font-semibold rounded-2xl text-slate-200 hover:bg-slate-800/60 transition-all">
                         <svg class="w-5 h-5 stroke-[2]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -63,7 +60,6 @@
                         <span>Kelola Bank Topik</span>
                     </a>
 
-                    <!-- Data Mahasiswa -->
                     <a href="{{ url('/gugus-ta/mahasiswa') }}"
                         class="flex items-center gap-3 px-4 py-3 text-sm font-semibold rounded-2xl text-slate-200 hover:bg-slate-800/60 transition-all">
                         <svg class="w-5 h-5 stroke-[2]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -73,7 +69,6 @@
                         <span>Data Mahasiswa</span>
                     </a>
 
-                    <!-- Data Dosen -->
                     <a href="{{ url('/gugus-ta/dosen') }}"
                         class="flex items-center gap-3 px-4 py-3 text-sm font-semibold rounded-2xl text-slate-200 hover:bg-slate-800/60 transition-all">
                         <svg class="w-5 h-5 stroke-[2]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -83,7 +78,6 @@
                         <span>Data Dosen</span>
                     </a>
 
-                    <!-- Ploting Dospem -->
                     <a href="/gugus-ta/ploting"
                         class="flex items-center gap-3 px-4 py-3 text-sm font-semibold rounded-2xl text-slate-200 hover:bg-slate-800/60 transition-all">
                         <svg class="w-5 h-5 stroke-[2]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -93,7 +87,6 @@
                         <span>Ploting Dospem</span>
                     </a>
 
-                    <!-- Arsip Judul -->
                     <a href="{{ route('arsip.index') }}"
                         class="flex items-center gap-3 px-4 py-3 text-sm font-semibold rounded-2xl text-slate-200 hover:bg-slate-800/60 transition-all">
                         <svg class="w-5 h-5 stroke-[2]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -118,7 +111,6 @@
                 class="h-16 bg-white border-b border-slate-200/80 flex items-center justify-between px-8 sticky top-0 z-10">
                 <h1 class="text-sm font-medium text-slate-600">Sistem Informasi Proposal dan Tugas Akhir</h1>
 
-                <!-- User Profile & Dropdown Container -->
                 <div class="relative">
                     <button id="profileBtn"
                         class="flex items-center gap-3 focus:outline-none hover:bg-slate-50 p-1.5 rounded-lg transition-colors cursor-pointer">
@@ -130,7 +122,6 @@
                             AG</div>
                     </button>
 
-                    <!-- Dropdown Menu -->
                     <div id="profileDropdown"
                         class="hidden absolute right-0 mt-2 w-48 bg-white rounded-xl border border-slate-200/80 shadow-lg py-1.5 z-50">
                         <div class="px-4 py-2.5 border-b border-slate-100">
@@ -181,7 +172,7 @@
                             <p class="text-[11px] font-semibold text-slate-500 uppercase tracking-wider">Total
                                 Pengajuan
                             </p>
-                            <p class="text-2xl font-bold text-slate-900 mt-1">12</p>
+                            <p class="text-2xl font-bold text-slate-900 mt-1">{{ $totalPengajuan ?? 0 }}</p>
                         </div>
                         <div class="p-2.5 bg-slate-100 text-slate-600 rounded-lg border border-slate-200/60">
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -197,7 +188,7 @@
                             <p class="text-[11px] font-semibold text-slate-500 uppercase tracking-wider">Menunggu
                                 Review
                             </p>
-                            <p class="text-2xl font-bold text-amber-600 mt-1">4</p>
+                            <p class="text-2xl font-bold text-amber-600 mt-1">{{ $menungguReview ?? 0 }}</p>
                         </div>
                         <div class="p-2.5 bg-amber-50 text-amber-600 rounded-lg border border-amber-200/60">
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -213,7 +204,7 @@
                             <p class="text-[11px] font-semibold text-slate-500 uppercase tracking-wider">Telah
                                 Disetujui
                             </p>
-                            <p class="text-2xl font-bold text-emerald-600 mt-1">8</p>
+                            <p class="text-2xl font-bold text-emerald-600 mt-1">{{ $telahDisetujui ?? 0 }}</p>
                         </div>
                         <div class="p-2.5 bg-emerald-50 text-emerald-600 rounded-lg border border-emerald-200/60">
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -228,7 +219,7 @@
                 <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
 
                     <!-- Search & Filter Bar -->
-                    <div
+                    <form method="GET" action="{{ route('gugusta.verifikasi') }}"
                         class="p-4 border-b border-slate-200 bg-slate-50/50 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                         <div class="relative flex-1 max-w-xs">
                             <span
@@ -238,18 +229,22 @@
                                         d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                                 </svg>
                             </span>
-                            <input type="text" placeholder="Cari nama, NIM, atau judul..."
+                            <input type="text" name="search" value="{{ request('search') }}"
+                                placeholder="Cari nama, NIM, atau judul..."
                                 class="w-full pl-9 pr-3 py-1.5 text-xs rounded-lg border border-slate-300 bg-white focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600 transition-all">
                         </div>
 
-                        <select
+                        <select name="status" onchange="this.form.submit()"
                             class="px-3 py-1.5 text-xs rounded-lg border border-slate-300 bg-white text-slate-700 focus:outline-none focus:border-blue-600">
                             <option value="">Semua Status</option>
-                            <option value="Menunggu">Menunggu</option>
-                            <option value="Disetujui">Disetujui</option>
-                            <option value="Ditolak">Ditolak</option>
+                            <option value="Menunggu" {{ request('status') == 'Menunggu' ? 'selected' : '' }}>Menunggu
+                            </option>
+                            <option value="Disetujui" {{ request('status') == 'Disetujui' ? 'selected' : '' }}>
+                                Disetujui</option>
+                            <option value="Ditolak" {{ request('status') == 'Ditolak' ? 'selected' : '' }}>Ditolak
+                            </option>
                         </select>
-                    </div>
+                    </form>
 
                     <!-- Table -->
                     <div class="overflow-x-auto">
@@ -264,50 +259,84 @@
                                 </tr>
                             </thead>
                             <tbody class="divide-y divide-slate-100 text-xs">
-                                <tr class="hover:bg-slate-50/60 transition-colors">
-                                    <td class="py-4 px-5 align-middle">
-                                        <div class="flex items-center gap-3">
-                                            <div
-                                                class="w-8 h-8 rounded-full bg-slate-800 text-white font-bold flex items-center justify-center text-[11px] tracking-wider shadow-sm">
-                                                MY
-                                            </div>
-                                            <div>
-                                                <div class="font-bold text-slate-900">Muhammad Ali Yafi</div>
-                                                <div class="text-[11px] text-slate-400 font-mono mt-0.5">2501301052
+                                @forelse ($proposals ?? [] as $item)
+                                    <tr class="hover:bg-slate-50/60 transition-colors">
+                                        <td class="py-4 px-5 align-middle">
+                                            <div class="flex items-center gap-3">
+                                                <div
+                                                    class="w-8 h-8 rounded-full bg-slate-800 text-white font-bold flex items-center justify-center text-[11px] tracking-wider shadow-sm">
+                                                    {{ strtoupper(substr($item->mahasiswa->nama ?? 'M', 0, 2)) }}
+                                                </div>
+                                                <div>
+                                                    <div class="font-bold text-slate-900">
+                                                        {{ $item->mahasiswa->nama ?? '-' }}</div>
+                                                    <div class="text-[11px] text-slate-400 font-mono mt-0.5">
+                                                        {{ $item->mahasiswa->nim ?? '-' }}
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                    </td>
-                                    <td class="py-4 px-5 align-middle max-w-md">
-                                        <div class="font-semibold text-slate-800 leading-snug">Sistem Informasi
-                                            Pengelolaan Tugas Akhir (SIPETA)</div>
-                                        <div class="mt-1">
-                                            <span
-                                                class="inline-block px-2 py-0.5 text-[10px] font-medium bg-slate-100 text-slate-600 border border-slate-200 rounded">
-                                                Sistem Informasi
-                                            </span>
-                                        </div>
-                                    </td>
-                                    <td class="py-4 px-5 align-middle">
-                                        <span
-                                            class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-[11px] font-medium bg-amber-50 text-amber-700 border border-amber-200/70">
-                                            <span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span>
-                                            Menunggu
-                                        </span>
-                                    </td>
-                                    <td class="py-4 px-5 align-middle">
-                                        <div class="flex items-center justify-center gap-2">
-                                            <button
-                                                class="px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg text-xs transition-colors shadow-sm">
-                                                ACC Judul
-                                            </button>
-                                            <button
-                                                class="px-3 py-1.5 bg-white hover:bg-rose-50 text-rose-600 border border-slate-200 hover:border-rose-200 font-semibold rounded-lg text-xs transition-colors">
-                                                Tolak
-                                            </button>
-                                        </div>
-                                    </td>
-                                </tr>
+                                        </td>
+                                        <td class="py-4 px-5 align-middle max-w-md">
+                                            <div class="font-semibold text-slate-800 leading-snug">
+                                                {{ $item->judul }}
+                                            </div>
+                                            <div class="mt-1">
+                                                <span
+                                                    class="inline-block px-2 py-0.5 text-[10px] font-medium bg-slate-100 text-slate-600 border border-slate-200 rounded">
+                                                    {{ $item->topik ?? 'Sistem Informasi' }}
+                                                </span>
+                                            </div>
+                                        </td>
+                                        <td class="py-4 px-5 align-middle">
+                                            @if (($item->status ?? 'Menunggu') == 'Disetujui')
+                                                <span
+                                                    class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-[11px] font-medium bg-emerald-50 text-emerald-700 border border-emerald-200/70">
+                                                    <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+                                                    Disetujui
+                                                </span>
+                                            @elseif (($item->status ?? 'Menunggu') == 'Ditolak')
+                                                <span
+                                                    class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-[11px] font-medium bg-rose-50 text-rose-700 border border-rose-200/70">
+                                                    <span class="w-1.5 h-1.5 rounded-full bg-rose-500"></span> Ditolak
+                                                </span>
+                                            @else
+                                                <span
+                                                    class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-[11px] font-medium bg-amber-50 text-amber-700 border border-amber-200/70">
+                                                    <span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span>
+                                                    Menunggu
+                                                </span>
+                                            @endif
+                                        </td>
+                                        <td class="py-4 px-5 align-middle">
+                                            <div class="flex items-center justify-center gap-2">
+                                                <button type="button"
+                                                    class="px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg text-xs transition-colors shadow-sm">
+                                                    ACC Judul
+                                                </button>
+                                                <button type="button"
+                                                    class="px-3 py-1.5 bg-white hover:bg-rose-50 text-rose-600 border border-slate-200 hover:border-rose-200 font-semibold rounded-lg text-xs transition-colors">
+                                                    Tolak
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                @empty
+                                    <tr>
+                                        <td colspan="4" class="py-12 text-center text-slate-400">
+                                            <svg class="w-10 h-10 mx-auto text-slate-300 mb-2" fill="none"
+                                                stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round"
+                                                    stroke-width="1.5"
+                                                    d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z">
+                                                </path>
+                                            </svg>
+                                            <p class="font-medium text-slate-500">Belum ada pengajuan judul proposal
+                                            </p>
+                                            <p class="text-[11px] text-slate-400 mt-0.5">Judul yang disetujui Dosen
+                                                Pembimbing akan muncul di sini untuk diverifikasi.</p>
+                                        </td>
+                                    </tr>
+                                @endforelse
                             </tbody>
                         </table>
                     </div>
@@ -338,7 +367,6 @@
             </div>
 
             <div class="space-y-3">
-                <!-- Admin Gugus TA (Aktif) -->
                 <div
                     class="w-full flex items-center justify-between p-3 rounded-xl border-2 border-blue-500 bg-blue-50 text-left cursor-default">
                     <div class="flex items-center gap-3">
@@ -357,7 +385,6 @@
                     </svg>
                 </div>
 
-                <!-- Dosen Pembimbing -->
                 <a href="{{ url('/dosen/dashboard') }}"
                     class="w-full flex items-center justify-between p-3 rounded-xl border border-slate-200 hover:border-slate-300 hover:bg-slate-50 text-left transition-all group">
                     <div class="flex items-center gap-3">
@@ -372,7 +399,6 @@
                     </div>
                 </a>
 
-                <!-- Koordinator Prodi -->
                 <a href="{{ url('/koorprodi/dashboard') }}"
                     class="w-full flex items-center justify-between p-3 rounded-xl border border-slate-200 hover:border-slate-300 hover:bg-slate-50 text-left transition-all group">
                     <div class="flex items-center gap-3">
